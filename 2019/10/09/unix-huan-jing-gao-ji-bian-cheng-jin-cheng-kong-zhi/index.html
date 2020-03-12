@@ -1,0 +1,1867 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="UNIX环境高级编程-进程控制, 吴超峰的博客">
+    <meta name="baidu-site-verification" content>
+    <meta name="google-site-verification" content>
+    <meta name="360-site-verification" content>
+    <meta name="description" content="今天讨论进程控制这一章，也是进程中最终要的一部分，其实主要就是围绕着 fork、exec、wait这三个函数来讨论 Unix 系统是如何管理进程的。
+1 进程标识PID 是系统中进程的唯一标志，在系统中使用 pid_t 类型表示，它是一个非">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>UNIX环境高级编程-进程控制 | 吴超峰的博客</title>
+    <link rel="icon" type="image/jpeg" href="/logo.jpg">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?46e79e71af0709a5b9106bf20cecc493";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.jpg" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">吴超峰的博客</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/contact" class="waves-effect waves-light">
+            
+            <span>留言板</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.jpg" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">吴超峰的博客</div>
+        <div class="logo-desc">
+            
+            南京大学 | 计算机科学与技术系
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-link"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-link"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-link"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-link"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-link"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-link"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        <li>
+            <a href="/contact" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-link"></i>
+                
+                留言板
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/fengshentianxia" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/fengshentianxia" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        UNIX环境高级编程-进程控制
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                        <a href="/tags/Linux/" target="_blank">
+                            <span class="chip bg-color">Linux</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                        <a href="/categories/UNIX环境高级编程/" class="post-category" target="_blank">
+                            UNIX环境高级编程
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-10-09
+                </div>
+
+                <div class="post-author info-break-policy">
+                    <i class="fa fa-user-o fa-fw"></i>作者:&nbsp;&nbsp;
+                    
+                    吴超峰
+                    
+                </div>
+
+                
+                
+                <div class="info-break-policy">
+                    <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    6.1k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    24 分
+                </div>
+                
+                
+
+                
+                <div id="busuanzi_container_page_pv" class="info-break-policy">
+                    <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                    <span id="busuanzi_value_page_pv"></span>
+                </div>
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>今天讨论进程控制这一章，也是进程中最终要的一部分，其实主要就是围绕着 fork、exec、wait这三个函数来讨论 Unix 系统是如何管理进程的。</p>
+<h2 id="1-进程标识"><a href="#1-进程标识" class="headerlink" title="1 进程标识"></a>1 进程标识</h2><p>PID 是系统中进程的<strong>唯一标志</strong>，在系统中使用 pid_t 类型表示，它是一个<strong>非负整型</strong>。</p>
+<p>1号 init 进程是所有进程的祖先进程（但不一定是父进程），内核启动后会启动 init 进程，然后内核就会像一个库一样守在后台等待出现异常等情况的时候再出来处理一下，其它的事情都由 init 进程创建子进程来完成。</p>
+<p>进程号是不断向后使用的，当进程号达到最大值的时候，再回到最小一个可用的数值重新使用。</p>
+<pre class="line-numbers language-c"><code class="language-c"><span class="token comment" spellcheck="true">//getpid, getppid - get process identification</span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;sys/types.h></span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span>
+
+pid_t <span class="token function">getpid</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//getpid获得当前进程 ID。</span>
+pid_t <span class="token function">getppid</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//getppid获得父进程 ID。</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="2-函数fork"><a href="#2-函数fork" class="headerlink" title="2 函数fork"></a>2 函数fork</h2><p>fork函数的作用就是创建子进程。调用 fork创建子进程的时候，刚开始父子进程是一模一样的，就连代码执行到的位置都是一模一样的。</p>
+<pre class="line-numbers language-c"><code class="language-c"><span class="token comment" spellcheck="true">//fork - create a child process</span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span>
+pid_t <span class="token function">fork</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="2-1-fork特点"><a href="#2-1-fork特点" class="headerlink" title="2.1 fork特点"></a>2.1 fork特点</h3><p>如何区分父子进程：fork 执行一次，但返回两次。</p>
+<blockquote>
+<ul>
+<li>父进程中的返回值是子进程的 PID</li>
+<li>在子进程中的返回值是 0</li>
+<li>创建失败的返回值为负值。</li>
+</ul>
+</blockquote>
+<p>例如：</p>
+<pre class="line-numbers language-c"><code class="language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span> </span>
+<span class="token keyword">int</span> <span class="token function">main</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> 
+<span class="token punctuation">{</span> 
+    pid_t fpid<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//fpid表示fork函数返回的值</span>
+    <span class="token keyword">int</span> count<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
+    fpid<span class="token operator">=</span><span class="token function">fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>fpid <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> 
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"error in fork!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+    <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>fpid <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"i am the child process, my process id is %d/n"</span><span class="token punctuation">,</span><span class="token function">getpid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"我是爹的儿子/n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//对某些人来说中文看着更直白。</span>
+        count<span class="token operator">++</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"i am the parent process, my process id is %d/n"</span><span class="token punctuation">,</span><span class="token function">getpid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"我是孩子他爹/n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        count<span class="token operator">++</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"统计结果是: %d/n"</span><span class="token punctuation">,</span>count<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="2-2-fork之后子进程的创建过程"><a href="#2-2-fork之后子进程的创建过程" class="headerlink" title="2.2 fork之后子进程的创建过程"></a>2.2 fork之后子进程的创建过程</h3><p>从上面，我们知道，调用 fork创建子进程的时候，刚开始父子进程是一模一样的，就连代码执行到的位置都是一模一样的。到底怎么创建子进程的进程空间？</p>
+<ul>
+<li>这里主要经历了两个版本，最初的版本是<strong>完全拷贝父进程的进程空间</strong></li>
+</ul>
+<blockquote>
+<p>拷贝父进程的数据空间、堆和栈，共享父进程的代码段。</p>
+</blockquote>
+<p>如果父进程携带的数据量特别大，那么这种情况创建子进程就会比较耗费资源。这还不是最要命的，万一费了这么大劲创建了一个子进程出来，结果子进程没有使用父进程给它的数据，而只是打印了一句 “Hello World!” 就结束退出了，岂不是白白的浪费了之前的资源开销</p>
+<ul>
+<li>后来又提出了<strong>写时复制技术</strong>。</li>
+</ul>
+<p><strong>写时复制（Copy-On-Write，COW）</strong>就是下图的部分，fork函数刚刚创建子进程的时候父子进程的数据指向同一块物理内存，但是内核将这些内存的访问变为只读的了，当父子进程中的任何一个想要修改数据的时候，内核会为修改区域的那块内存制作一个副本，并将自己的虚拟地址映射到物理地址的指向修改为副本的地址，从此父子进程自己玩自己的，谁也不影响谁，效率也提高了许多。新分配的副本大小通常是虚拟存储系统中的一“页”。</p>
+<p><img src="/2019/10/09/unix-huan-jing-gao-ji-bian-cheng-jin-cheng-kong-zhi/281621483655338.png" alt="fork与写时复制"></p>
+<p>当然，写是复制技术中所谓制作一个副本，这个是在物理地址中制作的，并非是我们在程序中拿到的那个指针所指向的地址，我们的指针所指向的地址其实是虚拟地址，所以这些动作对用户态程序员是透明的，不需要我们自己进行管理，内核会自动为我们打点好一切。</p>
+<h3 id="2-3-父子进程之间的不同"><a href="#2-3-父子进程之间的不同" class="headerlink" title="2.3 父子进程之间的不同"></a>2.3 父子进程之间的不同</h3><p>当然其实父子进程之间是有五点不同的：</p>
+<blockquote>
+<ol>
+<li>fork 的返回值不同；</li>
+<li>父子进程的 PID 不相同；</li>
+<li>父子进程的 PPID 不相同； // PPID 就是父进程 PID</li>
+<li>在子进程中资源的利用量清零，否则如果父进程打开了很多资源，子进程能使用的资源量就很少了；</li>
+<li>未决信号和文件锁不继承。</li>
+</ol>
+</blockquote>
+<p>其次，父进程与子进程谁先运行是不确定的，这个执行顺序是由进程调度器决定的，不过 vfork会保证子进程先运行。进程调度器不是一个工具，是在内核中的一块代码。</p>
+<p>例如：</p>
+<pre class="line-numbers language-c"><code class="language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdlib.h></span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span>
+
+<span class="token keyword">int</span> <span class="token function">main</span> <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+        pid_t pid<span class="token punctuation">;</span>
+
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"[%d] Start!\n"</span><span class="token punctuation">,</span> <span class="token function">getpid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        pid <span class="token operator">=</span> <span class="token function">fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>pid <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"fork()"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token number">0</span> <span class="token operator">==</span> pid<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment" spellcheck="true">// child</span>
+                <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"[%d] Child process.\n"</span><span class="token punctuation">,</span> <span class="token function">getpid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span> <span class="token comment" spellcheck="true">// parent</span>
+                <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"[%d] Parent process.\n"</span><span class="token punctuation">,</span> <span class="token function">getpid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"End!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>执行结果：</p>
+<pre class="line-numbers language-shell"><code class="language-shell">>$ make 1fork
+cc     1fork.c   -o 1fork
+>$ ./1fork 
+[3713] Start!
+[3714] Child process.
+[3713] Parent process.
+[3713] End!
+[3714] End!<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>新打开一个终端，验证它们的父子进程关系:</p>
+<pre class="line-numbers language-shell"><code class="language-shell"> >$ ps axf
+3565 pts/1    Ss     0:00  \_ bash
+3713 pts/1    S+     0:00  |   \_ ./1fork
+3714 pts/1    S+     0:00  |       \_ ./1fork<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p> 从 ps命令可以看出来，3713 进程确实产生了一个子进程 3714。</p>
+<p>但是这里面有一个问题，我们重新执行一遍这个程序，这次将输出重定向到文件中。</p>
+<pre class="line-numbers language-shell"><code class="language-shell">>$ ./1fork > result.txt
+>$ cat result.txt 
+[3807] Start!
+[3807] Parent process.
+End!
+[3807] Start!
+[3808] Child process.
+End!<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>发现有什么不同了吗？父进程竟然输出了两次 Start!，这是为什么呢？</p>
+<p>其实第二次 Start! 并不是父进程输出的，而是子进程输出的。但是为什么 PID 却是父进程的呢？</p>
+<p>其实这是因为行缓冲变成了全缓冲导致的，之前我们讲过，标准输出是行缓冲模式，而系统默认的是全缓冲模式。所以当我们将它输出到控制台的时候是可以得到预期结果的，但是一旦重定向到文件的时候就由行缓冲模式变成了全缓冲模式，而子进程产生的时候是会复制父进程的缓冲区的数据的，所以子进程刷新缓冲区的时候子进程也会将从父进程缓冲区中复制到的内容刷新出来。因此，<strong>在使用 fork 产生子进程之前一定要使用 fflush(NULL) 刷新所有缓冲区！</strong></p>
+<p>那么大家再考虑一个问题，当程序运行的时候，为什么子进程的输出结果是在当前 shell 中，而没有打开一个新的 shell 呢？</p>
+<p>这是因为子进程被创建的时候会复制父进程所有打开的文件描述符，所谓的“复制”是指就像执行了 dup函数一样，父子进程每个相同的打开的文件描述符共享一个文件表项。</p>
+<p>而父进程默认开启了 0（stdin）、1（stdout）、2（stderr） 三个文件描述符，所以子进程中也同样存在这三个文件描述符。</p>
+<p>既然子进程会复制父进程的文件描述符，也就是说如果父进程在创建子进程之前关闭了三个标准的文件描述符，那么子进程也就没有这三个文件描述符可以使用了。</p>
+<p>从上面的 ps 命令执行结果可以看出来，我们的父进程是 bash 的子进程，所以我们父进程的三个标准文件描述符是从 bash 中复制过来的。</p>
+<h3 id="2-4-父子进程之间的文件共享"><a href="#2-4-父子进程之间的文件共享" class="headerlink" title="2.4 父子进程之间的文件共享"></a>2.4 父子进程之间的文件共享</h3><p>在重定向父进程的标准输出时，子进程的标准输出也被重定向。实际上，fork的一个特性是父进程的所有打开文件描述符都被复制到子进程中。我们说“复制”是因为对每个文件描述符来说，就好像执行了dup函数。父进程和子进程每个相同的打开描述符共享一个文件表项。</p>
+<p><img src="/2019/10/09/unix-huan-jing-gao-ji-bian-cheng-jin-cheng-kong-zhi/1570761510199.png" alt="fork之后父进程和子进程之间对打开文件的共享"></p>
+<h3 id="2-5-僵尸进程"><a href="#2-5-僵尸进程" class="headerlink" title="2.5 僵尸进程"></a>2.5 僵尸进程</h3><p>一个进程使用fork创建子进程，如果子进程退出，而父进程并没有调用wait或waitpid获取子进程的状态信息，那么子进程的进程描述符仍然保存在系统中。这种进程称之为僵尸进程。僵尸进程是一个进程必然会经过的过程：这是每个子进程在结束时都要经过的阶段。</p>
+<p>例如</p>
+<pre class="line-numbers language-c"><code class="language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdlib.h></span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;sys/types.h></span></span>
+
+<span class="token keyword">int</span> <span class="token function">main</span> <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+        pid_t pid<span class="token punctuation">;</span>
+        <span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token function">fflush</span><span class="token punctuation">(</span><span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                pid <span class="token operator">=</span> <span class="token function">fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>pid <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                        <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"fork()"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        <span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token number">0</span> <span class="token operator">==</span> pid<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"pid = %d\n"</span><span class="token punctuation">,</span> <span class="token function">getpid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        <span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>运行</p>
+<pre class="line-numbers language-shell"><code class="language-shell">>$ make 2fork
+cc     2fork.c   -o 2fork
+>$ ./2fork 
+pid = 5101
+pid = 5103
+pid = 5105
+pid = 5107
+pid = 5108
+pid = 5106
+pid = 5104
+pid = 5102
+pid = 5110
+pid = 5109
+# ... 这里父进程处于 sleep 状态，便于我们新打开一个终端查看进程状态
+>$ ps axf
+ 3565 pts/1    Ss     0:00  \_ bash
+ 5100 pts/1    S+     0:00  |   \_ ./2fork
+ 5101 pts/1    Z+     0:00  |       \_ [2fork] <defunct>
+ 5102 pts/1    Z+     0:00  |       \_ [2fork] <defunct>
+ 5103 pts/1    Z+     0:00  |       \_ [2fork] <defunct>
+ 5104 pts/1    Z+     0:00  |       \_ [2fork] <defunct>
+ 5105 pts/1    Z+     0:00  |       \_ [2fork] <defunct>
+ 5106 pts/1    Z+     0:00  |       \_ [2fork] <defunct>
+ 5107 pts/1    Z+     0:00  |       \_ [2fork] <defunct>
+ 5108 pts/1    Z+     0:00  |       \_ [2fork] <defunct>
+ 5109 pts/1    Z+     0:00  |       \_ [2fork] <defunct>
+ 5110 pts/1    Z+     0:00  |       \_ [2fork] <defunct>
+>$<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>从执行结果来看，子进程的状态已经变为 Z+ 了，说明子进程执行完成之后变成了“僵尸进程”。</p>
+<p>那么为什么子进程会变为僵尸进程呢？是因为子进程比父进程先结束了，它们必须得等待父进程为其“收尸”才能彻底释放。</p>
+<p>在现实世界中白发人送黑发人通常会被认为是件不吉利的事情，但是在计算机的世界中，父进程是需要为子进程收尸的。</p>
+<p>如果父进程先结束了，那么这些子进程的父进程会变成 1 号 init 进程，当这些子进程运行结束时会变成僵尸进程，然后 1 号 init 进程就会及时为它们收尸。</p>
+<p>我们修改下上面的栗子，将 sleep（100）这行代码移动到子进程中，让父进程创建完子进程后直接退出，使子进程变成孤儿进程。代码很简单我就不重复贴出来了，直接贴测试的结果。</p>
+<pre class="line-numbers language-shell"><code class="language-shell">>$ make 2fork
+cc     2fork.c   -o 2fork
+>$ ./2fork 
+pid = 5245
+pid = 5247
+pid = 5251
+pid = 5254
+>$ pid = 5252         # 这里会输出一个提示符，是因为父进程退出了，shell 已经为我们的父进程收尸了，所以提示符被输出了。而我们的父进程没有为子进程收尸，所以子进程会继续输出。
+pid = 5250
+pid = 5253
+pid = 5248
+pid = 5249
+pid = 5246
+
+# 下面我们打开一个新的 shell 查看进程状态
+>$ ps -axj
+ PPID   PID  PGID   SID TTY      TPGID STAT   UID   TIME COMMAND
+    1  5296  5295  3565 pts/1     3565 S      501   0:00 ./2fork
+    1  5297  5295  3565 pts/1     3565 S      501   0:00 ./2fork
+    1  5298  5295  3565 pts/1     3565 S      501   0:00 ./2fork
+    1  5299  5295  3565 pts/1     3565 S      501   0:00 ./2fork
+    1  5300  5295  3565 pts/1     3565 S      501   0:00 ./2fork
+    1  5301  5295  3565 pts/1     3565 S      501   0:00 ./2fork
+    1  5302  5295  3565 pts/1     3565 S      501   0:00 ./2fork
+    1  5303  5295  3565 pts/1     3565 S      501   0:00 ./2fork
+    1  5304  5295  3565 pts/1     3565 S      501   0:00 ./2fork
+    1  5305  5295  3565 pts/1     3565 S      501   0:00 ./2fork
+>$<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>从上面 ps命令的执行结果来看，所有子进程的父进程都变成了 1 号 init 进程。</p>
+<p>很多人会认为僵尸进程不应该出现，它们会占用大量的资源。其实不然，它们在内核中仅仅保留一个结构体，也就是自身的状态信息，其它的资源都释放了。但是它占用了一个重要的系统资源：PID，因为系统中 PID 的数量是有限的，所以及时释放僵尸进程还是很有必要的。</p>
+<p>我们的父进程没有对子进程进行收尸，所以才会出现这样的情况。其实对于这种转瞬即逝的程序而言不会有什么危害，但是假设父进程是一个要不断执行一个月的程序，而它却又不为子进程收尸，那么子进程就会占用这些 PID 一个月之久，那么就可能出现问题了。</p>
+<p>所以在一个完善的程序中，父进程是要为子进程收尸的，至于如何为子进程收尸，下面我们会讲，fork函数就先讨论到这里。</p>
+<h2 id="3-函数vfork"><a href="#3-函数vfork" class="headerlink" title="3 函数vfork"></a>3 函数vfork</h2><pre class="line-numbers language-c"><code class="language-c"><span class="token comment" spellcheck="true">//vfork - create a child process and block parent</span>
+
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;sys/types.h></span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span>
+
+pid_t <span class="token function">vfork</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+   <span class="token comment" spellcheck="true">/*Feature Test Macro Requirements for glibc (see feature_test_macros(7)):
+
+       vfork():
+           Since glibc 2.12:
+               _BSD_SOURCE ||
+                   (_XOPEN_SOURCE >= 500 ||
+                       _XOPEN_SOURCE &amp;&amp; _XOPEN_SOURCE_EXTENDED) &amp;&amp;
+                   !(_POSIX_C_SOURCE >= 200809L || _XOPEN_SOURCE >= 700)
+           Before glibc 2.12:
+               _BSD_SOURCE || _XOPEN_SOURCE >= 500 ||
+               _XOPEN_SOURCE &amp;&amp; _XOPEN_SOURCE_EXTENDED
+    */</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p> vfork 函数在上面介绍写时拷贝技术的时候我们就提到了它的工作方式，并且也说了这是一个过时的函数，不推荐大家使用了，简单了解一下就可以了。</p>
+<p>使用 vfork函数创建的子进程除了与父进程共享数据外，vfork还保证子进程先运行，在子进程调用 exec函数族 或 exit（_exit、_Exit） 函数前父进程处于休眠状态。</p>
+<p>另外，<strong>使用 vfork创建的子进程是不允许使用 return 语句返回的，只能使用 exit函数族的函数结束，否则会被信号杀死，父进程则不受这个限制。</strong></p>
+<h2 id="4-函数wait和waitpid"><a href="#4-函数wait和waitpid" class="headerlink" title="4 函数wait和waitpid"></a>4 函数wait和waitpid</h2><pre class="line-numbers language-c"><code class="language-c"><span class="token comment" spellcheck="true">//wait, waitpid, waitid - wait for process to change state</span>
+
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;sys/types.h></span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;sys/wait.h></span></span>
+pid_t <span class="token function">wait</span><span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token operator">*</span>status<span class="token punctuation">)</span><span class="token punctuation">;</span>
+pid_t <span class="token function">waitpid</span><span class="token punctuation">(</span>pid_t pid<span class="token punctuation">,</span> <span class="token keyword">int</span> <span class="token operator">*</span>status<span class="token punctuation">,</span> <span class="token keyword">int</span> options<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>wait阻塞的等待子进程资源的释放，相当于上面提到的“收尸”。</p>
+<p>每次调用 wait函数会为一个子进程收尸，而 wait函数并没有让我们指定是哪个特定的子进程。如果想要为特定的子进程收尸，需要调用 waitpid 函数。</p>
+<p><strong>收尸这件事只能是父进程对子进程做，而且只能对自己的子进程做。子进程是不能为父进程收尸的，父进程也不能为别人的子进程收尸。</strong></p>
+<p><strong>参数列表：</strong></p>
+<blockquote>
+<ul>
+<li>status：由函数回填，表示子进程的退出状态。如果填 NULL，表示仅回收资源，并不关心子进程的退出状态。status 参数可以使用以下的宏进行解析：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>宏</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>WIFEXITED</td>
+<td>返回真表示子进程正常终止，返回假表示子进程异常终止。正常与异常终止的8种方式上面讲过。</td>
+</tr>
+<tr>
+<td>WEXITSTATUS</td>
+<td>返回子进程的退出码。只有上一个宏返回正常终止时才能使用，异常终止是不会有返回值的。</td>
+</tr>
+<tr>
+<td>WTERMSIG</td>
+<td>可以获得子进程具体被哪个信号杀死了。</td>
+</tr>
+<tr>
+<td>WIFSTOPPED</td>
+<td>子进程是否被信号 stop 了。stop 和杀死是不同的，stop 的进程可以被恢复（resumed）。</td>
+</tr>
+<tr>
+<td>WSTOPSIG</td>
+<td>如果子进程是被信号 stop 了，可以查看具体是被哪个信号 stop 了。</td>
+</tr>
+<tr>
+<td>WIFCONTINUED</td>
+<td>如果子进程被 stop 了，可以查看它是否被 resumed 了。</td>
+</tr>
+</tbody></table>
+<ul>
+<li>pid：一共分为四种情况</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>pid参数</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&lt; -1</td>
+<td>为归属于进程组 ID 为 pid 参数的绝对值的进程组中的任何一个子进程收尸</td>
+</tr>
+<tr>
+<td>== -1</td>
+<td>为任意一个子进程收尸</td>
+</tr>
+<tr>
+<td>== 0</td>
+<td>为与父进程同一个进程组中的任意一个子进程收尸</td>
+</tr>
+<tr>
+<td>&gt; 0</td>
+<td>为一个 PID 等于参数 pid 的子进程收尸</td>
+</tr>
+</tbody></table>
+<ul>
+<li>options：为特殊要求；这个参数是这个函数的设计精髓。可以通过 WNOHANG 宏要求 waitpid 函数以非阻塞的形式为子进程收尸，这个也是最常用的特殊要求。</li>
+</ul>
+</blockquote>
+<pre class="line-numbers language-c"><code class="language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdlib.h></span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;sys/types.h></span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;sys/wait.h></span></span>
+
+<span class="token keyword">int</span> <span class="token function">main</span> <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+        pid_t pid<span class="token punctuation">;</span>
+        <span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token function">fflush</span><span class="token punctuation">(</span><span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                pid <span class="token operator">=</span> <span class="token function">fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>pid <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                        <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"fork()"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        <span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token number">0</span> <span class="token operator">==</span> pid<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"pid = %d\n"</span><span class="token punctuation">,</span> <span class="token function">getpid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        <span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">// 为所有的子进程收尸</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token function">wait</span><span class="token punctuation">(</span><span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>大家有没有想过为什么要由父进程为子进程收尸呢，为什么不让子进程结束后自动释放所有资源？试想如果没有收尸这步会发生什么。</p>
+<p>假设父进程需要创建一个子进程并且要让它做 3 秒钟的事情，很不巧子进程刚启动就出现了一个异常然后就挂掉了，并且直接释放了自己的资源。<br>而此时系统 PID 资源紧张，很快已死掉的子进程的 PID 被分配给了其它进程，而父进程此时并不知道手里的子进程的 PID 已经不属于它了。</p>
+<p>如果这时候父进程后悔执行子进程了，它要 kill 掉这个子进程。。。。。后果就是系统大乱对吧。</p>
+<p>而使用了收尸技术之后，子进程状态改变时会给父进程发送一个 SIGCHLD 信号，wait函数其实就是阻塞等待被这个信号打断，然后为子进程收尸。</p>
+<p>系统通过收尸这种机制来保证父进程未执行收尸动作之前，手里拿到的子进程 PID 一定是有效的了（即使子进程已死掉，但是这个 PID 依然是属于父进程的子进程的，而不会归属于别人）。</p>
+<h2 id="5-函数exec"><a href="#5-函数exec" class="headerlink" title="5 函数exec"></a>5 函数exec</h2><pre class="line-numbers language-c"><code class="language-c"><span class="token comment" spellcheck="true">//execl, execlp, execle, execv, execvp, execvpe - execute a file</span>
+
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span>
+
+<span class="token keyword">extern</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token operator">*</span>environ<span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> <span class="token function">execl</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>path<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>arg<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">execlp</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>file<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>arg<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">execle</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>path<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>arg<span class="token punctuation">,</span>
+                  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span> <span class="token keyword">const</span> envp<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">execv</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>path<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token keyword">const</span> argv<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">execvp</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>file<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token keyword">const</span> argv<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">execvpe</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>file<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token keyword">const</span> argv<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                   <span class="token keyword">char</span> <span class="token operator">*</span><span class="token keyword">const</span> envp<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+   <span class="token comment" spellcheck="true">/*Feature Test Macro Requirements for glibc (see feature_test_macros(7)):
+
+       execvpe(): _GNU_SOURCE
+   */</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>我们再来看上面第一个 fork代码的栗子执行时使用 ps -axf 命令查看父子依赖关系的结果：</p>
+<pre class="line-numbers language-shell"><code class="language-shell">>$ ps axf
+ 3565 pts/1    Ss     0:00  \_ bash
+ 3713 pts/1    S+     0:00  |   \_ ./1fork
+ 3714 pts/1    S+     0:00  |       \_ ./1fork
+>$<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>我们知道 fork 创建出来的子进程是通过复制父进程的形式实现的，但是我们的父进程又是 bash 的子进程，为什么 bash 没有创建出来一个与自己一模一样的子进程呢？</p>
+<p>这就是 exec函数族的功劳了。</p>
+<p>它可以使调用的它进程“外壳”不变，“内容物”改变为新的东西。“外壳”就是父子关系、PID 等东西，“内容物”其实是指一个新的可执行程序。也就是说 exec函数会将调用它的进程完全(整个4GB虚拟内存空间，即代码段、数据段、堆栈等等)变成另一个可执行程序，但父子关系、PID 等东西不会改变。</p>
+<p>在执行了 exec函数族的函数之后，整个进程的地址空间会立即被替换，所以 exec下面的代码全部都不会再执行了，替代的是新程序的代码段。</p>
+<p>缓冲区也会被新的程序所替换，所以<strong>在执行 exec 之前要使用 fflush（NULL）</strong> <strong>刷新所有的缓冲区。</strong>这样父进程才会让它缓冲区中的数据到达它们该去的地方，而不是在数据到达目的地之前缓冲区就被覆盖掉。</p>
+<p>参数列表：</p>
+<blockquote>
+<ul>
+<li>path：要执行的二进制程序路径</li>
+<li>arg：传递给 path 程序的 argv 参数，第一个是 argv[0]，其它参数从第二个开始。</li>
+<li>…：argv 的后续参数，最后一个参数是 NULL，表示变长参数列表的结束。</li>
+</ul>
+</blockquote>
+<p>看上去 execl、execlp像是变参函数，execle像是定参函数，其实正好是反过来的，execl和 execlp是定参的，而 execle函数是变参的。</p>
+<p>下面我们来看一个 fork + exec + wait最经典的用法：</p>
+<pre class="line-numbers language-c"><code class="language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdlib.h></span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span>
+<span class="token comment" spellcheck="true">/**
+ * 创建子进程 date，参数是 +%s
+ * 相当于在 shell 中执行 date +%s 命令
+ */</span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    pid_t pid<span class="token punctuation">;</span>
+    <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"Begin!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">fflush</span><span class="token punctuation">(</span><span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    pid <span class="token operator">=</span> <span class="token function">fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>pid <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"fork()"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>pid <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>    <span class="token comment" spellcheck="true">// child</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">execl</span><span class="token punctuation">(</span><span class="token string">"/bin/date"</span><span class="token punctuation">,</span><span class="token string">"date"</span><span class="token punctuation">,</span><span class="token string">"+%s"</span><span class="token punctuation">,</span><span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"execl()"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">wait</span><span class="token punctuation">(</span><span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    
+
+    <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"End!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>fork、exec、wait 函数可以让我们创建任何进程来执行任何命令了，如此看来，整个 Linux 世界都是由 fork、exec、wait这三个函数搭建起来的，现在大家可以尝试用这三个函数来执行一些命令了。</p>
+<p>shell 的内部命令与外部命令</p>
+<p>像 cd、exit、|、&gt; 牵涉到环境变量改变等动作这样的命令叫做内部命令，而使用 which命令能查询到的在磁盘上存在的命令就是外部命令。</p>
+<p>学会了 fork、exec、wait函数的使用，大家已经可以尝试编写一个 shell 程序了，基本可以执行所有的外部命令了。</p>
+<p>但是一个 shell 不仅仅支持外部命令，还支持很多内部命令，对内部命令的支持才是 shell 的难点。</p>
+<h2 id="6-更改用户ID和更改组ID"><a href="#6-更改用户ID和更改组ID" class="headerlink" title="6 更改用户ID和更改组ID"></a>6 更改用户ID和更改组ID</h2><p>在 Linux 系统中，特权和访问控制是基于用户 ID 和用户组 ID 的，所以当我们需要使用特权或访问无权访问的文件时需要切换用户 ID 或用户组 ID。</p>
+<p><strong>uid</strong></p>
+<blockquote>
+<ul>
+<li>r（real）用于保存用户权限</li>
+<li>e（effective）定用户权限时使用</li>
+<li>s 与 real 相同，所以有些系统不支持</li>
+</ul>
+</blockquote>
+<p><strong>gid</strong></p>
+<blockquote>
+<ul>
+<li>r（real）用于保存用户组权限</li>
+<li>e（effective）定用户权组限时使用</li>
+<li>s 与 real 相同，所以有些系统不支持</li>
+</ul>
+</blockquote>
+<p>比如普通用户没有查看 /etc/shadow 文件，但是为什么有权限修改自己的密码呢？</p>
+<pre class="line-numbers language-sh"><code class="language-sh">>$ which passwd 
+ /usr/bin/passwd
+>$ ls -l /usr/bin/passwd 
+ -rwsr-xr-x 1 root root 47032  2月 17  2014 /usr/bin/passwd
+ $ ls -l /etc/shadow
+ ---------- 1 root root 1899 Apr 1 16:25 /etc/shadow<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这是因为 passwd命令是具有 U+S 权限的，用户在使用这个程序的时候身份会切换为这个程序文件所有者的身份。</p>
+<p>G+S 与 U+S 类似，只不过执行的瞬间身份会切换为与程序归属用户组相同的组权限。</p>
+<p>改变用户 ID 和组 ID 可以使用 setuid和 setgid函数实现，这两个函数使用起来都比较简单，需要用的童鞋自己查阅 main 手册吧。</p>
+<h2 id="7-解释器文件"><a href="#7-解释器文件" class="headerlink" title="7 解释器文件"></a>7 解释器文件</h2><p>解释器文件其实就是脚本。</p>
+<p>做一个系统级开发工程师需要具备的素质至少精通2门语言，一门面向过程，一门面向对象，还要精通至少一门脚本语言，如 shell、python等，还要具备扎实的网络知识和一点硬件知识。</p>
+<p><strong>解释器</strong>是一个二进制的可执行文件。就是为了用一个可执行的二进制文件解释执行<strong>解释器文件</strong>中的命令。</p>
+<blockquote>
+<p>#! 用于装载解释器</p>
+</blockquote>
+<p>例如：</p>
+<blockquote>
+<p>#!/bin/shell 装载了 /bin/shell 作为解释器</p>
+<p>#!/bin/cat 装载了 /bin/cat 作为解释器</p>
+</blockquote>
+<p>那么装载解释器之后为什么不会递归执行装载解释器这行代码呢？因为根据约定，脚本中的 # 表示注释，所以解释器在解析这个脚本的时候不会看到这行装载解释器的命令。</p>
+<p>装载解释器的步骤由内核 exec 系统调用来完成，如果使用 exec函数来调用解释器文件，实际上 exec 函数并没有执行解释器文件，而是执行了解释器文件中装载的解释器，由它来执行解释器文件中的指令。</p>
+<h2 id="8-函数system"><a href="#8-函数system" class="headerlink" title="8 函数system"></a>8 函数system</h2><pre class="line-numbers language-c"><code class="language-c"><span class="token comment" spellcheck="true">//system - execute a shell command</span>
+
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdlib.h></span></span>
+<span class="token keyword">int</span> <span class="token function">system</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>command<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>该函数可以执行一条系统命令，是通过调用 /bin/sh -c command 实现的。</p>
+<p>其实我们可以猜测一下 system命令是如何实现的，下面是伪代码：</p>
+<pre class="line-numbers language-c"><code class="language-c">pid_t pid<span class="token punctuation">;</span>
+
+pid <span class="token operator">=</span> <span class="token function">fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span><span class="token punctuation">(</span>pid <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"fork()"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">if</span><span class="token punctuation">(</span>pid <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>    <span class="token comment" spellcheck="true">// child</span>
+<span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// system("date +%s");</span>
+    <span class="token function">execl</span><span class="token punctuation">(</span><span class="token string">"/bin/sh"</span><span class="token punctuation">,</span><span class="token string">"sh"</span><span class="token punctuation">,</span><span class="token string">"-c"</span><span class="token punctuation">,</span><span class="token string">"date +%s"</span><span class="token punctuation">,</span><span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"execl()"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token function">wait</span><span class="token punctuation">(</span><span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="9-进程会计"><a href="#9-进程会计" class="headerlink" title="9 进程会计"></a>9 进程会计</h2><p>连 POSIX 标准都不支持，是方言中的方言。</p>
+<p>它是典型的事实标准，各个系统的实现都不统一，所以建议少用为妙。</p>
+<pre class="line-numbers language-c"><code class="language-c"><span class="token comment" spellcheck="true">//acct - switch process accounting on or off</span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span>
+
+<span class="token keyword">int</span> <span class="token function">acct</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>filename<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+            </div>
+            <hr />
+
+            
+            <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.88rem;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-large waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fa fa-close"></i></a>
+            <h4 class="reward-title">写作不易，客官能否打赏一杯奶茶？</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《UNIX环境高级编程-进程控制》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/10/09/unix-huan-jing-gao-ji-bian-cheng-jin-cheng-kong-zhi/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                吴超峰
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+    <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: 'd71785aa5056a34a83a8',
+        clientSecret: '11f797c7924b4eda214973051526455de2da39d9',
+        repo: 'fengshentianxia.github.io',
+        owner: 'fengshentianxia',
+        admin: "fengshentianxia",
+        id: '2019/10/09/unix-huan-jing-gao-ji-bian-cheng-jin-cheng-kong-zhi/',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+    <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments input[type=text],
+    #vcomments input[type=email],
+    #vcomments input[type=url],
+    #vcomments textarea {
+        box-sizing: border-box;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #42b983;
+        font-weight: 500;
+        text-decoration: underline;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div id="vcomments" class="card-content"></div>
+</div>
+
+<script src="/libs/valine/av-min.js"></script>
+<script src="/libs/valine/Valine.min.js"></script>
+<!-- <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script> -->
+
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: '',
+        appKey: '',
+        notify: 'false' === 'true',
+        verify: 'false' === 'true',
+        visitor: 'false' === 'true',
+        avatar: 'wavatar',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: '如果你没有GitHub账号，还可以在这里评论啦！'
+    });
+</script>
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/03/12/article-title/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="article title">
+                        
+                        <span class="card-title">article title</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-12
+                        </span>
+                        <span class="publish-author">
+                            
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/10/08/xiang-jie-core-dump/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="详解core dump">
+                        
+                        <span class="card-title">详解core dump</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            转载自–详解coredump
+1.什么是coredump​        我们经常听到大家说到程序core掉了，需要定位解决，这里说的大部分是指对应程序由于各种异常或者bug导致在运行过程中异常退出或者中止，并且在满足一定条件下&#40;这
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-10-08
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/core-dump/" class="post-category" target="_blank">
+                                    core dump
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Linux/" target="_blank">
+                        <span class="chip bg-color">Linux</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: 吴超峰的博客<br />'
+            + '作者: 吴超峰<br />'
+            + '链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () { bodyElement.removeChild(newdiv); }, 200);
+    });
+</script>
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            &copy; 2019 chaofengwu. All Rights Reserved.
+
+            
+            &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+            <span class="white-color">106.3k</span>
+            
+
+            <br>
+            <span id="sitetime"></span>
+
+            
+            
+            <br>
+            
+            <span id="busuanzi_container_site_pv" style='display:none'>
+                <i class="fa fa-heart-o"></i>
+                本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv" style='display:none'>
+                人次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+            </span>
+            
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/fengshentianxia" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="https://user.qzone.qq.com/1339784341" class="tooltipped" target="_blank" data-tooltip="访问我的QQ空间" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+    $(document).ready(function () {
+
+        var int = setInterval(fixCount, 50);
+        var pvcountOffset = 0;
+        var uvcountOffset = 0;
+
+        function fixCount() {
+            if (document.getElementById("busuanzi_container_site_pv").style.display != "none") {
+                $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + pvcountOffset);
+                clearInterval(int);
+            }
+            if ($("#busuanzi_container_site_pv").css("display") != "none") {
+                $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + uvcountOffset); // 加上初始数据 
+                clearInterval(int);
+            }
+        }
+    });
+</script>
+
+<script language=javascript>
+    function siteTime() {
+        window.setTimeout("siteTime()", 1000);
+        var seconds = 1000;
+        var minutes = seconds * 60;
+        var hours = minutes * 60;
+        var days = hours * 24;
+        var years = days * 365;
+        var today = new Date();
+        var todayYear = today.getFullYear();
+        var todayMonth = today.getMonth() + 1;
+        var todayDate = today.getDate();
+        var todayHour = today.getHours();
+        var todayMinute = today.getMinutes();
+        var todaySecond = today.getSeconds();
+        /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+        year - 作为date对象的年份，为4位年份值
+        month - 0-11之间的整数，做为date对象的月份
+        day - 1-31之间的整数，做为date对象的天数
+        hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+        minutes - 0-59之间的整数，做为date对象的分钟数
+        seconds - 0-59之间的整数，做为date对象的秒数
+        microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+        var t1 = Date.UTC(2019, 10, 6, 00, 00, 00); //北京时间2018-2-13 00:00:00
+        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+        var diff = t2 - t1;
+        var diffYears = Math.floor(diff / years);
+        var diffDays = Math.floor((diff / days) - diffYears * 365);
+        var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+        var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes);
+        var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes * minutes) / seconds);
+        document.getElementById("sitetime").innerHTML = "本站已运行 " + diffYears + " 年 " + diffDays + " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+</script>
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <script type="text/javascript"> var OriginTitile = document.title, st; document.addEventListener("visibilitychange", function () { document.hidden ? (document.title = "Σ(っ °Д °;)っ喔哟，崩溃啦！", clearTimeout(st)) : (document.title = "φ(゜▽゜*)♪咦，又好了！", st = setTimeout(function () { document.title = OriginTitile }, 3e3)) })
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', '');
+</script>
+
+
+
+    
+    <script src="/libs/others/clicklove.js"></script>
+    
+
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    <!-- 雪花特效 -->
+    
+
+</body>
+
+</html>

@@ -1,0 +1,2895 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="面试-C++, 吴超峰的博客">
+    <meta name="baidu-site-verification" content>
+    <meta name="google-site-verification" content>
+    <meta name="360-site-verification" content>
+    <meta name="description" content="1 编译和链接1.1 编译和链接1.1.1 请你来说一下一个C++源文件从文本到可执行文件经历的过程？
+对于C++源文件，从文本到可执行文件一般需要四个过程：
+
+预处理阶段：对源代码文件中文件包含关系（头文件）、预编译语句（宏定义）进行分析">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>面试-C++ | 吴超峰的博客</title>
+    <link rel="icon" type="image/jpeg" href="/logo.jpg">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?46e79e71af0709a5b9106bf20cecc493";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.jpg" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">吴超峰的博客</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/contact" class="waves-effect waves-light">
+            
+            <span>留言板</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.jpg" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">吴超峰的博客</div>
+        <div class="logo-desc">
+            
+            南京大学 | 计算机科学与技术系
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-link"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-link"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-link"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-link"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-link"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-link"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        <li>
+            <a href="/contact" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-link"></i>
+                
+                留言板
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/fengshentianxia" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/fengshentianxia" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        面试-C++
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                        <a href="/tags/C/" target="_blank">
+                            <span class="chip bg-color">C++</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                        <a href="/categories/面试/" class="post-category" target="_blank">
+                            面试
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-10-06
+                </div>
+
+                <div class="post-author info-break-policy">
+                    <i class="fa fa-user-o fa-fw"></i>作者:&nbsp;&nbsp;
+                    
+                    吴超峰
+                    
+                </div>
+
+                
+                
+                <div class="info-break-policy">
+                    <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    14k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    50 分
+                </div>
+                
+                
+
+                
+                <div id="busuanzi_container_page_pv" class="info-break-policy">
+                    <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                    <span id="busuanzi_value_page_pv"></span>
+                </div>
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="1-编译和链接"><a href="#1-编译和链接" class="headerlink" title="1 编译和链接"></a>1 编译和链接</h2><h3 id="1-1-编译和链接"><a href="#1-1-编译和链接" class="headerlink" title="1.1 编译和链接"></a>1.1 编译和链接</h3><h4 id="1-1-1-请你来说一下一个C-源文件从文本到可执行文件经历的过程？"><a href="#1-1-1-请你来说一下一个C-源文件从文本到可执行文件经历的过程？" class="headerlink" title="1.1.1 请你来说一下一个C++源文件从文本到可执行文件经历的过程？"></a>1.1.1 请你来说一下一个C++源文件从文本到可执行文件经历的过程？</h4><blockquote>
+<p>对于C++源文件，从文本到可执行文件一般需要四个过程：</p>
+<ul>
+<li>预处理阶段：对源代码文件中文件包含关系（头文件）、预编译语句（宏定义）进行分析和替换，生成预编译文件。</li>
+<li>编译阶段：将经过预处理后的预编译文件转换成特定汇编代码，生成汇编文件</li>
+<li>汇编阶段：将编译阶段生成的汇编文件转化成机器码，生成可重定位目标文件</li>
+<li>链接阶段：将多个目标文件及所需要的库连接成最终的可执行目标文件</li>
+</ul>
+<blockquote>
+<ol>
+<li><strong>静态链接：</strong>函数和数据被编译进一个二进制文件。在使用静态库的情况下，在编译链接可执行文件时，链接器从库中复制这些函数和数据并把它们和应用程序的其它模块组合起来创建最终的可执行文件。</li>
+</ol>
+<ul>
+<li><strong>缺点：</strong></li>
+</ul>
+<blockquote>
+<ul>
+<li>函数和数据被编译进一个二进制文件。在使用静态库的情况下，在编译链接可执行文件时，链接器从库中复制这些函数和数据并把它们和应用程序的其它模块组合起来创建最终的可执行文件。</li>
+<li>空间浪费：因为每个可执行程序中对所有需要的目标文件都要有一份副本，所以如果多个程序对同一个目标文件都有依赖，会出现同一个目标文件都在内存存在多个副本；</li>
+<li>更新困难：每当库函数的代码修改了，这个时候就需要重新进行编译链接形成可执行程序。</li>
+</ul>
+</blockquote>
+<ul>
+<li><strong>优点：</strong></li>
+</ul>
+<blockquote>
+<ul>
+<li>运行速度快：但是静态链接的优点就是，在可执行程序中已经具备了所有执行程序所需要的任何东西，在执行的时候运行速度快。</li>
+</ul>
+</blockquote>
+<ol start="2">
+<li><strong>动态链接：</strong>动态链接的基本思想是把程序按照模块拆分成各个相对独立部分，在程序运行时才将它们链接在一起形成一个完整的程序，而不是像静态链接一样把所有程序模块都链接成一个单独的可执行文件。</li>
+</ol>
+<ul>
+<li><strong>优点：</strong></li>
+</ul>
+<blockquote>
+<ul>
+<li>共享库：就是即使需要每个程序都依赖同一个库，但是该库不会像静态链接那样在内存中存在多分，副本，而是这多个程序在执行时共享同一份副本；</li>
+<li>更新方便：更新时只需要替换原来的目标文件，而无需将所有的程序再重新链接一遍。当程序下一次运行时，新版本的目标文件会被自动加载到内存并且链接起来，程序就完成了升级的目标。</li>
+</ul>
+</blockquote>
+<ul>
+<li><strong>缺点：</strong></li>
+</ul>
+<blockquote>
+<ul>
+<li>性能损耗：因为把链接推迟到了程序运行时，所以每次执行程序都需要进行链接，所以性能会有一定损失</li>
+</ul>
+</blockquote>
+</blockquote>
+</blockquote>
+<h4 id="1-1-2-请你来回答一下include头文件的顺序以及双引号””和尖括号-lt-gt-的区别？"><a href="#1-1-2-请你来回答一下include头文件的顺序以及双引号””和尖括号-lt-gt-的区别？" class="headerlink" title="1.1.2 请你来回答一下include头文件的顺序以及双引号””和尖括号&lt;&gt;的区别？"></a>1.1.2 请你来回答一下include头文件的顺序以及双引号””和尖括号&lt;&gt;的区别？</h4><p>Include头文件的顺序：对于include的头文件来说，如果在文件a.h中声明一个在文件b.h中定义的变量，而不引用b.h。那么要在a.c文件中引用b.h文件，并且要先引用b.h，后引用a.h,否则汇报变量类型未声明错误。</p>
+<p>双引号和尖括号的区别：</p>
+<blockquote>
+<p>编译器预处理阶段查找头文件的路径不一样。</p>
+</blockquote>
+<p>对于使用双引号包含的头文件，查找头文件路径的顺序为：</p>
+<blockquote>
+<ul>
+<li>当前头文件目录</li>
+<li>编译器设置的头文件路径（编译器可使用-I显式指定搜索路径）</li>
+<li>系统变量CPLUS_INCLUDE_PATH/C_INCLUDE_PATH指定的头文件路径</li>
+</ul>
+</blockquote>
+<p>对于使用尖括号包含的头文件，查找头文件的路径顺序为：</p>
+<blockquote>
+<ul>
+<li>编译器设置的头文件路径（编译器可使用-I显式指定搜索路径）</li>
+<li>系统变量CPLUS_INCLUDE_PATH/C_INCLUDE_PATH指定的头文件路径</li>
+</ul>
+</blockquote>
+<h4 id="1-1-3-请问GDB调试用过吗，什么是条件断点"><a href="#1-1-3-请问GDB调试用过吗，什么是条件断点" class="headerlink" title="1.1.3 请问GDB调试用过吗，什么是条件断点"></a>1.1.3 请问GDB调试用过吗，什么是条件断点</h4><p>1、GDB调试</p>
+<blockquote>
+<ul>
+<li>GDB 是自由软件基金会（Free Software Foundation）的软件工具之一。它的作用是协助程序员找到代码中的错误。如果没有GDB的帮助，程序员要想跟踪代码的执行流程，唯一的办法就是添加大量的语句来产生特定的输出。但这一手段本身就可能会引入新的错误，从而也就无法对那些导致程序崩溃的错误代码进行分析。</li>
+<li>GDB的出现减轻了开发人员的负担，他们可以在程序运行的时候单步跟踪自己的代码，或者通过断点暂时中止程序的执行。此外，他们还能够随时察看变量和内存的当前状态，并监视关键的数据结构是如何影响代码运行的。</li>
+</ul>
+</blockquote>
+<p>2、条件断点</p>
+<blockquote>
+<p>条件断点是当满足条件就中断程序运行，命令：break line-or-function if expr。</p>
+<p>例如：(gdb)break 666 if testsize==100</p>
+</blockquote>
+<h2 id="2-变量"><a href="#2-变量" class="headerlink" title="2.变量"></a>2.变量</h2><h3 id="2-1-关键字"><a href="#2-1-关键字" class="headerlink" title="2.1 关键字"></a>2.1 关键字</h3><h4 id="2-1-1-static"><a href="#2-1-1-static" class="headerlink" title="2.1.1 static"></a>2.1.1 static</h4><p>面向过程程序设计中的static和面向对象程序设计中的static。</p>
+<p>（1）<strong>面向过程设计中的static</strong></p>
+<blockquote>
+<p><strong>静态全局变量：</strong>在全局变量前，加上关键字static，该变量就被定义成为一个静态全局变量。</p>
+<ul>
+<li>该变量在全局数据区分配内存，也就是静态存储区</li>
+<li>未经初始化的静态全局变量会被程序自动初始化为0（自动变量的值是随机的，除非它被显式初始化）；</li>
+<li>静态全局变量在声明它的整个文件都是可见的，而在文件之外是不可见的；</li>
+</ul>
+<p><strong>静态局部变量：</strong> 在局部变量前，加上关键字static，该变量就被定义成为一个静态局部变量。</p>
+<ul>
+<li>该变量在全局数据区分配内存，也就是静态存储区</li>
+<li>静态局部变量在程序执行到该对象的声明处时被首次初始化，即以后的函数调用不再进行初始化；</li>
+<li>静态局部变量一般在声明处初始化，如果没有显式初始化，会被程序自动初始化为0</li>
+<li>它始终驻留在全局数据区，直到程序运行结束。但其作用域为局部作用域，当定义它的函数或语句块结束时，其作用域随之结束；</li>
+</ul>
+<p><strong>静态函数：</strong> 在函数的返回类型前加上static关键字,函数即被定义为静态函数</p>
+<ul>
+<li>静态函数不能被其它文件所用；</li>
+<li>其它文件中可以定义相同名字的函数，不会发生冲突；</li>
+</ul>
+</blockquote>
+<p>（2）<strong>面向对象的static关键字（类中的static关键字）</strong></p>
+<blockquote>
+<p><strong>静态数据成员：</strong> 在类内数据成员的声明前加上关键字static，该数据成员就是类内的静态数据成员。</p>
+<ul>
+<li>对于非静态数据成员，每个类对象都有自己的拷贝。无论这个类的对象被定义了多少个，静态数据成员在程序中也只有一份拷贝，由该类型的所有对象共享访问。</li>
+<li>静态数据成员存储在全局数据区。静态数据成员定义时要分配空间，所以不能在类声明中定义。</li>
+<li>静态数据成员和普通数据成员一样遵从public,protected,private访问规则。</li>
+<li>因为静态数据成员在全局数据区分配内存，属于本类的所有对象共享，所以，它不属于特定的类对象，在没有产生类对象时其作用域就可见，即在没有产生类的实例时，我们就可以操作它；</li>
+<li>静态数据成员初始化与一般数据成员初始化不同。</li>
+</ul>
+<p><strong>静态成员函数：</strong> </p>
+<ul>
+<li>出现在类体外的函数定义不能指定关键字static；</li>
+<li>静态成员之间可以相互访问，包括静态成员函数访问静态数据成员和访问静态成员函数；</li>
+<li>非静态成员函数可以任意地访问静态成员函数和静态数据成员；</li>
+<li>由于没有this指针的额外开销，因此静态成员函数与类的全局函数相比速度上会有少许的增长；</li>
+</ul>
+</blockquote>
+<p>（3）<strong>请你回答一下静态变量什么时候初始化</strong></p>
+<blockquote>
+<p>静态变量存储在虚拟地址空间的数据段和bss段，C语言中其在代码执行之前初始化，属于编译期初始化。而C++中由于引入对象，对象生成必须调用构造函数，因此C++规定全局或局部静态对象当且仅当对象首次用到时进行构造</p>
+</blockquote>
+<h4 id="2-1-2-const"><a href="#2-1-2-const" class="headerlink" title="2.1.2 const"></a>2.1.2 const</h4><p><strong>(1) const修饰基本数据类型</strong></p>
+<blockquote>
+<p><strong>1.const修饰一般常量及数组</strong>  </p>
+<blockquote>
+<p>对于类似这些基本数据类型，修饰符const可以用在类型说明符前，也可以用在类型说明符后，其结果是一样的。在使用这些常量的时候，只要不改变这些常量的值便好。</p>
+</blockquote>
+<p><strong>2.const修饰指针变量*</strong>  </p>
+<blockquote>
+<p>如果const位于星号*的左侧，则const就是用来修饰指针所指向的变量，即指针指向为常量；</p>
+<p>如果const位于星号的右侧，const就是修饰指针本身，即指针本身是常量</p>
+</blockquote>
+<p><strong>3. const修饰引用</strong></p>
+<blockquote>
+<p>表示要引用的对象是一个常量。</p>
+</blockquote>
+</blockquote>
+<p><strong>(2)const应用到函数中</strong></p>
+<blockquote>
+<p><strong>1.作为参数的const修饰符</strong></p>
+<blockquote>
+<p>参数在使用过程中，内容不可以被更改</p>
+</blockquote>
+<p><strong>2.作为函数返回值的const修饰符</strong>  </p>
+<blockquote>
+<p>如果给以“指针传递”方式的函数返回值加const 修饰，那么函数返回值（即指针）的内容不能被修改，该返回值只能被赋给加const 修饰的同类型指针。</p>
+</blockquote>
+</blockquote>
+<p><strong>(3)const在类中的用法</strong></p>
+<blockquote>
+<p><strong>1.修饰成员变量</strong></p>
+<blockquote>
+<p>不能在类声明中初始化const数据成员，const数据成员的初始化只能在类构造函数的初始化表中进行。 对const成员变量的初始化，不能在变量声明的地方，必须在类的构造函数的初始化列表中完成，即使是在构造函数内部赋值也是不行的。</p>
+</blockquote>
+<p><strong>2.后缀修饰成员函数</strong></p>
+<blockquote>
+<p>const成员函数不可以修改对象的数据,不管对象是否具有const性质.它在编译时,以是否修改成员数据为依据,进行检查.</p>
+</blockquote>
+</blockquote>
+<p><strong>(4)const修饰类对象，定义常量对象</strong> </p>
+<blockquote>
+<p>常量对象只能调用常量函数，别的成员函数都不能调用。</p>
+</blockquote>
+<p><font size="4" color="red">const和define的区别：</font></p>
+<p><strong>(1) 编译器处理方式不同</strong></p>
+<blockquote>
+<ul>
+<li>define宏是在预处理阶段展开。</li>
+<li>const常量是编译运行阶段使用。</li>
+</ul>
+</blockquote>
+<p><strong>(2) 类型和安全检查不同</strong></p>
+<blockquote>
+<ul>
+<li>define宏没有类型，不做任何类型检查，仅仅是展开。</li>
+<li>const常量有具体的类型，在编译阶段会执行类型检查</li>
+</ul>
+</blockquote>
+<p><strong>(3) 存储方式不同</strong></p>
+<blockquote>
+<ul>
+<li>define宏仅仅是展开，有多少地方使用，就展开多少次，不会分配内存。（宏定义不分配内存，<strong>变量定义</strong>分配内存。）</li>
+<li>const常量会在内存中分配(可以是堆中也可以是栈中)。</li>
+</ul>
+</blockquote>
+<p><strong>(4)const  可以节省空间，避免不必要的内存分配</strong></p>
+<p><strong>(5)提高了效率</strong></p>
+<blockquote>
+<p>编译器通常不为普通const常量分配存储空间，而是将它们保存在符号表中，这使得它成为一个编译期间的常量，没有了存储与读内存的操作，使得它的效率也很高。</p>
+</blockquote>
+<p><font size="4" color="red">常量的存放位置：</font></p>
+<blockquote>
+<ul>
+<li><strong>局部对象：</strong> 存放在栈区</li>
+<li><strong>全局对象：</strong> 存放在全局/静态存储区</li>
+<li><strong>字面值常量：</strong> 存放在常量存储区</li>
+</ul>
+</blockquote>
+<p><font size="4" color="red">const修饰成员函数的目的：</font></p>
+<blockquote>
+<p>const修饰的成员函数表明函数调用不会对对象做出任何更改，事实上，如果确认不会对对象做更改，就应该为函数加上const限定，这样无论const对象还是普通对象都可以调用该函数。</p>
+</blockquote>
+<p><font size="4" color="red">如果同时定义了两个函数，一个带const，一个不带，会有问题吗</font></p>
+<blockquote>
+<p>不会，这相当于函数的重载。</p>
+</blockquote>
+<h4 id="2-1-3-volatile-易变的"><a href="#2-1-3-volatile-易变的" class="headerlink" title="2.1.3 volatile(易变的)"></a>2.1.3 volatile(易变的)</h4><p>​        volatile的本意是“易变的” 因为访问寄存器要比访问内存单元快的多,所以编译器一般都会作减少存取内存的优化，但有可能会读脏数据。当要求使用volatile声明变量值的时候，<strong>系统总是重新从它所在的内存读取数据</strong>，即使它前面的指令刚刚从该处读取过数据。精确地说就是，遇到这个关键字声明的变量，编译器对访问该变量的代码就不再进行优化，从而可以提供对特殊地址的稳定访问；如果不使用valatile，则编译器将对所声明的语句进行优化。</p>
+<h4 id="2-1-4-mutable"><a href="#2-1-4-mutable" class="headerlink" title="2.1.4 mutable"></a>2.1.4 mutable</h4><p>在C++中，mutable是为了突破const的限制而设置的。被mutable修饰的变量，将永远处于可变的状态，即使在一个const函数中，甚至结构体变量或者类对象为const，其mutable成员也可以被修改。</p>
+<h4 id="2-1-5-override和final关键字"><a href="#2-1-5-override和final关键字" class="headerlink" title="2.1.5 override和final关键字"></a>2.1.5 override和final关键字</h4><blockquote>
+<p>override确保在派生类中声明的重载函数跟基类的虚函数有相同的签名</p>
+<p>final阻止类的进一步派生和虚函数的进一步重载</p>
+</blockquote>
+<h3 id="2-2-数组、引用与指针"><a href="#2-2-数组、引用与指针" class="headerlink" title="2.2 数组、引用与指针"></a>2.2 数组、引用与指针</h3><h4 id="2-2-1-数组和指针的区别"><a href="#2-2-1-数组和指针的区别" class="headerlink" title="2.2.1 数组和指针的区别"></a>2.2.1 数组和指针的区别</h4><p><strong>(1)含义上的区别</strong></p>
+<blockquote>
+<p>数组对应着一块内存区域，而指针是指向一块内存区域。其地址和容量在生命期里不会改变，只有数组的内容可以改变；而指针却不同，它指向的内存区域的大小可以随时改变，而且当指针指向常量字符串时，它的内容是不可以被修改的，否则在运行时会报错。</p>
+</blockquote>
+<p><strong>(2)计算内存容量的区别</strong></p>
+<blockquote>
+<p>用运算符sizeof可以计算出数组的容量（字节数），而用sizeof却无法计算指针所指内存的容量，用sizeof(p)得到的结果永远是4或者2（即指针变量所占内存单元的字节数，一般情况下指针变量占2个或4个字节的内存单元）。在进行参数传递时，数组会自动退化为同类型的指针。 </p>
+</blockquote>
+<h4 id="2-2-2-指针和引用的区别"><a href="#2-2-2-指针和引用的区别" class="headerlink" title="2.2.2 指针和引用的区别"></a>2.2.2 指针和引用的区别</h4><p><strong>(1) 相同点</strong></p>
+<blockquote>
+<p>都是地址的概念：指针指向一块内存，它的内容是所指内存的地址；引用是某块内存的别名。</p>
+</blockquote>
+<p><strong>(2)不同点</strong></p>
+<blockquote>
+<ul>
+<li>指针是一个实体，而引用仅是个别名；</li>
+<li>引用使用时无需解引用(*)，指针需要解引用；</li>
+<li>引用只能在定义时被初始化一次，之后不可变；指针可变；</li>
+<li>引用不能为空，指针可以为空；</li>
+<li>“sizeof 引用”得到的是所指向的变量(对象)的大小，而“sizeof 指针”得到的是指针本身(所指向的变量或对象的地址)的大小；</li>
+<li>指针和引用的自增(++)运算意义不一样；</li>
+</ul>
+</blockquote>
+<h4 id="2-2-3-智能指针"><a href="#2-2-3-智能指针" class="headerlink" title="2.2.3 智能指针"></a>2.2.3 智能指针</h4><p><strong>(1)作用</strong></p>
+<blockquote>
+<p>智能指针的作用是管理一个指针，因为存在以下这种情况：申请的空间在函数结束时忘记释放，造成内存泄漏。使用智能指针可以很大程度上的避免这个问题，因为智能指针就是一个类，当超出了类的作用域是，类会自动调用析构函数，析构函数会自动释放资源。所以智能指针的作用原理就是在函数结束时自动释放内存空间，不需要手动释放内存空间。</p>
+</blockquote>
+<p><strong>(2) 分类</strong></p>
+<blockquote>
+<ul>
+<li><strong>auto_ptr</strong>（c++98的方案，cpp11已经抛弃），采用所有权模式。</li>
+</ul>
+<pre class="line-numbers language-c++"><code class="language-c++">auto_ptr< string> p1 (new string ("I reigned lonely as a cloud.”));
+auto_ptr<string> p2;
+p2 = p1; //auto_ptr不会报错.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>此时不会报错，p2剥夺了p1的所有权，但是当程序运行时访问p1将会报错。所以auto_ptr的缺点是：存在潜在的内存崩溃问题！</p>
+<ul>
+<li><strong>unique_ptr</strong>（替换auto_ptr）</li>
+</ul>
+<p>unique_ptr实现独占式拥有或严格拥有概念，保证同一时间内只有一个智能指针可以指向该对象。它对于避免资源泄露(例如“以new创建对象后因为发生异常而忘记调用delete”)特别有用。<strong>只能移动（std::move())，不能复制</strong></p>
+<pre class="line-numbers language-c++"><code class="language-c++">unique_ptr<string> p3 (new string ("auto"));   //#4
+unique_ptr<string> p4；                       //#5
+p4 = p3;//此时会报错！！<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><strong>shared_ptr</strong></li>
+</ul>
+<p>shared_ptr实现共享式拥有概念。多个智能指针可以指向相同对象，该对象和其相关资源会在“最后一个引用被销毁”时候释放。从名字share就可以看出了资源可以被多个指针共享，它使用计数机制来表明资源被几个指针共享。可以通过成员函数use_count()来查看资源的所有者个数。除了可以通过new来构造，还可以通过传入auto_ptr, unique_ptr,weak_ptr来构造。当我们调用release()时，当前指针会释放资源所有权，计数减一。当计数等于0时，资源会被释放。</p>
+<p>shared_ptr 是为了解决 auto_ptr 在对象所有权上的局限性(auto_ptr 是独占的), 在使用引用计数的机制上提供了可以共享所有权的智能指针。</p>
+<p>成员函数：</p>
+<blockquote>
+<ul>
+<li>use_count 返回引用计数的个数</li>
+<li>unique 返回是否是独占所有权( use_count 为 1)</li>
+<li>swap 交换两个 shared_ptr 对象(即交换所拥有的对象)</li>
+<li>reset 放弃内部对象的所有权或拥有对象的变更, 会引起原有对象的引用计数的减少</li>
+<li>get 返回内部对象(指针), 由于已经重载了()方法, 因此和直接使用对象是一样的.如 shared_ptr<int> sp(new int(1)); sp 与 sp.get()是等价的</int></li>
+</ul>
+</blockquote>
+<ul>
+<li><strong>weak_ptr</strong></li>
+</ul>
+<p><strong>weak_ptr 是一种不控制对象生命周期的智能指针, 它指向一个 shared_ptr 管理的对象.</strong>进行该对象的内存管理的是那个强引用的 shared_ptr. weak_ptr只是提供了对管理对象的一个访问手段。weak_ptr 设计的目的是为配合 shared_ptr 而引入的一种智能指针来协助 shared_ptr 工作, 它只可以从一个 shared_ptr 或另一个 weak_ptr 对象构造, 它的构造和析构不会引起引用记数的增加或减少。weak_ptr是<strong>用来解决shared_ptr相互引用时的死锁问题</strong>,如果说两个shared_ptr相互引用,那么这两个指针的引用计数永远不可能下降为0,资源永远不会释放。它是对对象的一种弱引用，不会增加对象的引用计数，和shared_ptr之间可以相互转化,shared_ptr可以直接赋值给它，它可以通过调用lock函数来获得shared_ptr。</p>
+<pre class="line-numbers language-c++"><code class="language-c++">class B;
+class A
+{
+public:
+    shared_ptr&lt;B&gt pb_;
+    ~A(){
+        cout<<"A delete\n";
+    }
+};
+class B
+{
+public:
+    shared_ptr&lt;A&gt; pb_;
+    ~B(){
+        cout<<"B delete\n";
+    }
+};
+void fun()
+{
+    shared_ptr&lt;B> pb(new B());
+    shared_ptr&lt;A> pa(new A());
+    pb->pa_ = pa;
+    pa->pb_ = pb;
+    cout&lt;&lt;pb.use_count()&lt;&lt;endl;
+    cout&lt;&lt;pa.use_count()&lt;&lt;endl;
+}
+int main()
+{
+    fun();
+    return 0;
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以看到fun函数中pa ，pb之间互相引用，两个资源的引用计数为2，当要跳出函数时，智能指针pa，pb析构时两个资源引用计数会减一，但是两者引用计数还是为1，导致跳出函数时资源没有被释放（A B的析构函数没有被调用），如果把其中一个改为weak_ptr就可以了，我们把类A里面的shared_ptr pb_; 改为weak_ptr pb_; 运行结果如下，这样的话，资源B的引用开始就只有1，当pb析构时，B的计数变为0，B得到释放，B释放的同时也会使A的计数减一，同时pa析构时使A的计数减一，那么A的计数为0，A得到释放。</p>
+<p><strong>注意：</strong>的是我们不能通过weak_ptr直接访问对象的方法，比如B对象中有一个方法print(),我们不能这样访问，pa-&gt;pb_-&gt;print(); 英文pb_是一个weak_ptr，应该先把它转化为shared_ptr,如：shared_ptr p = pa-&gt;pb_.lock(); p-&gt;print();</p>
+</blockquote>
+<p><strong>(3)智能指针中的内存泄露</strong></p>
+<blockquote>
+<ul>
+<li><strong>原因</strong></li>
+</ul>
+<p>当两个对象相互使用一个shared_ptr成员变量指向对方，会造成循环引用，使引用计数失效，从而导致内存泄漏。</p>
+<ul>
+<li><strong>解决方法</strong> </li>
+</ul>
+<p>weak_ptr还可以用来返回this指针和解决循环引用的问题。</p>
+</blockquote>
+<h4 id="2-2-4-野指针"><a href="#2-2-4-野指针" class="headerlink" title="2.2.4 野指针"></a>2.2.4 野指针</h4><blockquote>
+<ul>
+<li>野指针指向了一块没有访问权限的内存。（即指针没有初始化）</li>
+<li>野指针指向了一个已经释放的内存</li>
+</ul>
+</blockquote>
+<h4 id="2-2-5-左值引用与右值引用"><a href="#2-2-5-左值引用与右值引用" class="headerlink" title="2.2.5 左值引用与右值引用"></a>2.2.5 左值引用与右值引用</h4><ul>
+<li>左值引用，也就是“常规引用”，不能绑定到要转换的表达式，字面常量，或返回右值的表达式。而右值引用恰好相反，可以绑定到这类表达式，但不能绑定到一个左值上。</li>
+<li>右值引用就是必须绑定到右值的引用，通过&amp;&amp;获得。右值引用只能绑定到一个将要销毁的对象上，因此可以自由地移动其资源。</li>
+</ul>
+<blockquote>
+<p>返回左值的表达式包括返回左值引用的函数及赋值，下标，解引用和前置递增/递减运算符，返回右值的包括返回非引用类型的函数及算术，关系，位和后置递增/递减运算符。</p>
+<p>可以看到左值的特点是有持久的状态，而右值则是短暂的</p>
+</blockquote>
+<h3 id="2-3-类型转换"><a href="#2-3-类型转换" class="headerlink" title="2.3 类型转换"></a>2.3 类型转换</h3><h4 id="2-3-1-隐式类型转换"><a href="#2-3-1-隐式类型转换" class="headerlink" title="2.3.1 隐式类型转换"></a>2.3.1 隐式类型转换</h4><p>隐式转换，是指不需要用户干预，编译器私下进行的类型转换行为。很多时候用户可能都不知道进行了哪些转换。</p>
+<blockquote>
+<ul>
+<li>对于内置类型，低精度的变量给高精度变量赋值会发生隐式类型转换</li>
+<li>对于只存在单个参数的构造函数的对象构造来说，函数调用可以直接使用该参数传入，编译器会自动调用其构造函数生成临时对象。</li>
+</ul>
+</blockquote>
+<h4 id="2-3-2-显式类型转换"><a href="#2-3-2-显式类型转换" class="headerlink" title="2.3.2 显式类型转换"></a>2.3.2 显式类型转换</h4><p>（1）<strong>static_cast</strong> ：最常用的转换，<strong>但是转换的时候不会检查类型来保证转换的安全性</strong>。</p>
+<p>static_cast本质上是传统c语言强制转换的替代品。static_cast不能转换掉expression的const、volitale、或者__unaligned属性。</p>
+<p>（2）<strong>dynamic_cast转换：</strong>操作符在执行类型转换时首先将检查能否成功转换，如果能成功转换则转换之，如果转换失败，如果是指针则反回一个0值，如果是转换的是引用，则抛出一个bad_cast异常，所以在使用dynamic_cast转换之间最好使用if语句对其转换成功与否进行测试。</p>
+<blockquote>
+<ul>
+<li>T必须是类的指针、类的引用或者void。</li>
+<li>dynamic_cast转换符只能用于含有虚函数的类。</li>
+<li>dynamic_cast主要用于类层次间的上行转换和下行转换，还可以用于类之间的交叉转换。</li>
+<li>在类层次间进行上行转换（子类-&gt;子类/基类）时，dynamic_cast和static_cast的效果是一样的；在进行下行转换（基类-&gt;子类）时，dynamic_cast具有类型检查的功能，比static_cast更安全。</li>
+</ul>
+</blockquote>
+<p>（3）<strong>reinterpret_cast重述转换：</strong>此标识符的意思即为数据的二进制形式重新解释，但是不改变其值。该操作符用于将一种类型转换为另一种不同的类型，比如可以把一个整型转换为一个指针，或把一个指针转换为一个整型，因此使用该操作符的危险性较高，一般不应使用该操作符。</p>
+<p>（4）<strong>const_cast转换：</strong>主要是用来去掉const属性，当然也可以加上const属性。主要是用前者，后者很少用。</p>
+<h3 id="2-4-其他"><a href="#2-4-其他" class="headerlink" title="2.4 其他"></a>2.4 其他</h3><h4 id="2-4-1-i和i-的区别"><a href="#2-4-1-i和i-的区别" class="headerlink" title="2.4.1 ++i和i++的区别"></a>2.4.1 ++i和i++的区别</h4><blockquote>
+<ul>
+<li>i++ 返回原来的值，++i 返回加1后的值。</li>
+<li>i++ 不能作为左值，而++i 可以。</li>
+</ul>
+</blockquote>
+<h4 id="2-4-2-C-存储方案：C-三种，C-11四种"><a href="#2-4-2-C-存储方案：C-三种，C-11四种" class="headerlink" title="2.4.2 C++存储方案：C++三种，C++11四种"></a>2.4.2 C++存储方案：C++三种，C++11四种</h4><p>这些方案的区别就在于数据保留在内存中的时间。</p>
+<blockquote>
+<p><strong>自动存储持续性：</strong>在函数定义中声明的变量（包括函数参数）的存储持续性为自动的。它们在程序开始执行其所属的函数或代码块时被创建，在执行完函数或代码块时，它们使用的内存被释放。C++有两种存储持续性为自动的变量。 </p>
+<p><strong>静态存储持续性：</strong>在函数定义外定义的变量和使用关键字static定义的变量的存储持续性都为静态。它们在程序整个运行过程中都存在。C++有3种存储持续性为静态的变量。 </p>
+<p><strong>线程存储持续性（C++11）：</strong>当前，多核处理器很常见，这些CPU可同时处理多个执行任务。这让程序能够将计算放在可并行处理的不同线程中。如果变量是使用关键字thread_local声明的，则其生命周期与所属的线程一样长。本书不探讨并行编程。</p>
+<p><strong>动态存储持续性：</strong>用new运算符分配的内存将一直存在，直到使用delete运算符将其释放或程序结束为止。这种内存的存储持续性为动态，有时被称为自由存储（free store）或堆（heap）。</p>
+</blockquote>
+<h2 id="3-函数"><a href="#3-函数" class="headerlink" title="3 函数"></a>3 函数</h2><h3 id="3-1-静态函数和虚函数的区别"><a href="#3-1-静态函数和虚函数的区别" class="headerlink" title="3.1 静态函数和虚函数的区别"></a>3.1 静态函数和虚函数的区别</h3><blockquote>
+<p>静态函数在编译的时候就已经确定运行时机，虚函数在运行的时候动态绑定。虚函数因为用了虚函数表机制，调用的时候会增加一次内存开销。</p>
+</blockquote>
+<h3 id="3-2-函数的覆盖与重载"><a href="#3-2-函数的覆盖与重载" class="headerlink" title="3.2 函数的覆盖与重载"></a>3.2 函数的覆盖与重载</h3><blockquote>
+<p><strong>重载：</strong>两个函数名相同，但是参数列表不同（个数，类型），返回值类型没有要求，在同一作用域中<br><strong>重写：</strong>子类继承了父类，父类中的函数是虚函数，在子类中重新定义了这个虚函数，这种情况是重写</p>
+</blockquote>
+<h3 id="3-3-写个函数在main函数执行前先运行"><a href="#3-3-写个函数在main函数执行前先运行" class="headerlink" title="3.3 写个函数在main函数执行前先运行"></a>3.3 写个函数在main函数执行前先运行</h3><p>一个C++的程序，要先从main函数执行起，这是基本的编程常识，但是我们却可以在main函数执行之前先来执行一段代码，这是利用全局变量和构造函数的特性，再有全局变量的时候要先创建全局变量，然后在执行main函数.</p>
+<pre class="line-numbers language-c++"><code class="language-c++">#include <Iostream>
+using namespace std;
+class TestClass
+{
+public:
+    TestClass();
+};
+TestClass::TestClass()
+{
+    cout << "TestClass" << endl;
+}
+TestClass Ts;//定义个全局变量，让类里面的代码在main之前执行
+int main()
+{
+    cout << "main" << endl;
+    int a;
+    cin >> a;
+    return 0;
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-4-请你来说一说C-函数栈空间的最大值"><a href="#3-4-请你来说一说C-函数栈空间的最大值" class="headerlink" title="3.4 请你来说一说C++函数栈空间的最大值"></a>3.4 请你来说一说C++函数栈空间的最大值</h3><blockquote>
+<ul>
+<li>在Windows下，栈是向低地址扩展的数据结构，是一块连续的内存区域。栈顶的地址和栈的最大容量是系统预先规定好的，在Window下，栈的大小是2MB，栈的大小一般小于2GB。</li>
+<li>Linux下，默认栈空间大小为8MB，可通过ulimit -s来设置。</li>
+</ul>
+</blockquote>
+<h3 id="3-5-C语言是怎么进行函数调用的？"><a href="#3-5-C语言是怎么进行函数调用的？" class="headerlink" title="3.5 C语言是怎么进行函数调用的？"></a>3.5 C语言是怎么进行函数调用的？</h3><blockquote>
+<p>每一个函数调用都会分配函数栈，在栈内进行函数执行过程。调用前，先把返回地址压栈，然后把当前函数的esp指针压栈。</p>
+</blockquote>
+<h3 id="3-6-请你说说C语言参数压栈顺序？"><a href="#3-6-请你说说C语言参数压栈顺序？" class="headerlink" title="3.6 请你说说C语言参数压栈顺序？"></a>3.6 请你说说C语言参数压栈顺序？</h3><blockquote>
+<p>从右到左</p>
+</blockquote>
+<h3 id="3-7-请你说说C-如何处理返回值"><a href="#3-7-请你说说C-如何处理返回值" class="headerlink" title="3.7 请你说说C++如何处理返回值"></a>3.7 请你说说C++如何处理返回值</h3><blockquote>
+<p>生成一个临时变量，把它的引用作为函数参数传入函数内。</p>
+</blockquote>
+<h3 id="3-8-strcpy和strlen"><a href="#3-8-strcpy和strlen" class="headerlink" title="3.8 strcpy和strlen"></a>3.8 strcpy和strlen</h3><blockquote>
+<p>strcpy是字符串拷贝函数，原型：</p>
+<pre class="line-numbers language-c++"><code class="language-c++">char *strcpy(char* dest, const char *src);<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>从src逐字节拷贝到dest，直到遇到’\0’结束，因为没有指定长度，可能会导致拷贝越界，造成缓冲区溢出漏洞,安全版本是strncpy函数。</li>
+<li>strlen函数是计算字符串长度的函数，返回从开始到’\0’之间的字符个数。</li>
+</ul>
+</blockquote>
+<h3 id="3-9-fork、vfork、exec、wait"><a href="#3-9-fork、vfork、exec、wait" class="headerlink" title="3.9 fork、vfork、exec、wait"></a>3.9 fork、vfork、exec、wait</h3><p><strong>（1）fork</strong></p>
+<p>fork()函数通过系统调用创建一个与原来进程几乎完全相同的进程，也就是两个进程可以做完全相同的事，但如果初始参数或者传入的变量不同，两个进程也可以做不同的事。</p>
+<p>最常见的fork( )用法是创建一个新的进程，然后使用exec( )载入二进制映像，替换当前进程的映像。这种情况下，派生（fork）了新的进程，而这个子进程会执行一个新的二进制可执行文件的映像。这种“派生加执行”的方式是很常见的。</p>
+<p>在早期的Unix系统中，创建进程比较原始。当调用fork时，内核会把所有的内部数据结构复制一份，复制进程的页表项，然后把父进程的地址空间中的内容逐页的复制到子进程的地址空间中。但从内核角度来说，逐页的复制方式是十分耗时的。现代的Unix系统采取了更多的优化，例如Linux，采用了写时复制的方法，而不是对父进程空间进程整体复制。</p>
+<p>为什么两个进程的fpid不同呢，这与fork函数的特性有关。fork调用的一个奇妙之处就是它仅仅被调用一次，却能够返回两次，它可能有三种不同的返回值：<br>    1）在父进程中，fork返回新创建子进程的进程ID；<br>    2）在子进程中，fork返回0；<br>    3）如果出现错误，fork返回一个负值；</p>
+<pre class="line-numbers language-c++"><code class="language-c++">#include <unistd.h>
+#include <stdio.h> 
+int main () 
+{ 
+    pid_t fpid; //fpid表示fork函数返回的值
+    int count=0;
+    fpid=fork(); 
+    if (fpid < 0) 
+        printf("error in fork!"); 
+    else if (fpid == 0) {
+        printf("i am the child process, my process id is %d/n",getpid()); 
+        printf("我是爹的儿子/n");//对某些人来说中文看着更直白。
+        count++;
+    }
+    else {
+        printf("i am the parent process, my process id is %d/n",getpid()); 
+        printf("我是孩子他爹/n");
+        count++;
+    }
+    printf("统计结果是: %d/n",count);
+    return 0;
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>（2）vfork</strong></p>
+<p>在实现写时复制之前，Unix的设计者们就一直很关注在fork后立刻执行exec所造成的地址空间的浪费。BSD的开发者们在3.0的BSD系统中引入了vfork( )系统调用。</p>
+<p>除了子进程必须要立刻执行一次对exec的系统调用，或者调用_exit( )退出，对vfork( )的成功调用所产生的结果和fork( )是一样的。vfork( )会挂起父进程直到子进程终止或者运行了一个新的可执行文件的映像。通过这样的方式，vfork( )避免了地址空间的按页复制。在这个过程中，父进程和子进程共享相同的地址空间和页表项。实际上vfork( )只完成了一件事：复制内部的内核数据结构。因此，子进程也就不能修改地址空间中的任何内存。</p>
+<p>vfork( )是一个历史遗留产物，Linux本不应该实现它。需要注意的是，即使增加了<strong>写时复制</strong>，vfork( )也要比fork( )快，因为它没有进行页表项的复制。然而，写时复制的出现减少了对于替换fork( )争论。实际上，直到2.2.0内核，vfork( )只是一个封装过的fork( )。因为对vfork( )的需求要小于fork( )，所以vfork( )的这种实现方式是可行的。</p>
+<p><strong>注：写时复制</strong></p>
+<p>Linux采用了写时复制的方法，以减少fork时对父进程空间进程整体复制带来的开销。</p>
+<p>写时复制是一种采取了惰性优化方法来避免复制时的系统开销。它的前提很简单：如果有多个进程要读取它们自己的那部门资源的副本，那么复制是不必要的。每个进程只要保存一个指向这个资源的指针就可以了。只要没有进程要去修改自己的“副本”，就存在着这样的幻觉：每个进程好像独占那个资源。从而就避免了复制带来的负担。如果一个进程要修改自己的那份资源“副本”，那么就会复制那份资源，并把复制的那份提供给进程。不过其中的复制对进程来说是透明的。这个进程就可以修改复制后的资源了，同时其他的进程仍然共享那份没有修改过的资源。所以这就是名称的由来：在写入时进行复制。</p>
+<p>写时复制的主要好处在于：如果进程从来就不需要修改资源，则不需要进行复制。惰性算法的好处就在于它们尽量推迟代价高昂的操作，直到必要的时刻才会去执行。</p>
+<p>在使用虚拟内存的情况下，写时复制（Copy-On-Write）是以页为基础进行的。所以，只要进程不修改它全部的地址空间，那么就不必复制整个地址空间。在fork( )调用结束后，父进程和子进程都相信它们有一个自己的地址空间，但实际上它们共享父进程的原始页，接下来这些页又可以被其他的父进程或子进程共享。</p>
+<p>写时复制在内核中的实现非常简单。与内核页相关的数据结构可以被标记为只读和写时复制。如果有进程试图修改一个页，就会产生一个缺页中断。内核处理缺页中断的方式就是对该页进行一次透明复制。这时会清除页面的COW属性，表示着它不再被共享。</p>
+<p>现代的计算机系统结构中都在内存管理单元（MMU）提供了硬件级别的写时复制支持，所以实现是很容易的。</p>
+<p>在调用fork( )时，写时复制是有很大优势的。因为大量的fork之后都会跟着执行exec，那么复制整个父进程地址空间中的内容到子进程的地址空间完全是在浪费时间：如果子进程立刻执行一个新的二进制可执行文件的映像，它先前的地址空间就会被交换出去。写时复制可以对这种情况进行优化。</p>
+<p><strong>（3）fork和vfork的区别</strong></p>
+<blockquote>
+<ol>
+<li>fork( )的子进程拷贝父进程的数据段和代码段；vfork( )的子进程与父进程共享数据段</li>
+<li>fork( )的父子进程的执行次序不确定；vfork( )保证子进程先运行，在调用exec或exit之前与父进程数据是共享的，在它调用exec或exit之后父进程才可能被调度运行。</li>
+<li>vfork( )保证子进程先运行，在它调用exec或exit之后父进程才可能被调度运行。如果在调用这两个函数之前子进程依赖于父进程的进一步动作，则会导致死锁。</li>
+<li>当需要改变共享数据段中变量的值，则拷贝父进程。</li>
+</ol>
+</blockquote>
+<p><strong>（4）exec</strong></p>
+<blockquote>
+<ul>
+<li>当进程调用一种exec函数时，该进程的用户空间代码和数据完全被新程序替换，从新程序的启动例程开始执行。</li>
+<li>这些函数如果调用成功则加载新的程序从启动代码开始执行，不再返回，如果调用出错则返回-1，所以exec函数只有出错的返回值而没有成功的返回值。</li>
+</ul>
+</blockquote>
+<p><strong>（5）wait</strong></p>
+<blockquote>
+<ul>
+<li>调用这两个函数的进程用这两个函数来等待其子进程状态的改变，并获取子进程所改变的信息。这里所指的状态的改变包括：子进程终止；子进程被一个信号终止来；子进程被一个信号恢复。对于一个已经终止的子进程，用wait能够让系统释放与子进程相关的资源；如果不用wait则终止的进程会变为僵尸进程。</li>
+<li>一个进程在终止时会关闭所有文件描述符,释放在用户空间分配的内存,但它的PCB还保留着,内核在其中保存了一些信息:如果是正常终止则保存着退出状态,如果是异常终止则保存着导致该进程终止的信号是哪个。这个进程的父进程可以调用wait 或waitpid获取这些信息,然后彻底清除掉这个进程。</li>
+<li>如果子进程状态已经改变，那么wait调用会立即返回。否则调用wait的进程将会阻塞直到有子进程改变状态或者有信号来打断这个调用。</li>
+</ul>
+</blockquote>
+<h3 id="3-10-select、poll、epoll——-IO多路复用技术"><a href="#3-10-select、poll、epoll——-IO多路复用技术" class="headerlink" title="3.10 select、poll、epoll——-IO多路复用技术"></a>3.10 select、poll、epoll——-IO多路复用技术</h3><p><strong>（1）select</strong></p>
+<p><strong>原理</strong></p>
+<blockquote>
+<p>select 函数监视的文件描述符分3类，分别是writefds、readfds、和exceptfds。调用后select函数会阻塞，直到有描述符就绪（有数据 可读、可写、或者有except），或者超时（timeout指定等待时间，如果立即返回设为null即可），函数返回。当select函数返回后，可以通过遍历fdset，来找到就绪的描述符。</p>
+</blockquote>
+<p><strong>优点</strong></p>
+<blockquote>
+<p>select目前几乎在所有的平台上支持，其良好跨平台支持也是它的一个优点</p>
+</blockquote>
+<p><strong>缺点</strong></p>
+<blockquote>
+<ol>
+<li>select最大的缺陷就是单个进程所打开的FD是有一定限制的，它由FD_SETSIZE设置，默认值是1024。</li>
+<li>对socket进行扫描时是线性扫描，即采用轮询的方法，效率较低。</li>
+<li>需要维护一个用来存放大量fd的数据结构，这样会使得用户空间和内核空间在传递该结构时复制开销大。</li>
+</ol>
+</blockquote>
+<p><strong>（2）poll</strong></p>
+<p><strong>原理</strong></p>
+<blockquote>
+<p>poll本质上和select没有区别，它将用户传入的数组拷贝到内核空间，然后查询每个fd对应的设备状态，如果设备就绪则在设备等待队列中加入一项并继续遍历，如果遍历完所有fd后没有发现就绪设备，则挂起当前进程，直到设备就绪或者主动超时，被唤醒后它又要再次遍历fd。这个过程经历了多次无谓的遍历。</p>
+</blockquote>
+<p><strong>优点</strong></p>
+<blockquote>
+<p>它没有最大连接数的限制，原因是它是基于链表来存储的</p>
+</blockquote>
+<p><strong>缺点</strong></p>
+<blockquote>
+<ol>
+<li>大量的fd的数组被整体复制于用户态和内核地址空间之间，而不管这样的复制是不是有意义。</li>
+<li>poll还有一个特点是“水平触发”`，如果报告了fd后，没有被处理，那么下次poll时会再次报告该fd。</li>
+</ol>
+</blockquote>
+<p><strong>（3）epoll</strong></p>
+<p><strong>原理</strong></p>
+<blockquote>
+<p>epoll支持水平触发和边缘触发，最大的特点在于边缘触发，它只告诉进程哪些fd刚刚变为就绪态，并且只会通知一次。还有一个特点是。epoll使用“事件”的就绪通知方式，通过epoll_ctl注册fd，一旦该fd就绪，内核就会采用类似callback的回调机制来激活该fd，epoll_wait便可以收到通知.</p>
+<p>调用顺序：</p>
+<pre class="line-numbers language-c++"><code class="language-c++">int epoll_create(int size);
+int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event);
+int epoll_wait(int epfd, struct epoll_event *events,int maxevents, int timeout);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>首先创建一个epoll对象，然后使用epoll_ctl对这个对象进行操作，把需要监控的描述添加进去，这些描述如将会以epoll_event结构体的形式组成一颗红黑树，接着阻塞在epoll_wait，进入大循环，当某个fd上有事件发生时，内核将会把其对应的结构体放入到一个链表中，返回有事件发生的链表</p>
+</blockquote>
+<p><strong>优点</strong></p>
+<blockquote>
+<ol>
+<li>没有最大并发连接的限制，能打开的FD的上限远大于1024（1G的内存上能监听约10万个端口）。</li>
+<li>效率提升，不是轮询的方式，不会随着FD数目的增加效率下降。只有活跃可用的FD才会调用callback函数；即Epoll最大的优点就在于它只管你“活跃”的连接，而跟连接总数无关，因此在实际的网络环境中，Epoll的效率就会远远高于select和poll。</li>
+<li>内存拷贝，利用mmap()文件映射内存加速与内核空间的消息传递；即epoll使用mmap减少复制开销。</li>
+</ol>
+</blockquote>
+<p><strong>epoll对文件描述符的操作有两种模式：LT（level trigger）和ET（edge trigger）。LT模式是默认模式，LT模式与ET模式的区别如下：</strong></p>
+<blockquote>
+<ul>
+<li>LT模式：当epoll_wait检测到描述符事件发生并将此事件通知应用程序，<code>应用程序可以不立即处理该事件</code>。下次调用epoll_wait时，会再次响应应用程序并通知此事件。</li>
+<li>ET模式：当epoll_wait检测到描述符事件发生并将此事件通知应用程序，<code>应用程序必须立即处理该事件</code>。如果不处理，下次调用epoll_wait时，不会再次响应应用程序并通知此事件。</li>
+</ul>
+</blockquote>
+<h3 id="3-11-函数指针"><a href="#3-11-函数指针" class="headerlink" title="3.11 函数指针"></a>3.11 函数指针</h3><p><strong>（1）普通函数指针</strong></p>
+<blockquote>
+<ol>
+<li>typedef 定义可以简化函数指针的定义</li>
+<li>函数指针同样是可以作为参数传递给函数的</li>
+<li>利用函数指针，我们可以构成函数指针数组，更明确点的说法是构成指向函数的指针数组。</li>
+</ol>
+</blockquote>
+<pre class="line-numbers language-c++"><code class="language-c++">int test(int a)
+{
+    return a;
+}
+int main(int argc, const char * argv[])
+{
+    int (*fp)(int a);
+    fp = test;
+    cout<<fp(2)<<endl;
+    return 0;
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>(2)指向类成员函数的指针</strong></p>
+<p><strong>定义：</strong>类成员函数指针（member function pointer），是 C++ 语言的一类指针数据类型，用于存储一个指定类具有给定的形参列表与返回值类型的成员函数的访问信息。</p>
+<p>基本上要注意的有两点：</p>
+<ul>
+<li>1、函数指针赋值要使用 <strong>&amp;</strong></li>
+<li>2、使用 <strong>.*</strong> (实例对象)或者 <strong>-&gt;*</strong>（实例对象指针）调用类成员函数指针所指向的函数</li>
+</ul>
+<p>1) 类成员函数指针指向类中的非静态成员函数</p>
+<blockquote>
+<ul>
+<li>对于 <strong>nonstatic member function （非静态成员函数）</strong>取地址，获得该函数在内存中的实际地址</li>
+<li>对于 <strong>virtual function（虚函数）</strong>, 其地址在编译时期是未知的，所以对于 virtual member function（虚成员函数）取其地址，所能获得的只是一个索引值，对于虚函数， 返回其在虚函数表的偏移位置</li>
+</ul>
+</blockquote>
+<p>2) 类成员函数指针指向类中的静态成员函数</p>
+<p><strong>总结：</strong></p>
+<blockquote>
+<ul>
+<li>类成员函数指针与普通函数指针不是一码事。前者要用 <strong>.*</strong> 与 -<strong>&gt;*</strong> 运算符来使用，而后者可以用 <em><em>*</em></em> 运算符（称为”解引用”dereference，或称”间址”indirection）。</li>
+<li>普通函数指针实际上保存的是函数体的开始地址，因此也称”代码指针”，以区别于 C/C++ 最常用的数据指针。</li>
+<li>而类成员函数指针就不仅仅是类成员函数的内存起始地址，还需要能解决因为 C++ 的多重继承、虚继承而带来的类实例地址的调整问题，所以类成员函数指针在调用的时候一定要传入类实例对象。</li>
+</ul>
+</blockquote>
+<h3 id="3-12-请你来说一说extern“C”"><a href="#3-12-请你来说一说extern“C”" class="headerlink" title="3.12 请你来说一说extern“C”"></a>3.12 请你来说一说extern“C”</h3><blockquote>
+<ul>
+<li>C++调用C函数需要extern C，因为C语言没有函数重载。</li>
+<li>extern “C”指令中的C，表示的一种编译和连接规约，而不是一种语言。C表示符合C语言的编译和连接规约的任何语言，如Fortran、assembler等。</li>
+<li>extern “C”的真实目的是实现<strong>类C和C++的混合编程</strong></li>
+</ul>
+</blockquote>
+<h2 id="4-类"><a href="#4-类" class="headerlink" title="4 类"></a>4 类</h2><h3 id="4-1-c-和c的区别"><a href="#4-1-c-和c的区别" class="headerlink" title="4.1 c++和c的区别"></a>4.1 c++和c的区别</h3><blockquote>
+<ol>
+<li>兼容 C 语言的部分;</li>
+<li>面向对象的 C++;</li>
+<li>泛型编程，模板；</li>
+<li>STL。</li>
+</ol>
+</blockquote>
+<h3 id="4-2-析构函数的作用"><a href="#4-2-析构函数的作用" class="headerlink" title="4.2 析构函数的作用"></a>4.2 析构函数的作用</h3><blockquote>
+<p>析构函数也是特殊的类成员函数，它没有返回类型，没有参数，不能随意调用，也没有重载，只有在类对象的生命期结束的时候，由系统自动调用。析构函数是对类实例化出来的对象资源进行清理。</p>
+</blockquote>
+<h3 id="4-3-为什么析构函数必须是虚函数？为什么C-默认的析构函数不是虚函数"><a href="#4-3-为什么析构函数必须是虚函数？为什么C-默认的析构函数不是虚函数" class="headerlink" title="4.3 为什么析构函数必须是虚函数？为什么C++默认的析构函数不是虚函数?"></a>4.3 为什么析构函数必须是虚函数？为什么C++默认的析构函数不是虚函数?</h3><blockquote>
+<ul>
+<li>析构函数不一定必须是虚函数，是否为虚函数取决于该类的使用，一般该类为基类产生继承和多态时，才会是虚函数，单独使用可以不是虚函数。之所以在继承和多态时设计为虚函数是因为当new派生类并且用基类指针指向这个派生类，在销毁基类指针时只会调用基类的析构函数，不会调用派生类的析构函数，因为基类无法操作派生类中非继承的成员，这样就造成派生类只new无法delete造成内存泄露。</li>
+<li>默认不是虚析构函数是因为如果析构函数为虚函数就需要编译器在类中增加虚函数表来实现虚函数机制，这样所需内存空间就更大了，因此没有必要默认为虚析构函数</li>
+</ul>
+</blockquote>
+<h3 id="4-4-请你回答一下C-中拷贝赋值函数的形参能否进行值传递？"><a href="#4-4-请你回答一下C-中拷贝赋值函数的形参能否进行值传递？" class="headerlink" title="4.4 请你回答一下C++中拷贝赋值函数的形参能否进行值传递？"></a>4.4 请你回答一下C++中拷贝赋值函数的形参能否进行值传递？</h3><blockquote>
+<p>不能。如果是这种情况下，调用拷贝构造函数的时候，首先要将实参传递给形参，这个传递的时候又要调用拷贝构造函数。。如此循环，无法完成拷贝，栈也会满。</p>
+</blockquote>
+<h3 id="4-5-请你说一说你理解的虚函数和多态"><a href="#4-5-请你说一说你理解的虚函数和多态" class="headerlink" title="4.5 请你说一说你理解的虚函数和多态"></a>4.5 请你说一说你理解的虚函数和多态</h3><blockquote>
+<ul>
+<li>C++多态(polymorphism)是通过虚函数来实现的，虚函数允许子类重新定义成员函数，而子类重新定义父类的做法称为覆盖(override)，或者称为重写。</li>
+<li>最常见的用法就是声明基类的指针，利用该指针指向任意一个子类对象，调用相应的虚函数，动态绑定。由于编写代码的时候并不能确定被调用的是基类的函数还是哪个派生类的函数，所以被成为“虚”函数。如果没有使用虚函数的话，即没有利用C++多态性，则利用基类指针调用相应的函数的时候，将总被限制在基类函数本身，而无法调用到子类中被重写过的函数。</li>
+</ul>
+</blockquote>
+<h3 id="4-6-虚函数表具体是怎样实现运行时多态的"><a href="#4-6-虚函数表具体是怎样实现运行时多态的" class="headerlink" title="4.6 虚函数表具体是怎样实现运行时多态的?"></a>4.6 虚函数表具体是怎样实现运行时多态的?</h3><blockquote>
+<p>子类若重写父类虚函数，虚函数表中，该函数的地址会被替换，对于存在虚函数的类的对象，在VS中，对象的对象模型的头部存放指向虚函数表的指针，通过该机制实现多态。</p>
+</blockquote>
+<h3 id="4-7-请你说说你了解的RTTI（运行时类型识别）"><a href="#4-7-请你说说你了解的RTTI（运行时类型识别）" class="headerlink" title="4.7 请你说说你了解的RTTI（运行时类型识别）"></a>4.7 请你说说你了解的RTTI（运行时类型识别）</h3><p>通过RTTI，能够通过基类的指针或引用来检索其所指对象的实际类型。c++通过下面两个操作符提供RTTI。</p>
+<p>（1）typeid：返回指针或引用所指对象的实际类型。</p>
+<p>（2）dynamic_cast：将基类类型的指针或引用安全的转换为派生类型的指针或引用。</p>
+<p>对于带虚函数的类，在运行时执行RTTI操作符，返回动态类型信息；对于其他类型，在编译时执行RTTI，返回静态类型信息。</p>
+<blockquote>
+<p>当具有基类的指针或引用，但需要执行派生类操作时，需要动态的强制类型转换（dynamic_cast）。这种机制的使用容易出错，最好以虚函数机制代替之。</p>
+</blockquote>
+<h3 id="4-8-请你来说一下C-中类成员的访问权限"><a href="#4-8-请你来说一下C-中类成员的访问权限" class="headerlink" title="4.8 请你来说一下C++中类成员的访问权限"></a>4.8 请你来说一下<strong>C</strong>++中类成员的访问权限</h3><blockquote>
+<p>C++通过 public、protected、private 三个关键字来控制成员变量和成员函数的访问权限，它们分别表示公有的、受保护的、私有的，被称为成员访问限定符。在类的内部（定义类的代码内部），无论成员被声明为 public、protected 还是 private，都是可以互相访问的，没有访问权限的限制。在类的外部（定义类的代码之外），只能通过对象访问成员，并且通过对象只能访问 public 属性的成员，不能访问 private、protected 属性的成员</p>
+</blockquote>
+<h3 id="4-9-请你来说一下C-中struct和class的区别"><a href="#4-9-请你来说一下C-中struct和class的区别" class="headerlink" title="4.9 请你来说一下C++中struct和class的区别"></a>4.9 请你来说一下C++中struct和class的区别</h3><blockquote>
+<p>在C++中，可以用struct和class定义类，都可以继承。区别在于：structural的默认继承权限和默认访问权限是public，而class的默认继承权限和默认访问权限是private。另外，class还可以定义模板类形参，比如template &lt;class T, int i&gt;。</p>
+</blockquote>
+<h3 id="4-10-请你回答一下C-类内可以定义引用数据成员吗？"><a href="#4-10-请你回答一下C-类内可以定义引用数据成员吗？" class="headerlink" title="4.10 请你回答一下C++类内可以定义引用数据成员吗？"></a>4.10 请你回答一下C++类内可以定义引用数据成员吗？</h3><blockquote>
+<p>可以，必须通过成员函数初始化，经过成员函数初始化和列表初始化是可以的</p>
+</blockquote>
+<h3 id="4-11-c-11-新特性"><a href="#4-11-c-11-新特性" class="headerlink" title="4.11 c++11 新特性"></a>4.11 c++11 新特性</h3><blockquote>
+<ul>
+<li>“语法糖”：<code>nullptr</code>, <code>auto</code>自动类型推导，范围for循环，初始化列表, lambda表达式等</li>
+<li>右值引用和移动语义</li>
+<li>智能指针</li>
+<li>C++11多线程编程：<code>thread</code>库及其相配套的同步原语<code>mutex</code>, <code>lock_guard</code>, <code>condition_variable</code>, 以及异步<code>std::furture</code></li>
+</ul>
+</blockquote>
+<h3 id="4-12-给你一个类，里面有static，virtual，之类的，来说一说这个类的内存分布"><a href="#4-12-给你一个类，里面有static，virtual，之类的，来说一说这个类的内存分布" class="headerlink" title="4.12 给你一个类，里面有static，virtual，之类的，来说一说这个类的内存分布"></a>4.12 给你一个类，里面有static，virtual，之类的，来说一说这个类的内存分布</h3><p>1、static修饰符</p>
+<p>1）static修饰成员变量</p>
+<blockquote>
+<ul>
+<li>对于非静态数据成员，每个类对象都有自己的拷贝。而静态数据成员被当做是类的成员，无论这个类被定义了多少个，静态数据成员都只有一份拷贝，为该类型的所有对象所共享(包括其派生类)。所以，静态数据成员的值对每个对象都是一样的，它的值可以更新。</li>
+<li>因为静态数据成员在<strong>全局数据区分配内存</strong>，属于本类的所有对象共享，所以它不属于特定的类对象，在没有产生类对象前就可以使用。</li>
+</ul>
+</blockquote>
+<p>2）static修饰成员函数</p>
+<blockquote>
+<ul>
+<li>与普通的成员函数相比，静态成员函数由于不是与任何的对象相联系，因此它<strong>不具有this指针</strong>。从这个意义上来说，它无法访问属于类对象的非静态数据成员，也无法访问非静态成员函数，只能调用其他的静态成员函数。</li>
+<li>Static修饰的成员函数，在<strong>代码区分配内存</strong>。</li>
+</ul>
+</blockquote>
+<p>2、C++继承和虚函数</p>
+<p>C++多态分为<strong>静态多态和动态多态</strong>。静态多态是通过<strong>重载和模板技术</strong>实现，在编译的时候确定。动态多态通过<strong>虚函数和继承关系</strong>来实现，执行动态绑定，在运行的时候确定。</p>
+<p>动态多态实现有几个条件：</p>
+<blockquote>
+<p>(1) 虚函数；</p>
+<p>(2) 一个基类的指针或引用指向派生类的对象；</p>
+<p>基类指针在调用成员函数(虚函数)时，就会去查找该对象的虚函数表。虚函数表的地址在每个对象的首地址。查找该虚函数表中该函数的指针进行调用。</p>
+<p>每个对象中保存的只是一个虚函数表的指针，C++内部为每一个类维持一个虚函数表，该类的对象的都指向这同一个虚函数表。</p>
+<p><strong>虚函数表中为什么就能准确查找相应的函数指针呢？</strong></p>
+<p>因为在类设计的时候，虚函数表直接从基类也继承过来，如果覆盖了其中的某个虚函数，那么虚函数表的指针就会被替换，因此可以根据指针准确找到该调用哪个函数。</p>
+</blockquote>
+<p>3、virtual修饰符</p>
+<blockquote>
+<ul>
+<li>类是局部变量：则该类数据存储在<strong>栈区</strong></li>
+<li>类是通过new/malloc动态申请：则该类数据存储在<em>*堆区</em>。</li>
+</ul>
+</blockquote>
+<p>如果该类是virutal继承而来的子类，则该类的虚函数表指针和该类其他成员一起存储。虚函数表指针指向只读数据段中的类虚函数表，虚函数表中存放着一个个函数指针，函数指针指向代码段中的具体函数。</p>
+<p>如果类中成员是virtual属性，会隐藏父类对应的属性。</p>
+<p><img src="/2019/10/06/mian-shi-c/311436_1552470920741_7D40CEF3951A10F626301148E06D89DA.png" alt="img"></p>
+<h3 id="4-13-A-a-new-A-a-gt-i-10-在内核中的内存分配上发生了什么？"><a href="#4-13-A-a-new-A-a-gt-i-10-在内核中的内存分配上发生了什么？" class="headerlink" title="4.13  A* a = new A; a-&gt;i = 10;在内核中的内存分配上发生了什么？"></a>4.13  A* a = new A; a-&gt;i = 10;在内核中的内存分配上发生了什么？</h3><blockquote>
+<p>A* a = new A; a-&gt;i = 10：</p>
+<p>1）A *a：a是一个局部变量，类型为指针，故而操作系统在程序栈区开辟4/8字节的空间（0x000m），分配给指针a。</p>
+<p>2）new A：通过new动态的在堆区申请类A大小的空间（0x000n）。</p>
+<p>3）a = new A：将指针a的内存区域填入栈中类A申请到的地址的地址。即*（0x000m）=0x000n。</p>
+<p>4）a-&gt;i：先找到指针a的地址0x000m，通过a的值0x000n和i在类a中偏移offset，得到a-&gt;i的地址0x000n + offset，进行*(0x000n + offset) = 10的赋值操作，即内存0x000n + offset的值是10。</p>
+</blockquote>
+<h2 id="5-内存管理"><a href="#5-内存管理" class="headerlink" title="5 内存管理"></a>5 内存管理</h2><h3 id="5-1-内存模型"><a href="#5-1-内存模型" class="headerlink" title="5.1 内存模型"></a>5.1 内存模型</h3><p><img src="/2019/10/06/mian-shi-c/311436_1552467921124_13956548C4BB199139A2744C39350272.png" alt="img"></p>
+<p>32bitCPU可寻址4G线性空间，每个进程都有各自独立的4G逻辑地址，其中0<del>3G是用户态空间，3</del>4G是内核空间，不同进程相同的逻辑地址会映射到不同的物理地址中。其逻辑地址其划分如下：</p>
+<p><strong>静态区域：</strong></p>
+<blockquote>
+<ul>
+<li>text segment(代码段):包括只读存储区和文本区，其中只读存储区存储字符串常量，文本区存储程序的机器代码。</li>
+<li>data segment(数据段)：存储程序中已初始化的全局变量和静态变量</li>
+<li>bss segment：存储未初始化的全局变量和静态变量（局部+全局），以及所有被初始化为0的全局变量和静态变量，对于未初始化的全局变量和静态变量，程序运行main之前时会统一清零。即未初始化的全局变量编译器会初始化为0</li>
+</ul>
+</blockquote>
+<p><strong>动态区域：</strong></p>
+<blockquote>
+<ul>
+<li>heap（堆）： 当进程未调用malloc时是没有堆段的，只有调用malloc时采用分配一个堆，并且在程序运行过程中可以动态增加堆大小(移动break指针)，从低地址向高地址增长。分配小内存时使用该区域。  堆的起始地址由mm_struct 结构体中的start_brk标识，结束地址由brk标识。</li>
+<li>memory mapping segment(映射区):存储动态链接库等文件映射、申请大内存（malloc时调用mmap函数）</li>
+<li>stack（栈）：使用栈空间存储函数的返回地址、参数、局部变量、返回值，从高地址向低地址增长。在创建进程时会有一个最大栈大小，Linux可以通过ulimit命令指定。</li>
+</ul>
+</blockquote>
+<h3 id="5-2-new-delete与malloc-free的区别"><a href="#5-2-new-delete与malloc-free的区别" class="headerlink" title="5.2 new/delete与malloc/free的区别"></a>5.2 new/delete与malloc/free的区别</h3><blockquote>
+<ul>
+<li>new/delete是C++的关键字，而malloc/free是C语言的库函数</li>
+<li>malloc后者使用必须指明申请内存空间的大小，返回的指针需要强转。</li>
+<li>new会调用构造函数，不用指定内存大小，返回的指针不用强转。</li>
+<li>new分配的内存要用delete销毁，malloc要用free来销毁；delete销毁的时候会调用对象的析构函数，而free则不会</li>
+<li>new如果分配失败了会抛出bad_malloc的异常，而malloc失败了会返回NULL。</li>
+</ul>
+</blockquote>
+<h3 id="5-3-malloc的原理，另外brk系统调用和mmap系统调用的作用"><a href="#5-3-malloc的原理，另外brk系统调用和mmap系统调用的作用" class="headerlink" title="5.3 malloc的原理，另外brk系统调用和mmap系统调用的作用"></a>5.3 malloc的原理，另外brk系统调用和mmap系统调用的作用</h3><blockquote>
+<ul>
+<li>Malloc函数用于动态分配内存。为了减少内存碎片和系统调用的开销，malloc其采用内存池的方式，先申请大块内存作为堆区，然后将堆区分为多个内存块，以块作为内存管理的基本单位。当用户申请内存时，直接从堆区分配一块合适的空闲块。Malloc采用隐式链表结构将堆区分成连续的、大小不一的块，包含已分配块和未分配块；同时malloc采用显示链表结构来管理所有的空闲块，即使用一个双向链表将空闲块连接起来，每一个空闲块记录了一个连续的、未分配的地址。</li>
+<li>当进行内存分配时，Malloc会通过隐式链表遍历所有的空闲块，选择满足要求的块进行分配；当进行内存合并时，malloc采用边界标记法，根据每个块的前后块是否已经分配来决定是否进行块合并。</li>
+<li>Malloc在申请内存时，一般会通过brk或者mmap系统调用进行申请。其中当申请内存小于128K时，会使用系统函数brk在堆区中分配；而当申请内存大于128K时，会使用系统函数mmap在映射区分配。</li>
+</ul>
+</blockquote>
+<h3 id="5-4-内存泄露"><a href="#5-4-内存泄露" class="headerlink" title="5.4 内存泄露"></a>5.4 内存泄露</h3><p><strong>（1）含义：</strong></p>
+<blockquote>
+<p>在编写应用程序的时候，程序分配了一块内存，但已经不再持有引用这块内存的对象（通常是指针），虽然这些内存被分配出去，但是无法收回，将无法被其他的进程所使用，我们说这块内存泄漏了，被泄漏的内存将在整个程序声明周期内都不可使用。</p>
+</blockquote>
+<p><strong>（2）原因</strong></p>
+<blockquote>
+<ul>
+<li>是在使用new或malloc动态分配堆上的内存空间，而并未使用delete或free及时释放掉内存。</li>
+<li>delete void * 的指针，导致没有调用到对象的析构函数，析构的所有清理工作都没有去执行从而导致内存的泄露；</li>
+<li>没有将基类的析构函数定义为虚函数，当基类的指针指向子类时，delete该对象时，不会调用子类的析构函数</li>
+</ul>
+</blockquote>
+<p><strong>（3）分类</strong></p>
+<blockquote>
+<ul>
+<li>堆内存泄漏 （Heap leak）。对内存指的是程序运行中根据需要分配通过malloc,realloc new等从堆中分配的一块内存，再是完成后必须通过调用对应的 free或者delete 删掉。如果程序的设计的错误导致这部分内存没有被释放，那么此后这块内存将不会被使用，就会产生Heap Leak。</li>
+<li>系统资源泄露（Resource Leak）。主要指程序使用系统分配的资源比如 Bitmap,handle ,SOCKET等没有使用相应的函数释放掉，导致系统资源的浪费，严重可导致系统效能降低，系统运行不稳定。</li>
+<li>没有将基类的析构函数定义为虚函数。当基类指针指向子类对象时，如果基类的析构函数不是virtual，那么子类的析构函数将不会被调用，子类的资源没有正确是释放，因此造成内存泄露。</li>
+</ul>
+</blockquote>
+<p><strong>（4）检测</strong></p>
+<blockquote>
+<ul>
+<li>思路就是重载 malloc/free，new/delete 在实际申请的每个内存块包一层，然后用一个链表他们链起来，调用一次 free 或者 delete ，就把改节点删除。程序运行结束后遍历链表就是内存泄露的部分。</li>
+<li>内存泄漏通常是由于调用了malloc/new等内存申请的操作，但是缺少了对应的free/delete。为了判断内存是否泄露，我们一方面可以使用linux环境下的内存泄漏检查工具Valgrind,另一方面我们在写代码时可以添加内存申请和释放的统计功能，统计当前申请和释放的内存是否一致，以此来判断内存是否泄露。</li>
+</ul>
+</blockquote>
+<h3 id="5-5-内存溢出"><a href="#5-5-内存溢出" class="headerlink" title="5.5 内存溢出"></a>5.5 内存溢出</h3><p><strong>（1）含义</strong></p>
+<blockquote>
+<p>指程序申请内存时，没有足够的内存供申请者使用。内存溢出就是你要的内存空间超过了系统实际分配给你的空间，此时系统相当于没法满足你的需求，就会报内存溢出的错误。</p>
+</blockquote>
+<p><strong>（2）原因</strong></p>
+<blockquote>
+<ul>
+<li>内存中加载的数据量过于庞大，如一次从数据库取出过多数据</li>
+<li>集合类中有对对象的引用，使用完后未清空，使得不能回收</li>
+<li>代码中存在死循环或循环产生过多重复的对象实体</li>
+<li>使用的第三方软件中的BUG</li>
+<li>启动参数内存值设定的过小</li>
+</ul>
+</blockquote>
+<h3 id="5-6-段错误"><a href="#5-6-段错误" class="headerlink" title="5.6 段错误"></a>5.6 段错误</h3><p><strong>（1）含义</strong></p>
+<blockquote>
+<p>段错误通常发生在访问非法内存地址的时候</p>
+</blockquote>
+<p><strong>（2）原因</strong></p>
+<blockquote>
+<ul>
+<li>使用野指针</li>
+<li>试图修改字符串常量的内容</li>
+</ul>
+</blockquote>
+<h2 id="6-多线程"><a href="#6-多线程" class="headerlink" title="6 多线程"></a>6 多线程</h2><h3 id="6-1-C-的锁你知道几种"><a href="#6-1-C-的锁你知道几种" class="headerlink" title="6.1 C++的锁你知道几种?"></a>6.1 C++的锁你知道几种?</h3><p>线程之间的锁有：<strong>互斥锁、条件锁、自旋锁、读写锁、递归锁</strong>。一般而言，锁的功能越强大，性能就会越低。</p>
+<blockquote>
+<ol>
+<li><strong>互斥锁</strong></li>
+</ol>
+<ul>
+<li>互斥锁用于控制多个线程对他们之间共享资源互斥访问的一个信号量。也就是说是为了避免多个线程在某一时刻同时操作一个共享资源。</li>
+<li>在某一时刻，只有一个线程可以获取互斥锁，在释放互斥锁之前其他线程都不能获取该互斥锁。如果其他线程想要获取这个互斥锁，那么这个线程只能以<strong>阻塞方式</strong>进行等待。</li>
+</ul>
+<ol start="2">
+<li><strong>条件锁</strong></li>
+</ol>
+<ul>
+<li>条件锁就是所谓的条件变量，某一个线程因为某个条件为满足时可以使用条件变量使改程序处于<strong>阻塞状态</strong>。一旦条件满足以“信号量”的方式唤醒一个因为该条件而被阻塞的线程。最为常见就是在线程池中，起初没有任务时任务队列为空，此时线程池中的线程因为“任务队列为空”这个条件处于阻塞状态。一旦有任务进来，就会以信号量的方式唤醒一个线程来处理这个任务。</li>
+</ul>
+<ol start="3">
+<li><strong>自旋锁</strong></li>
+</ol>
+<ul>
+<li>在任何时刻同样只能有一个线程访问对象。但是当获取锁操作失败时，不会进入睡眠，而是会在原地自旋，直到锁被释放。这样节省了线程从睡眠状态到被唤醒期间的消耗，<strong>在加锁时间短暂的环境下会极大的提高效率</strong>。但如果加锁时间过长，则会非常浪费CPU资源。</li>
+</ul>
+<ol start="4">
+<li><strong>读写锁</strong></li>
+</ol>
+<ul>
+<li>分为读锁和写锁。处于读操作时，可以允许多个线程同时获得读操作。但是同一时刻只能有一个线程可以获得写锁。其它获取写锁失败的线程都会进入睡眠状态，直到写锁释放时被唤醒。 注意：写锁会阻塞其它读写锁。当有一个线程获得写锁在写时，读锁也不能被其它线程获取；写者优先于读者（一旦有写者，则后续读者必须等待，唤醒时优先考虑写者）。<strong>适用于读取数据的频率远远大于写数据的频率的场合。</strong></li>
+</ul>
+</blockquote>
+<h3 id="6-2-说一说你用到的锁"><a href="#6-2-说一说你用到的锁" class="headerlink" title="6.2 说一说你用到的锁"></a>6.2 说一说你用到的锁</h3><blockquote>
+<p>生产者消费者问题利用互斥锁和条件变量可以很容易解决，条件变量这里起到了替代信号量的作用</p>
+</blockquote>
+<h2 id="7-STL"><a href="#7-STL" class="headerlink" title="7 STL"></a>7 STL</h2><h3 id="7-1-STL的基本组成"><a href="#7-1-STL的基本组成" class="headerlink" title="7.1 STL的基本组成"></a>7.1 STL的基本组成</h3><p><img src="https://github.com/steveLauwh/SGI-STL/raw/master/The%20Annotated%20STL%20Sources%20V3.3/Other/SGISTL.PNG" alt></p>
+<blockquote>
+<ul>
+<li><a href="https://github.com/steveLauwh/SGI-STL/tree/master/The%20Annotated%20STL%20Sources%20V3.3/container" target="_blank" rel="noopener">Container</a> 通过 <a href="https://github.com/steveLauwh/SGI-STL/tree/master/The%20Annotated%20STL%20Sources%20V3.3/allocator" target="_blank" rel="noopener">Allocator</a> 取得数据储存空间</li>
+<li><a href="https://github.com/steveLauwh/SGI-STL/tree/master/The%20Annotated%20STL%20Sources%20V3.3/algorithm" target="_blank" rel="noopener">Algorithm</a> 通过 <a href="https://github.com/steveLauwh/SGI-STL/tree/master/The%20Annotated%20STL%20Sources%20V3.3/iterator" target="_blank" rel="noopener">Iterator</a> 存取 <a href="https://github.com/steveLauwh/SGI-STL/tree/master/The%20Annotated%20STL%20Sources%20V3.3/container" target="_blank" rel="noopener">Container</a> 内容</li>
+<li><a href="https://github.com/steveLauwh/SGI-STL/tree/master/The%20Annotated%20STL%20Sources%20V3.3/functor-function%20object" target="_blank" rel="noopener">Functor</a> 可以协助 <a href="https://github.com/steveLauwh/SGI-STL/tree/master/The%20Annotated%20STL%20Sources%20V3.3/algorithm" target="_blank" rel="noopener">Algorithm</a> 完成不同的策略变化</li>
+<li><a href="https://github.com/steveLauwh/SGI-STL/tree/master/The%20Annotated%20STL%20Sources%20V3.3/adapter" target="_blank" rel="noopener">Adapter</a> 可以修饰或套接 <a href="https://github.com/steveLauwh/SGI-STL/tree/master/The%20Annotated%20STL%20Sources%20V3.3/functor-function%20object" target="_blank" rel="noopener">Functor</a>、<a href="https://github.com/steveLauwh/SGI-STL/tree/master/The%20Annotated%20STL%20Sources%20V3.3/iterator" target="_blank" rel="noopener">Iterator</a>。</li>
+</ul>
+</blockquote>
+<h4 id="7-1-1-空间配置器-allocator"><a href="#7-1-1-空间配置器-allocator" class="headerlink" title="7.1.1 空间配置器(allocator)"></a>7.1.1 空间配置器(allocator)</h4><p>配置器：负责空间配置与管理，从实现的角度来看，配置器是一个实现了动态空间配置、空间管理、空间释放的 class template。</p>
+<p>空间配置器：整个 STL 的操作对象(所有的数值)都存放在容器之内，而容器一定需要配置空间以存放内容。</p>
+<p><img src="https://github.com/steveLauwh/SGI-STL/raw/master/The%20Annotated%20STL%20Sources%20V3.3/Other/allocator.PNG" alt></p>
+<h5 id="（1）具有次配置力-sub-allocation-的-SGI-空间配置器"><a href="#（1）具有次配置力-sub-allocation-的-SGI-空间配置器" class="headerlink" title="（1）具有次配置力(sub-allocation)的 SGI 空间配置器"></a>（1）具有次配置力(sub-allocation)的 SGI 空间配置器</h5><h6 id="SGI-STL-空间配置器的结构"><a href="#SGI-STL-空间配置器的结构" class="headerlink" title="SGI STL 空间配置器的结构"></a>SGI STL 空间配置器的结构</h6><p>SGI STL 的配置器，其名称是 alloc 而不是 allocator，而且不接受任何参数。</p>
+<p>SGI STL 的每一个容器都已经指定其缺省的空间配置器为 alloc。</p>
+<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">T</span><span class="token punctuation">,</span> <span class="token keyword">class</span> <span class="token class-name">Alloc</span> <span class="token operator">=</span> alloc<span class="token operator">></span>  <span class="token comment" spellcheck="true">// 缺省使用 alloc 为配置器</span>
+<span class="token keyword">class</span> <span class="token class-name">vector</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token punctuation">,</span> std<span class="token operator">::</span>alloc<span class="token operator">></span> iv<span class="token punctuation">;</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><p>&lt;defalloc.h&gt;—-SGI 标准的空间配置器，std::allocator</p>
+<p>allocator 只是基层内存配置/释放行为(::operator::new 和 ::operator::delete)的一层薄薄的包装，并没有考虑到任何效率上的强化。</p>
+</li>
+<li><p>SGI 特殊的空间配置器，std::alloc</p>
+<ul>
+<li>&lt;stl_construct.h&gt;：定义了全局函数 construct() 和 destroy()，负责对象的构造和析构。 </li>
+<li>&lt;stl_alloc.h&gt;：定义了一、二级配置器，配置器名为 alloc。</li>
+<li>&lt;stl_uninitialized.h&gt;：定义了全局函数，用来填充(fill)或复制(copy)大块内存数据。</li>
+</ul>
+</li>
+<li><p>构造和析构基本工具</p>
+<p>具体看 &lt;stl_construct.h&gt; 源码，功能是构造和析构操作。</p>
+</li>
+<li><p>空间的配置和释放，std::alloc</p>
+<ul>
+<li>向 system heap 要求空间</li>
+<li>考虑多线程(multi-threads)状态</li>
+<li>考虑内存不足时的应变措施</li>
+<li>考虑过多 “小型区块” 可能造成的内存碎片问题</li>
+</ul>
+<p>对象构造前的空间配置 和 对象析构后的空间释放，具体看 &lt;stl_alloc.h&gt;。</p>
+</li>
+</ul>
+<h6 id="SGI-STL-空间配置器的分析"><a href="#SGI-STL-空间配置器的分析" class="headerlink" title="SGI STL 空间配置器的分析"></a>SGI STL 空间配置器的分析</h6><p>考虑到小型区块可能造成内存碎片问题，SGI 采用两级配置器，第一级配置器直接使用 malloc() 和 free() 实现；第二级配置器使用 memory pool 内存池管理。</p>
+<p>第二级配置器的原理：</p>
+<ul>
+<li>当配置区块超过 128 bytes，就使用第一级配置器</li>
+<li>当配置区块小于 128 bytes，使用内存池管理</li>
+</ul>
+<pre class="line-numbers language-c"><code class="language-c"><span class="token keyword">enum</span> <span class="token punctuation">{</span>_ALIGN <span class="token operator">=</span> <span class="token number">8</span><span class="token punctuation">}</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 小型区块的上调边界</span>
+<span class="token keyword">enum</span> <span class="token punctuation">{</span>_MAX_BYTES <span class="token operator">=</span> <span class="token number">128</span><span class="token punctuation">}</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 小区区块的上限</span>
+<span class="token keyword">enum</span> <span class="token punctuation">{</span>_NFREELISTS <span class="token operator">=</span> <span class="token number">16</span><span class="token punctuation">}</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// _MAX_BYTES/_ALIGN  free-list 的个数</span>
+
+<span class="token comment" spellcheck="true">// free-list 的节点结构，降低维护链表 list 带来的额外负担</span>
+<span class="token keyword">union</span> _Obj <span class="token punctuation">{</span>
+    <span class="token keyword">union</span> _Obj<span class="token operator">*</span> _M_free_list_link<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 利用联合体特点</span>
+    <span class="token keyword">char</span> _M_client_data<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">/* The client sees this. */</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">static</span> _Obj<span class="token operator">*</span> __STL_VOLATILE _S_free_list<span class="token punctuation">[</span>_NFREELISTS<span class="token punctuation">]</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 注意，它是数组，每个数组元素包含若干相等的小额区块</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>其中 free-list 是指针数组，16 个数组元素，就是 16 个 free-list，各自管理大小分别为 8， 16， 24， 32，…128 bytes(8 的倍数)的小额区块。</p>
+<p>小额区块的结构体 <code>union _Obj</code> 使用链表连接起来。</p>
+<p>配置器负责配置，同时也负责回收。</p>
+<p><img src="https://github.com/steveLauwh/SGI-STL/raw/master/The%20Annotated%20STL%20Sources%20V3.3/Other/allocator_memorypool.PNG" alt></p>
+<h5 id="（2）内存配置与释放过程"><a href="#（2）内存配置与释放过程" class="headerlink" title="（2）内存配置与释放过程"></a>（2）内存配置与释放过程</h5><p>new运算分两个阶段：</p>
+<blockquote>
+<p>(1)调用::operator new配置内存;</p>
+<p>(2)调用对象构造函数构造对象内容</p>
+</blockquote>
+<p>delete运算分两个阶段：</p>
+<blockquote>
+<p>(1)调用对象析构函数；</p>
+<p>(2)调用::operator delete释放内存</p>
+</blockquote>
+<p>为了精密分工，STL allocator将两个阶段操作区分开来：</p>
+<blockquote>
+<ul>
+<li>内存配置有alloc::allocate()负责，内存释放由alloc::deallocate()负责；对象构造由::construct()负责，对象析构由::destroy()负责。</li>
+</ul>
+</blockquote>
+<h4 id="7-1-2-迭代器-iterator"><a href="#7-1-2-迭代器-iterator" class="headerlink" title="7.1.2 迭代器(iterator)"></a>7.1.2 迭代器(iterator)</h4><p>迭代器：扮演容器与算法之间的桥梁，是所谓的 “泛型指针”，共有五种类型，以及其它衍生变化。从实现的角度来看，迭代器是一种将 <code>operator*</code>，<code>operator-&gt;</code>，<code>operator++</code>，<code>operator--</code> 等指针相关操作予以重载的 class template。 所有 STL 容器都附带有自己专属的迭代器。 native pointer 也是一种迭代器。</p>
+<h5 id="（1）迭代器-iterator-是一种-smart-pointer"><a href="#（1）迭代器-iterator-是一种-smart-pointer" class="headerlink" title="（1）迭代器(iterator) 是一种 smart pointer"></a>（1）迭代器(iterator) 是一种 smart pointer</h5><p>迭代器是一种行为类似指针的对象，而指针的各种行为中最常见的用途是 dereference 和 member access。迭代器最重要的就是对 <code>operator*</code> 和 <code>operator-&gt;</code>进行重载工作。</p>
+<p>auto_ptr：用来包装原生指针(native pointer)的对象，在头文件 <memory> 中定义。</memory></p>
+<p>为什么每一种 STL 容器都提供有专属迭代器的缘故。</p>
+<p>主要是暴露太多细节，所以把迭代器的开发工作交给容器去完成，这样所有实现细节可以得到封装，不被使用者看到。</p>
+<h5 id="（2）迭代器相应类型-associated-types"><a href="#（2）迭代器相应类型-associated-types" class="headerlink" title="（2）迭代器相应类型(associated types)"></a>（2）迭代器相应类型(associated types)</h5><p>迭代器所指对象的类型。</p>
+<p>利用 function template 的参数推导机制，只能推导出参数的类型，无法推导出函数返回值类型。</p>
+<p>迭代器相应类型有五种：</p>
+<ul>
+<li>value type</li>
+<li>difference type</li>
+<li>pointer</li>
+<li>reference</li>
+<li>iterator category</li>
+</ul>
+<p><img src="https://github.com/steveLauwh/SGI-STL/raw/master/The%20Annotated%20STL%20Sources%20V3.3/Other/iteratortraits.PNG" alt></p>
+<h5 id="（3）Traits-编程技术"><a href="#（3）Traits-编程技术" class="headerlink" title="（3）Traits 编程技术"></a>（3）Traits 编程技术</h5><p>traits 意为 “特性”，扮演 “特性萃取机” 角色，萃取各个迭代器的特性(相应类型)。</p>
+<p>template partial specialization 模板偏特化：针对 template 参数更进一步的条件限制所设计出来的一个特化版本，本身仍然是 template。</p>
+<pre class="line-numbers language-cpp"><code class="language-cpp">tempalte<span class="token operator">&lt;</span><span class="token keyword">typename</span> I<span class="token operator">></span>
+<span class="token keyword">struct</span> iterator_traits
+<span class="token punctuation">{</span>
+    <span class="token keyword">typedef</span> <span class="token keyword">typename</span> I<span class="token operator">::</span>iterator_category  iterator_category<span class="token punctuation">;</span>
+    <span class="token keyword">typedef</span> <span class="token keyword">typename</span> I<span class="token operator">::</span>value_type  value_type<span class="token punctuation">;</span>
+    <span class="token keyword">typedef</span> <span class="token keyword">typename</span> I<span class="token operator">::</span>difference_type  difference_type<span class="token punctuation">;</span>
+    <span class="token keyword">typedef</span> <span class="token keyword">typename</span> I<span class="token operator">::</span>pointer  pointer<span class="token punctuation">;</span>
+    <span class="token keyword">typedef</span> <span class="token keyword">typename</span> I<span class="token operator">::</span>reference  reference<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>迭代器相应类型之一：value type</li>
+</ul>
+<p>value type 就是迭代器所指对象的类型。</p>
+<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">T</span><span class="token operator">></span>
+<span class="token keyword">typename</span> iterator_traits<span class="token operator">&lt;</span>I<span class="token operator">></span><span class="token operator">::</span>value_type <span class="token function">func</span><span class="token punctuation">(</span>I ite<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token operator">*</span>ite<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>迭代器相应类型之二：difference type</li>
+</ul>
+<p>difference type 用来表示两个迭代器之间的距离。</p>
+<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">I</span><span class="token punctuation">,</span> <span class="token keyword">class</span> <span class="token class-name">T</span><span class="token operator">></span>
+<span class="token keyword">typename</span> iterator_traits<span class="token operator">&lt;</span>I<span class="token operator">></span><span class="token operator">::</span>difference_type <span class="token function">cout</span><span class="token punctuation">(</span>I first<span class="token punctuation">,</span> I last<span class="token punctuation">,</span> <span class="token keyword">const</span> T<span class="token operator">&amp;</span> value<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">typename</span> iterator_traits<span class="token operator">&lt;</span>I<span class="token operator">></span><span class="token operator">::</span>difference_type n <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> first <span class="token operator">!=</span> last<span class="token punctuation">;</span> <span class="token operator">++</span>first<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token operator">++</span>n<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> n<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>迭代器相应类型之三：reference type</li>
+</ul>
+<p>在 c++ 中，函数如果要传回左值，都是以 by reference 的方式进行，所以如果 p 是一个迭代器，它的 value type 是 T ，那么<code>*p</code> 应该是T&amp; (即reference type)</p>
+<ul>
+<li><p>迭代器相应类型之四：pointer type</p>
+</li>
+<li><p>迭代器相应类型之五：iterator_category</p>
+<ul>
+<li>输入迭代器 (InputIterator) 是能从所指向元素读取的迭代器 (Iterator) 。输入迭代器 (InputIterator) 仅保证单趟算法的合法性。</li>
+<li>输出迭代器 (OutputIterator) 是能写入所指元素的迭代器 (Iterator) 。</li>
+<li>向前迭代器 (ForwardIterator) 是一种能从所指向元素读取数据的迭代器 (Iterator) 。</li>
+<li>双向迭代器 (BidirectionalIterator) 是能双向移动（即自增与自减）的向前迭代器 (ForwardIterator) 。</li>
+<li>随机访问迭代器 (RandomAccessIterator) 是能在常数时间内移动到指向任何元素的双向迭代器 (BidirectionalIterator) 。</li>
+</ul>
+</li>
+<li><p>traits 本质是什么？  </p>
+</li>
+</ul>
+<p>多一层间接性，换来灵活性。iterator_traits 负责萃取迭代器的特性，__type_traits 负责萃取类型的特性。</p>
+<h4 id="7-1-3-容器-container"><a href="#7-1-3-容器-container" class="headerlink" title="7.1.3 容器(container)"></a>7.1.3 容器(container)</h4><p>容器：包括序列式容器和关联式容器；即各种数据结构，如 vector，list，deque，set，map 等用来存储数据；从实现的角度来看，STL 容器是一种 class template。</p>
+<p>任何特定的数据结构都是为了实现某种特定的算法。</p>
+<p><img src="https://github.com/steveLauwh/SGI-STL/raw/master/The%20Annotated%20STL%20Sources%20V3.3/Other/container.PNG" alt></p>
+<h5 id="（1）序列式容器-sequence-container"><a href="#（1）序列式容器-sequence-container" class="headerlink" title="（1）序列式容器(sequence container)"></a>（1）序列式容器(sequence container)</h5><ul>
+<li>array (C++ 提供，build-in)</li>
+<li>vector</li>
+<li>heap (内含一个 vector)</li>
+<li>priority-queue (内含一个 heap)</li>
+<li>list</li>
+<li>slist (非标准)</li>
+<li>deque</li>
+<li>stack (内含一个 deque)  (adapter 配接器)</li>
+<li>queue (内含一个 deque)  (adapter 配接器)</li>
+</ul>
+<p>怎么理解序列式容器，其中的元素都可序(ordered), 但未必有序(sorted)？</p>
+<p>ordered 是容器集合被排序，可以使用指定的顺序去遍历集合。 sorted 是一个容器集合根据某些规则确定排序的。</p>
+<p><img src="https://github.com/steveLauwh/SGI-STL/raw/master/The%20Annotated%20STL%20Sources%20V3.3/Other/sequencecontainer.PNG" alt></p>
+<h5 id="（2）关联式容器-associative-container"><a href="#（2）关联式容器-associative-container" class="headerlink" title="（2）关联式容器(associative container)"></a>（2）关联式容器(associative container)</h5><ul>
+<li>RB-tree (非公开)</li>
+<li>set (内含一个 RB-tree)</li>
+<li>map (内含一个 RB-tree)</li>
+<li>multiset (内含一个 RB-tree)</li>
+<li>multimap (内含一个 RB-tree)</li>
+<li>hashtable (非标准)</li>
+<li>hash_set (内含一个 hashtable)  (非标准)</li>
+<li>hash_map (内含一个 hashtable)  (非标准)</li>
+<li>hash_multiset (内含一个 hashtable)  (非标准)</li>
+<li>hash_multimap (内含一个 hashtable)  (非标准)</li>
+</ul>
+<p><img src="https://github.com/steveLauwh/SGI-STL/raw/master/The%20Annotated%20STL%20Sources%20V3.3/Other/associativecontainer.PNG" alt></p>
+<p>熟悉关联式容器，需要有 <a href="https://github.com/steveLauwh/Data-Structures-And-Algorithms/tree/master/Tree/RB-tree" target="_blank" rel="noopener">RB-tree</a>(红黑树原理) 和 <a href="https://github.com/steveLauwh/Data-Structures-And-Algorithms/tree/master/Hash%20Table" target="_blank" rel="noopener">hash table</a>(哈希表原理) 基础。</p>
+<h4 id="7-1-4-算法-algorithm"><a href="#7-1-4-算法-algorithm" class="headerlink" title="7.1.4 算法(algorithm)"></a>7.1.4 算法(algorithm)</h4><p><img src="https://github.com/steveLauwh/SGI-STL/raw/master/The%20Annotated%20STL%20Sources%20V3.3/Other/STLAlgorithm.png" alt></p>
+<p>算法：各种常用算法如 sort，search，copy，erase 等，从实现的角度来看，STL 算法是一种 function template。</p>
+<p>所有泛型算法的前两个参数都是一对迭代器，STL 习惯使用前闭后开的区间，<code>[first, last)</code>。</p>
+<p>最后一个元素的下一位置，称为 end()。</p>
+<p>数值的传递由 pass-by-value 改为 pass-by-reference，好处是，在模板中，参数的类型可以任意，当对象一大，传递成本便会上升，所以用 pass-by-reference 可以节省空间。</p>
+<h5 id="（1）数值算法-lt-stl-numeric-h-gt"><a href="#（1）数值算法-lt-stl-numeric-h-gt" class="headerlink" title="（1）数值算法 &lt;stl_numeric.h&gt;"></a>（1）数值算法 &lt;stl_numeric.h&gt;</h5><p>STL 将数值算法的内部实现放在 &lt;stl_numeric.h&gt; 中，用户调用数值算法的接口，需要包含 <numeric> 头文件。</numeric></p>
+<blockquote>
+<p><strong>元素累加 <code>accumulate</code></strong></p>
+</blockquote>
+<p>算法 <code>accumulate</code> 用来计算 init 和 <code>[first, last)</code> 内所有元素的总和。</p>
+<blockquote>
+<p><strong>相邻元素的差值 <code>adjacent_difference</code></strong></p>
+</blockquote>
+<p>算法 <code>adjacent_difference</code> 用来计算 <code>[first, last)</code> 中相邻元素的差值。</p>
+<blockquote>
+<p><strong>内积 <code>inner_product</code></strong></p>
+</blockquote>
+<p>算法 <code>inner_product</code> 计算 <code>[first1, last1)</code> 和 <code>[first2, first2 + (last1 - first1))</code> 的一般内积。 </p>
+<blockquote>
+<p><strong>局部求和 <code>partial_sum</code></strong></p>
+</blockquote>
+<p>算法 <code>partial_sum</code> 用来计算局部求和。</p>
+<blockquote>
+<p><strong>幂次方 <code>power</code></strong></p>
+</blockquote>
+<p>算法 <code>power</code> 用来计算某数的 n 幂次方。</p>
+<blockquote>
+<p><strong>递增 <code>iota</code></strong></p>
+</blockquote>
+<p>在某区间 <code>[first, last)</code> 填入某指定值 <code>value</code> 的递增序列。</p>
+<h5 id="（2）基本算法-lt-stl-algobase-h-gt"><a href="#（2）基本算法-lt-stl-algobase-h-gt" class="headerlink" title="（2）基本算法 &lt;stl_algobase.h&gt;"></a>（2）基本算法 &lt;stl_algobase.h&gt;</h5><blockquote>
+<p><strong>判断两个区间是否相等 <code>equal</code></strong></p>
+</blockquote>
+<p>如果两个序列在 <code>[first, last)</code> 区间内相等，<code>equal()</code> 返回 true。</p>
+<p>注意，如果第二个序列的元素比较多，多出来的元素不予考虑，只要与第一个序列的元素相等，就返回 true。</p>
+<blockquote>
+<p><strong>改填元素 <code>fill</code></strong></p>
+</blockquote>
+<p>将 <code>[first, last)</code> 内的所有元素改填新值。</p>
+<blockquote>
+<p><strong>改填元素的值 n 次 <code>fill_n</code></strong></p>
+</blockquote>
+<p>将 <code>[first, last)</code> 内的前 n 个元素改填新值，返回的迭代器指向被填入的最后一个元素的下一位置。</p>
+<blockquote>
+<p><strong>元素互换 <code>iter_swap</code></strong></p>
+</blockquote>
+<p>将两个 Forwarditerators 所指的对象对调。</p>
+<blockquote>
+<p><strong>以字典顺序进行比较 <code>lexicographical_compare</code></strong></p>
+</blockquote>
+<p>以 “字典排列方式” 对两个序列 <code>[first1, last1)</code> 和 <code>[first2, last2)</code> 进行比较。</p>
+<blockquote>
+<p><strong>最大值 <code>max</code></strong></p>
+</blockquote>
+<p>取两个对象的较大值。</p>
+<blockquote>
+<p><strong>最小值 <code>min</code></strong></p>
+</blockquote>
+<p>取两个对象的最小值。</p>
+<blockquote>
+<p><strong>找出不匹配的点 <code>mismatch</code></strong></p>
+</blockquote>
+<p>用来平行比较两个序列，指出两者之间的第一个不匹配点。</p>
+<blockquote>
+<p><strong>交换 <code>swap</code></strong></p>
+</blockquote>
+<p>该函数用来交换两个对象的内容。</p>
+<blockquote>
+<p><strong>复制 <code>copy</code></strong></p>
+</blockquote>
+<p><code>copy</code> 算法可将输入区间 <code>[first, last)</code> 内的元素复制到输出区间 <code>[result, result + (last-first))</code> 内。</p>
+<blockquote>
+<p><strong>逆向复制 <code>copy_backward</code></strong></p>
+</blockquote>
+<p>将 <code>[first, last)</code> 区间内的每一个元素，以逆行的方向复制到以 <code>result-1</code> 为起点，方向亦为逆行的区间上。</p>
+<h5 id="（3）set-相关算法"><a href="#（3）set-相关算法" class="headerlink" title="（3）set 相关算法"></a>（3）set 相关算法</h5><ul>
+<li>并集 <code>set_union</code></li>
+</ul>
+<p>算法 <code>set_union</code> 可构造 S1、S2 之并集(S1 U S2)，此集合内含 S1 或 S2 内的每一个元素。其中 S1、S2 及其并集都是以排序区间表示。</p>
+<ul>
+<li>交集 <code>set_intersection</code></li>
+</ul>
+<p>算法 <code>set_intersection</code> 可构造 S1、S2 之交集。</p>
+<ul>
+<li>差集 <code>set_difference</code></li>
+</ul>
+<p>算法 <code>set_difference</code> 可构造 S1、S2 之差集。此集合内含出现于 S1 但不出现于 S2 的每一个元素。</p>
+<ul>
+<li>对称差集 <code>set_symmetric_difference</code></li>
+</ul>
+<p>算法 <code>set_symmetric_difference</code> 可构造 S1、S2 之对称差集。此集合内容<code>出现于 S1 但不出现于 S2</code> 以及 <code>出现于 S2 但不出现 S1</code> 的每一个元素。</p>
+<h5 id="（4）heap-算法"><a href="#（4）heap-算法" class="headerlink" title="（4）heap 算法"></a>（4）heap 算法</h5><p>头文件 &lt;stl_heap.h&gt;</p>
+<ul>
+<li>make_heap() 建堆</li>
+<li>pop_heap() 从堆中取出一个元素</li>
+<li>push_heap() 将一个元素推进堆内</li>
+<li>sort_heap() 对堆排序</li>
+</ul>
+<h5 id="（5）-其它算法-lt-stl-algo-h-gt"><a href="#（5）-其它算法-lt-stl-algo-h-gt" class="headerlink" title="（5） 其它算法 &lt;stl_algo.h&gt;"></a>（5） 其它算法 &lt;stl_algo.h&gt;</h5><p>定义于 SGI &lt;stl_algo.h&gt; 内的所有算法。</p>
+<blockquote>
+<p><strong>查找相邻而重复的元素 <code>adjacent_find</code></strong></p>
+</blockquote>
+<p>对一个序列，查找相邻元素值相等的第一个元素。</p>
+<blockquote>
+<p><strong>计数 <code>count</code></strong> </p>
+</blockquote>
+<p>将 <code>[first, last)</code> 区间内的每一个元素拿来和指定值 <code>value</code> 比较，并返回与 <code>value</code> 相等的元素个数。</p>
+<blockquote>
+<p><strong>在特定条件下计数 <code>count_if</code></strong></p>
+</blockquote>
+<p>将指定操作(一个仿函数) pred 实施于 <code>[first, last)</code> 区间内的每一个元素身上，并将造成 pred 计算结果为 true 的所有元素的个数返回。</p>
+<blockquote>
+<p><strong>循环查找 <code>find</code></strong></p>
+</blockquote>
+<p>循环查找 <code>[first, last)</code> 内的所有元素，找出第一个匹配条件的，返回指向该元素的迭代器。</p>
+<blockquote>
+<p><strong>在特定条件下循环查找 <code>find_if</code></strong></p>
+</blockquote>
+<p>根据指定的 pred 运算条件，循环查找 <code>[first, last)</code> 内的所有元素，找出第一个令 pred 运算结果为 true，返回指向该元素的迭代器。</p>
+<blockquote>
+<p><strong>查找某个子序列的最后一次出现点 <code>find_end</code></strong></p>
+</blockquote>
+<p>在序列一 <code>[first, last)</code> 所涵盖的区间中，查找序列二 <code>[first, last)</code> 的最后一个出现点。</p>
+<blockquote>
+<p><strong>查找某些元素的第一次出现点 <code>find_first_of</code></strong></p>
+</blockquote>
+<p>本算法以 <code>[first2, last2)</code> 区间内的某些元素作为查找目标，寻找在 <code>[first1, last1)</code> 区间内的第一次出现地点。</p>
+<blockquote>
+<p><strong>对区间内的每一个元素进行某操作 <code>for_each</code></strong></p>
+</blockquote>
+<p>将仿函数 f 作用于 <code>[first, last)</code> 区间内的每一个元素上。</p>
+<blockquote>
+<p><strong>以特定操作之运算结果填充特定区间内的元素 <code>generate</code></strong></p>
+</blockquote>
+<p>将仿函数 gen 的运算结果赋值给 <code>[first, last)</code> 区间内的所有元素上。 </p>
+<blockquote>
+<p><strong>以特定操作之运算结果填充 n 个元素内容 <code>generate_n</code></strong></p>
+</blockquote>
+<p>将仿函数 gen 的运算结果填写在从迭代器 first 开发的 n 个元素身上。</p>
+<blockquote>
+<p><strong>应用于有序区间 <code>includes</code></strong></p>
+</blockquote>
+<p>S1 和 S2 必须是有序集合，其中的元素可以重复，判断 S1 是否包含于 S2。includes 算法可供用户选择采用 less 或 greater 进行两元素的大小比较。</p>
+<blockquote>
+<p><strong>最大值所在位置 <code>max_element</code></strong></p>
+</blockquote>
+<p>这个算法返回一个迭代器，指向序列之中数值最大的元素。</p>
+<blockquote>
+<p><strong>应用于有序区间的合并操作 <code>merge</code></strong></p>
+</blockquote>
+<p>将两个经过排序的集合 S1 和 S2，合并起来置于另一段空间。所得结果也是一个有序序列。</p>
+<blockquote>
+<p><strong>最小值所在位置 <code>min_element</code></strong></p>
+</blockquote>
+<p>这个算法返回一个迭代器，指向序列之中数值最小的元素。</p>
+<blockquote>
+<p><strong>分割 <code>partition</code></strong></p>
+</blockquote>
+<p><code>partition</code> 将区间 <code>[first, last)</code> 中的元素重新排列。所有被一元条件运算 <code>pred</code> 判定为 true 的元素，都会被放在区间的前段，被判定为 false 的元素，都会被放在区间的后段。</p>
+<p>如果需要保留原始相对位置，应使用 <code>stable_partition</code>。</p>
+<blockquote>
+<p><strong>移除并不删除 <code>remove</code></strong></p>
+</blockquote>
+<p>移除 <code>[first, last)</code> 之中所有与 value 相等的元素，这一算法并不真正从容器中删除那些元素，而是将每一个不与 value 相等的元素轮番赋值给 first 之后的空间。</p>
+<blockquote>
+<p><strong>移除某类元素并将结果复制到另一容器 <code>remove_copy</code></strong></p>
+</blockquote>
+<p>移除 <code>[first, last)</code> 之中所有与 value 相等的元素。它并不真正从容器中删除那些元素，而是将结果复制到一个以 result 标示起始位置的容器身上。</p>
+<blockquote>
+<p><strong>有条件地删除某类元素 <code>remove_if</code></strong></p>
+</blockquote>
+<p>移除 <code>[first, last)</code> 区间内所有被仿函数 pred 认定为 true 的元素，每一个不符合 pred 条件的元素都会被轮番赋值给 first 之后的空间。</p>
+<blockquote>
+<p><strong>有条件地删除某类元素并将结果复制到另一容器 <code>remove_copy_if</code></strong></p>
+</blockquote>
+<p>移除 <code>[first, last)</code> 区间内所有被仿函数 pred 认定为 true 的元素，它并不真正从容器中删除那些元素，而是将结果复制到一个以 result 标示起始位置的容器身上。</p>
+<blockquote>
+<p><strong>替换某类元素 <code>replace</code></strong></p>
+</blockquote>
+<p>将 <code>[first, last)</code> 区间内的所有 old_value 都以 new_value 取代。</p>
+<blockquote>
+<p><strong>替换某类元素，并将结果复制到另一个容器 <code>repalce_copy</code></strong></p>
+</blockquote>
+<p>唯一不同的是新序列会被复制到 result 所指的容器中。</p>
+<blockquote>
+<p><strong>有条件地替换 <code>replace_if</code></strong></p>
+</blockquote>
+<p>将 <code>[first, last)</code> 区间内的所有被 pred 评估为 true 的元素，都以 new_value 取而代之。</p>
+<blockquote>
+<p><strong>有条件地替换，并将结果复制到另一个容器 <code>replace_copy_if</code></strong></p>
+</blockquote>
+<p>行为与 <code>replace_if()</code> 类似，新序列会被复制到 result 所指的区间内。</p>
+<blockquote>
+<p><strong>反转元素次序 <code>reverse</code></strong></p>
+</blockquote>
+<p>将序列 <code>[first, last)</code> 的元素在原容器中颠倒重排。</p>
+<blockquote>
+<p><strong>反转元素次序并将结果复制到另一个容器 <code>reverse_copy</code></strong></p>
+</blockquote>
+<p>行为与 <code>reverse()</code> 类似，新序列会被复制到 result 所指的容器中。</p>
+<blockquote>
+<p><strong>旋转 <code>rotate</code></strong></p>
+</blockquote>
+<p>将 <code>[first, middle)</code> 内的元素和 <code>[middle, last)</code> 内的元素互换，middle 所指的元素会成为容器的第一个元素。</p>
+<blockquote>
+<p><strong>旋转，并将结果复制到另一个容器 <code>rotate_copy</code></strong></p>
+</blockquote>
+<p>行为与 <code>rotate_copy()</code> 类似，新序列会被复制到 result 所指的容器中。</p>
+<blockquote>
+<p><strong>查找某个子序列 <code>search</code></strong></p>
+</blockquote>
+<p>在序列一 <code>[first1, last1)</code> 所涵盖的区间中，查找序列二 <code>[first2, last2)</code> 的首次出现点。</p>
+<blockquote>
+<p><strong>查找连续发生 n 次的子序列 <code>search_n</code></strong></p>
+</blockquote>
+<p>在序列 <code>[first, last)</code> 所涵盖的区间中，查找连续 count 个符合条件之元素所形成的子序列，并返回一个迭代器指向该子序列起始处。</p>
+<blockquote>
+<p><strong>指定区间交换 <code>swap_ranges</code></strong></p>
+</blockquote>
+<p>将 <code>[first1, last1)</code> 区间内的元素与从 first2 开始、个数相同的元素互相交换。这两个序列可位于同一容器中，也可位于不同的容器中。</p>
+<blockquote>
+<p><strong>以两个序列为基础，交互作用产生第三个序列 <code>transform</code></strong></p>
+</blockquote>
+<p>transform() 两个版本都执行结果放进迭代器 result 所标示的容器中。</p>
+<blockquote>
+<p><strong>将重复的元素删除，只保留一个 <code>unique</code></strong></p>
+</blockquote>
+<p>算法 unique 能够移除重复的元素。每当在 <code>[first, last)</code> 内遇到重复元素群，它便移除该元素群中第一个以后的所有元素。</p>
+<blockquote>
+<p><strong>将重复的元素删除，只保留一个， 并复制 result 中<code>unique_copy</code></strong></p>
+</blockquote>
+<p>算法 unique_copy 可从 <code>[first, last)</code> 中将元素复制到以 result 开头的区间上。</p>
+<blockquote>
+<p><strong>lower_bound (应用于有序区间)</strong></p>
+</blockquote>
+<p>二分查找，在已排序的 <code>[first, last)</code> 中的寻找元素 value，返回位置。</p>
+<blockquote>
+<p><strong>upper_bound (应用于有序空间)</strong></p>
+</blockquote>
+<p>二分查找，在已排序的 <code>[first, last)</code> 中的寻找元素 value，与 <code>lower_bound</code> 区别是返回查找值的位置。</p>
+<blockquote>
+<p><strong>二分查找 <code>binary_search (应用于有序空间)</code></strong></p>
+</blockquote>
+<p>二分查找法，在已排序的 <code>[first, last)</code> 中的寻找元素 value，查找到，返回 true，否则 false。</p>
+<blockquote>
+<p><strong>求下一个排列组合 <code>next_permutation</code></strong></p>
+</blockquote>
+<p><code>next_permutation()</code> 获取 <code>[first, last)</code> 所标示之序列的下一个排列组合。</p>
+<p>实现原理：</p>
+<p>在当前序列中，从尾端往前寻找两个相邻元素，前一个记为 <code>*i</code>，后一个记为 <code>*ii</code>，并且满足 <code>*i &lt; *ii</code>。然后再从尾端寻找另一个元素 <code>*j</code>，如果满足 <code>*i &lt; *j</code>，即将第 i 个元素与第 j 个元素对调，并将第 ii 个元素之后（包括ii）的所有元素颠倒排序，即求出下一个序列了。</p>
+<blockquote>
+<p><strong>求上一个排列组合 <code>prev_permutation</code></strong></p>
+</blockquote>
+<p><code>prev_permutation()</code> 获取 <code>[first, last)</code> 所标示之序列的上一个排列组合。</p>
+<p>实现原理：</p>
+<p>在当前序列中，从尾端往前寻找两个相邻元素，前一个记为 <code>*i</code>，后一个记为 <code>*ii</code>，并且满足 <code>*i &gt; *ii</code>。然后再从尾端寻找另一个元素 <code>*j</code>，如果满足 <code>*i &gt; *j</code>，即将第 i 个元素与第 j 个元素对调，并将第 ii 个元素之后（包括ii）的所有元素颠倒排序，即求出上一个序列了。</p>
+<blockquote>
+<p><strong>随机重排元素 <code>random-shuffle</code></strong></p>
+</blockquote>
+<p>这个算法将 <code>[first, last)</code> 的元素次序随机重排, 在 N！种可能的元素排列顺序中随机选出一种，此处 N 为 last-first。</p>
+<blockquote>
+<p><strong>局部排序 <code>partial_sort/partial_sort_copy</code></strong></p>
+</blockquote>
+<p>本算法接受一个 middle 迭代器(位于序列 <code>[first, last) 之内</code>)，然后重新安排 <code>[first, last)</code>，使序列中的 middle-first 个最小元素以递增顺序排序，置于 <code>[first, middle)</code>内。其余 <code>last-middle</code> 个元素安置于 <code>[middle, last)</code> 中，不保证有任何特定顺序。</p>
+<blockquote>
+<p><strong>排序算法 sort</strong></p>
+</blockquote>
+<p>STL 的 sort 算法，数据量大时采用 Quick Sort，分段递归排序，当数据量小于某个门槛(5-20)，就改用 Insertion Sort。</p>
+<p><strong>Insertion Sort</strong></p>
+<p>插入排序是以双层循环的形式进行。时间复杂度为 O(N^2)。</p>
+<p>将一个记录插入到已排序好的有序表中，从而得到一个新，记录数增1的有序表。即：先将序列的第1个记录看成是一个有序的子序列，然后从第2个记录逐个进行插入，直至整个序列有序为止。</p>
+<p><strong>Quick Sort</strong></p>
+<p>平均时间复杂度为 O(NlogN)，最坏情况下将达 O(N^2)。</p>
+<p>STL 早期采用 Quick Sort，现在 SGI STL 改用 IntroSort(极类似 median-of-three QuickSort 的一种排序算法)。</p>
+<p>递归</p>
+<p>Median-of-Three(三点中值) 中间值</p>
+<p>Partitioning 分割</p>
+<p><strong>SGI STL sort</strong></p>
+<p>混合式排序算法，Introspective Sorting，当做 Partitioning 操作，有恶化为二次行为的倾向时，改用 Heap Sort，使其效率维持在 Heap Sort 的 O(NlogN)。</p>
+<p>用 __lg() 控制分割恶化的情况：</p>
+<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">// 找出 2^k &lt;= n 的最大值 k</span>
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">size</span><span class="token operator">></span>
+<span class="token keyword">inline</span> Size <span class="token function">__lg</span><span class="token punctuation">(</span>Size n<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Size k<span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>k <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> n <span class="token operator">></span> <span class="token number">1</span><span class="token punctuation">;</span> n <span class="token operator">>>=</span> <span class="token number">1</span><span class="token punctuation">)</span>
+        <span class="token operator">++</span>k<span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> k<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>最多允许分割 2k 层；</p>
+<p>混合式排序思想：</p>
+<ul>
+<li>先判断序列大小，当大于阈值 <code>__stl_threshold(16)</code>，再检查分割层次，如果分割层次超过指定值 0，就改用 Heap Sort完成；</li>
+<li>在大于阈值 <code>__stl_threshold(16)</code>，分割层次不为 0，就继续使用 Quick Sort；</li>
+<li>如果小于阈值，则用插入排序；</li>
+</ul>
+<blockquote>
+<p><strong>equal_range(应用于有序区间)</strong></p>
+</blockquote>
+<p>算法 <code>equal_range</code> 是二分查找法的一个版本，试图在已排序的 <code>[first, last)</code> 中寻找 value。</p>
+<p>返回一个上下区间。</p>
+<blockquote>
+<p><strong>inplace_merge(应用于有序区间)</strong></p>
+</blockquote>
+<p>合并 并且 就地排序</p>
+<blockquote>
+<p><strong>nth_element</strong></p>
+</blockquote>
+<p>使第 n 大元素处于第 n 位置（从0开始,其位置是下标为 n的元素），并且比这个元素小的元素都排在这个元素之前，比这个元素大的元素都排在这个元素之后，但不能保证他们是有序的。</p>
+<blockquote>
+<p><strong>归并排序 merge sort</strong></p>
+</blockquote>
+<p>Merge Sort 的复杂度为 O(NlogN)。需要借用额外的内存。底层是调用 <code>inplace_merge</code> 实现。</p>
+<h4 id="7-1-5-仿函数-函数对象-functor-function-object"><a href="#7-1-5-仿函数-函数对象-functor-function-object" class="headerlink" title="7.1.5 仿函数/函数对象(functor/function object)"></a>7.1.5 仿函数/函数对象(functor/function object)</h4><p>仿函数/函数对象：行为类似函数，可作为算法的某种策略，从实现的角度来看，仿函数是一种重载了 operator() 的 class 或 class template。</p>
+<p>STL 仿函数应该有能力被函数配接器(function adapter)修饰，为了拥有配接能力，每一个仿函数必须定义自己的相应类型。</p>
+<p><img src="https://github.com/steveLauwh/SGI-STL/raw/master/The%20Annotated%20STL%20Sources%20V3.3/Other/functionobject.png" alt></p>
+<h5 id="（1）以操作数的个数划分，可分为一元和二元仿函数"><a href="#（1）以操作数的个数划分，可分为一元和二元仿函数" class="headerlink" title="（1）以操作数的个数划分，可分为一元和二元仿函数"></a>（1）以操作数的个数划分，可分为一元和二元仿函数</h5><ul>
+<li><code>unary_function</code></li>
+</ul>
+<p><code>unary_function</code> 用来呈现一元函数的参数类型和返回值类型。</p>
+<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">// 一元函数的参数类型和返回值类型</span>
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">_Arg</span><span class="token punctuation">,</span> <span class="token keyword">class</span> <span class="token class-name">_Result</span><span class="token operator">></span>
+<span class="token keyword">struct</span> unary_function <span class="token punctuation">{</span>
+  <span class="token keyword">typedef</span> _Arg argument_type<span class="token punctuation">;</span>
+  <span class="token keyword">typedef</span> _Result result_type<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><code>binary_function</code></li>
+</ul>
+<p><code>binary_function</code> 用来呈现二元函数的第一参数类型、第二参数类型，以及返回值类型。</p>
+<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">// 二元函数的第一个参数类型和第二个参数类型，以及返回值类型</span>
+<span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">_Arg1</span><span class="token punctuation">,</span> <span class="token keyword">class</span> <span class="token class-name">_Arg2</span><span class="token punctuation">,</span> <span class="token keyword">class</span> <span class="token class-name">_Result</span><span class="token operator">></span>
+<span class="token keyword">struct</span> binary_function <span class="token punctuation">{</span>
+  <span class="token keyword">typedef</span> _Arg1 first_argument_type<span class="token punctuation">;</span>
+  <span class="token keyword">typedef</span> _Arg2 second_argument_type<span class="token punctuation">;</span>
+  <span class="token keyword">typedef</span> _Result result_type<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="（2）功能划分"><a href="#（2）功能划分" class="headerlink" title="（2）功能划分"></a>（2）功能划分</h5><blockquote>
+<p>算法类(Arithmetic)仿函数</p>
+</blockquote>
+<p>STL 内建的 “算术类仿函数”，支持加法、减法、乘法、除法、模数和求反运算符。</p>
+<blockquote>
+<p>关系运算类(Relational)仿函数</p>
+</blockquote>
+<p>STL 内建的 “关系运算类仿函数” 支持等于、不等于、大于、大于等于、小于、小于等于六种运算。</p>
+<blockquote>
+<p>逻辑运算类(Logical)仿函数</p>
+</blockquote>
+<p>STL 内建的 “逻辑运算类仿函数” 支持了逻辑运算种的 And、Or、Not 三种运算。</p>
+<blockquote>
+<p>identity、select、project</p>
+</blockquote>
+<p>将其参数原封不动地传回。为了间接性——间接性是抽象化的重要工具。</p>
+<h4 id="7-1-6-适配器-adapter"><a href="#7-1-6-适配器-adapter" class="headerlink" title="7.1.6 适配器(adapter)"></a>7.1.6 适配器(adapter)</h4><p>适配器：一种用来修饰容器、仿函数或迭代器接口的东西。例如，STL 提供的 queue 和 stack，虽然看似容器，其实只能算是一种容器适配器，因为它们的底部完全借助 deque，所有操作都由底层的 deque 供应。改变 functor 接口者，称为 function adapter等。</p>
+<p>适配器(adapter) 在 STL 组件的灵活组合运用功能上，扮演者转换器的角色。</p>
+<p><img src="https://github.com/steveLauwh/SGI-STL/raw/master/The%20Annotated%20STL%20Sources%20V3.3/Other/adapter.PNG" alt></p>
+<h5 id="（1）应用于容器，container-adapter"><a href="#（1）应用于容器，container-adapter" class="headerlink" title="（1）应用于容器，container adapter"></a>（1）应用于容器，container adapter</h5><p>STL 提供的两个容器 queue 和 stack，它们修饰 deque 的接口而形成的。</p>
+<h5 id="（2）应用于迭代器，iterator-adapter"><a href="#（2）应用于迭代器，iterator-adapter" class="headerlink" title="（2）应用于迭代器，iterator adapter"></a>（2）应用于迭代器，iterator adapter</h5><p>STL 提供了许多应用于迭代器的适配器。</p>
+<blockquote>
+<p>insert iterator</p>
+</blockquote>
+<p>插入迭代器内部都维护有一个容器，容器当然有自己的迭代器，当客户端对插入迭代器做赋值操作时，就在插入迭代器中被转为对该容器的迭代器做插入操作。</p>
+<p><code>back_insert_iterator</code></p>
+<p>用于在容器尾部插入的迭代器适配器。</p>
+<p><code>front_insert_iterator</code></p>
+<p>用于在容器头部插入的迭代器适配器。</p>
+<blockquote>
+<p>reverse iterator</p>
+</blockquote>
+<p>将迭代器的移动行为倒转。以尾到头的方向来处理序列中的元素。</p>
+<blockquote>
+<p>stream iterator</p>
+</blockquote>
+<p>将迭代器绑定到一个 stream 对象身上，绑定到 istream 对象为 istream_iterator，拥有输入能力。</p>
+<p>绑定到 ostream 对象为 ostream_iterator，拥有输出能力。</p>
+<h5 id="（3）应用于仿函数，function-adapter"><a href="#（3）应用于仿函数，function-adapter" class="headerlink" title="（3）应用于仿函数，function adapter"></a>（3）应用于仿函数，function adapter</h5><blockquote>
+<p>对返回值进行逻辑否定：not1, not2</p>
+</blockquote>
+<blockquote>
+<p>对参数进行绑定：bind1st, bind2nd</p>
+</blockquote>
+<blockquote>
+<p>用于函数合成：compose1, compose2</p>
+</blockquote>
+<blockquote>
+<p>用于函数指针：ptr_fun</p>
+</blockquote>
+<blockquote>
+<p>用于成员函数指针：mem_fun, mem_fun_ref</p>
+</blockquote>
+<h3 id="7-2-问题"><a href="#7-2-问题" class="headerlink" title="7.2 问题"></a>7.2 问题</h3><h4 id="7-2-1-请你来说一下map和set有什么区别，分别又是怎么实现的？"><a href="#7-2-1-请你来说一下map和set有什么区别，分别又是怎么实现的？" class="headerlink" title="7.2.1 请你来说一下map和set有什么区别，分别又是怎么实现的？"></a>7.2.1 请你来说一下map和set有什么区别，分别又是怎么实现的？</h4><p>map和set都是C++的关联容器，其底层实现都是红黑树（RB-Tree）。由于 map 和set所开放的各种操作接口，RB-tree 也都提供了，所以几乎所有的 map 和set的操作行为，都只是转调 RB-tree 的操作行为。</p>
+<p>map和set区别在于：</p>
+<p>（1）<strong>map中的元素是key-value（关键字—值）对</strong>：关键字起到索引的作用，值则表示与索引相关联的数据；<strong>Set与之相对就是关键字的简单集合</strong>，set中每个元素只包含一个关键字。</p>
+<p>（2）<strong>set的迭代器是const的，不允许修改元素的值；map允许修改value，但不允许修改key。</strong>其原因是因为map和set是根据关键字排序来保证其有序性的，如果允许修改key的话，那么首先需要删除该键，然后调节平衡，再插入修改后的键值，调节平衡，如此一来，严重破坏了map和set的结构，导致iterator失效，不知道应该指向改变前的位置，还是指向改变后的位置。所以STL中将set的迭代器设置成const，不允许修改迭代器的值；而map的迭代器则不允许修改key值，允许修改value值。</p>
+<p>（3）<strong>map支持下标操作，set不支持下标操作。</strong>map可以用key做下标，map的下标运算符[ ]将关键码作为下标去执行查找，如果关键码不存在，则插入一个具有该关键码和mapped_type类型默认值的元素至map中，因此下标运算符[ ]在map应用中需要慎用，const_map不能用，只希望确定某一个关键值是否存在而不希望插入元素时也不应该使用，mapped_type类型没有默认值也不应该使用。如果find能解决需要，尽可能用find。</p>
+<h4 id="7-2-2-请你来说一说STL迭代器删除元素"><a href="#7-2-2-请你来说一说STL迭代器删除元素" class="headerlink" title="7.2.2 请你来说一说STL迭代器删除元素"></a>7.2.2 请你来说一说STL迭代器删除元素</h4><blockquote>
+<p>（1）对于关联容器（如map，set，multimap，multiset），删除当前的iterator，仅仅会使当前的iterator失效，只要在erase时，递增当前的iterator即可。这是因为map之类的容器，使用了红黑树来实现，插入，删除一个结点不会对其他结点造成影响。使用方式如下例子：</p>
+<pre class="line-numbers language-c++"><code class="language-c++">set<int> valset = { 1,2,3,4,5,6 };
+set<int>::iterator iter;
+for (iter = valset.begin(); iter != valset.end(); ){
+  if (3 == *iter)
+       valset.erase(iter++);
+  else
+       ++iter;
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>因为传给erase的是iter的一个副本，iter++是下一个有效的迭代器。</p>
+<p>（2）对于序列式容器（如vector，deque，list等），删除当前的iterator会使后面所有元素的iterator都失效。这是因为vector，deque使用了连续分配的内存，删除一个元素导致后面所有的元素会向前移动一个位置。不过erase方法可以返回下一个有效的iterator。使用方式如下,例如：</p>
+<pre class="line-numbers language-c++"><code class="language-c++">vector<int> val = { 1,2,3,4,5,6 };
+vector<int>::iterator iter;
+for (iter = val.begin(); iter != val.end(); ){
+  if (3 == *iter)
+       iter = val.erase(iter);     //返回下一个有效的迭代器，无需+1
+  else
+       ++iter;
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>（2）对于list来说，它使用了不连续分配的内存，并且它的erase方法也会返回下一个有效的iterator，因此上面两种正确的方法都可以使用。</p>
+</blockquote>
+<h4 id="7-2-3-请你讲讲STL有什么基本组成"><a href="#7-2-3-请你讲讲STL有什么基本组成" class="headerlink" title="7.2.3 请你讲讲STL有什么基本组成"></a>7.2.3 请你讲讲STL有什么基本组成</h4><blockquote>
+<p>容器、迭代器、仿函数、算法、分配器、配接器<br>他们之间的关系：分配器给容器分配存储空间，算法通过迭代器获取容器中的内容，仿函数可以协助算法完成各种操作，配接器用来套接适配仿函数</p>
+</blockquote>
+<h4 id="7-2-4-请你说说STL中map与unordered-map"><a href="#7-2-4-请你说说STL中map与unordered-map" class="headerlink" title="7.2.4 请你说说STL中map与unordered_map"></a>7.2.4 请你说说STL中map与unordered_map</h4><p>（1）map</p>
+<blockquote>
+<p>Map映射，map 的所有元素都是 pair，同时拥有实值（value）和键值（key）。pair 的第一元素被视为键值，第二元素被视为实值。所有元素都会根据元素的键值自动被排序。不允许键值重复。</p>
+<p>底层实现：红黑树</p>
+<p>适用场景：有序键值对不重复映射</p>
+</blockquote>
+<p>（2）Multimap</p>
+<blockquote>
+<p>多重映射。multimap 的所有元素都是 pair，同时拥有实值（value）和键值（key）。pair 的第一元素被视为键值，第二元素被视为实值。所有元素都会根据元素的键值自动被排序。允许键值重复。</p>
+<p>底层实现：红黑树</p>
+<p>适用场景：有序键值对可重复映射</p>
+</blockquote>
+<h4 id="7-2-5-请你说一说vector和list的区别，应用，越详细越好"><a href="#7-2-5-请你说一说vector和list的区别，应用，越详细越好" class="headerlink" title="7.2.5 请你说一说vector和list的区别，应用，越详细越好"></a>7.2.5 请你说一说vector和list的区别，应用，越详细越好</h4><p>1、概念：</p>
+<blockquote>
+<p>1）Vector</p>
+<ul>
+<li>连续存储的容器，动态数组，在堆上分配空间</li>
+<li>底层实现：数组</li>
+<li>两倍容量增长：vector 增加（插入）新元素时，如果未超过当时的容量，则还有剩余空间，那么直接添加到最后（插入指定位置），然后调整迭代器。如果没有剩余空间了，则会重新配置原有元素个数的两倍空间，然后将原空间元素通过复制的方式初始化新空间，再向新空间增加元素，最后析构并释放原空间，之前的迭代器会失效。</li>
+<li>性能：</li>
+<li>访问：O(1)</li>
+<li>插入：在最后插入（空间够）：很快</li>
+<li>在最后插入（空间不够）：需要内存申请和释放，以及对之前数据进行拷贝。</li>
+<li>在中间插入（空间够）：内存拷贝</li>
+<li>在中间插入（空间不够）：需要内存申请和释放，以及对之前数据进行拷贝。</li>
+<li>删除：在最后删除：很快</li>
+<li>在中间删除：内存拷贝</li>
+<li>适用场景：经常随机访问，且不经常对非尾节点进行插入删除。</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>2) List</p>
+<ul>
+<li>动态链表，在堆上分配空间，每插入一个元数都会分配空间，每删除一个元素都会释放空间。</li>
+<li>底层：双向链表</li>
+<li>性能：</li>
+<li>访问：随机访问性能很差，只能快速访问头尾节点。</li>
+<li>插入：很快，一般是常数开销</li>
+<li>删除：很快，一般是常数开销</li>
+<li>适用场景：经常插入删除大量数据</li>
+</ul>
+</blockquote>
+<p>2、区别：</p>
+<blockquote>
+<ul>
+<li>vector底层实现是数组；list是双向 链表。</li>
+<li>vector支持随机访问，list不支持。</li>
+<li>vector是顺序内存，list不是。</li>
+<li>vector在中间节点进行插入删除会导致内存拷贝，list不会。</li>
+<li>vector一次性分配好内存，不够时才进行2倍扩容；list每次插入新节点都会进行内存申请。</li>
+<li>vector随机访问性能好，插入删除性能差；list随机访问性能差，插入删除性能好。</li>
+</ul>
+</blockquote>
+<p>3、应用</p>
+<blockquote>
+<ul>
+<li>vector拥有一段连续的内存空间，因此支持随机访问，如果需要高效的随即访问，而不在乎插入和删除的效率，使用vector。</li>
+<li>list拥有一段不连续的内存空间，如果需要高效的插入和删除，而不关心随机访问，则应使用list。</li>
+</ul>
+</blockquote>
+<h4 id="7-2-6-请你来说一下STL中迭代器的作用，有指针为何还要迭代器"><a href="#7-2-6-请你来说一下STL中迭代器的作用，有指针为何还要迭代器" class="headerlink" title="7.2.6 请你来说一下STL中迭代器的作用，有指针为何还要迭代器"></a>7.2.6 请你来说一下STL中迭代器的作用，有指针为何还要迭代器</h4><p>1、迭代器</p>
+<blockquote>
+<p>Iterator（迭代器）模式又称Cursor（游标）模式，用于提供一种方法顺序访问一个聚合对象中各个元素, 而又不需暴露该对象的内部表示。或者这样说可能更容易理解：Iterator模式是运用于聚合对象的一种模式，通过运用该模式，使得我们可以在不知道对象内部表示的情况下，按照一定顺序（由iterator提供的方法）访问聚合对象中的各个元素。</p>
+<p>由于Iterator模式的以上特性：与聚合对象耦合，在一定程度上限制了它的广泛运用，一般仅用于底层聚合支持类，如STL的list、vector、stack等容器类及ostream_iterator等扩展iterator。</p>
+</blockquote>
+<p>2、迭代器和指针的区别</p>
+<blockquote>
+<p>迭代器不是指针，是类模板，表现的像指针。他只是模拟了指针的一些功能，通过重载了指针的一些操作符，-&gt;、<em>、++、–等。迭代器封装了指针，是一个“可遍历STL（ Standard Template Library）容器内全部或部分元素”的对象， 本质是封装了原生指针，是指针概念的一种提升（lift），提供了比指针更高级的行为，相当于一种智能指针，他可以根据不同类型的数据结构来实现不同的++，–等操作。</em></p>
+<p>迭代器返回的是对象引用而不是对象的值，所以cout只能输出迭代器使用*取值后的值而不能直接输出其自身。</p>
+</blockquote>
+<p>3、迭代器产生原因</p>
+<blockquote>
+<p>Iterator类的访问方式就是把不同集合类的访问逻辑抽象出来，使得不用暴露集合内部的结构而达到循环遍历集合的效果。</p>
+</blockquote>
+<h4 id="7-2-7-请你回答一下STL里resize和reserve的区别"><a href="#7-2-7-请你回答一下STL里resize和reserve的区别" class="headerlink" title="7.2.7 请你回答一下STL里resize和reserve的区别"></a>7.2.7 请你回答一下STL里resize和reserve的区别</h4><blockquote>
+<ul>
+<li>resize()：改变当前容器内含有元素的数量(size())，eg: vector<int>v; v.resize(len);v的size变为len,如果原来v的size小于len，那么容器新增（len-size）个元素，元素的值为默认为0.当v.push_back(3);之后，则是3是放在了v的末尾，即下标为len，此时容器是size为len+1</int></li>
+<li>reserve()：改变当前容器的最大容量（capacity）,它不会生成元素，只是确定这个容器允许放入多少对象，如果reserve(len)的值大于当前的capacity()，那么会重新分配一块能存len个对象的空间，然后把之前v.size()个对象通过copy construtor复制过来，销毁之前的内存；</li>
+</ul>
+</blockquote>
+<pre class="line-numbers language-c++"><code class="language-c++">#include <iostream>
+#include <vector>
+using namespace std;
+int main() {
+    vector<int> a;
+    a.reserve(100);
+    a.resize(50);
+    cout<<a.size()<<"  "<<a.capacity()<<endl;
+        //50  100
+    a.resize(150);
+    cout<<a.size()<<"  "<<a.capacity()<<endl;
+        //150  200
+    a.reserve(50);
+    cout<<a.size()<<"  "<<a.capacity()<<endl;
+        //150  200
+    a.resize(50);
+    cout<<a.size()<<"  "<<a.capacity()<<endl;
+        //50  200    
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="7-2-8-请你说一说C-STL-的内存优化"><a href="#7-2-8-请你说一说C-STL-的内存优化" class="headerlink" title="7.2.8 请你说一说C++ STL 的内存优化"></a>7.2.8 请你说一说C++ STL 的内存优化</h4><p>二级分配机制 第一级，大于128bytes时，直接调用malloc申请内存； 第二级，小于128bytes时，维护一个大小为16的链表数组组成的内存池，内存大小分别为8、16….128bytes。根据输入大小，向上取8的整数倍，在相应链表元素中寻找，若元素为空（说明被占用），则调用refill函数，申请最多20个内存块。</p>
+
+            </div>
+            <hr />
+
+            
+            <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.88rem;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-large waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fa fa-close"></i></a>
+            <h4 class="reward-title">写作不易，客官能否打赏一杯奶茶？</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《面试-C++》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/10/06/mian-shi-c/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                吴超峰
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+    <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: 'd71785aa5056a34a83a8',
+        clientSecret: '11f797c7924b4eda214973051526455de2da39d9',
+        repo: 'fengshentianxia.github.io',
+        owner: 'fengshentianxia',
+        admin: "fengshentianxia",
+        id: '2019/10/06/mian-shi-c/',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+    <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments input[type=text],
+    #vcomments input[type=email],
+    #vcomments input[type=url],
+    #vcomments textarea {
+        box-sizing: border-box;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #42b983;
+        font-weight: 500;
+        text-decoration: underline;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div id="vcomments" class="card-content"></div>
+</div>
+
+<script src="/libs/valine/av-min.js"></script>
+<script src="/libs/valine/Valine.min.js"></script>
+<!-- <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script> -->
+
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: '',
+        appKey: '',
+        notify: 'false' === 'true',
+        verify: 'false' === 'true',
+        visitor: 'false' === 'true',
+        avatar: 'wavatar',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: '如果你没有GitHub账号，还可以在这里评论啦！'
+    });
+</script>
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/10/06/mian-shi-ji-suan-ji-wang-luo/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="面试-计算机网络">
+                        
+                        <span class="card-title">面试-计算机网络</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            1. 网络模型1.1 OSI七层模型和TCP/IP四层模型
+（1）OSI 七层模型
+
+物理层：通过媒介传输比特,确定机械及电气规范,传输单位为bit。
+数据链路层：定义了如何让格式化数据以数据帧为单位进行传输，以及如何让控制对物理介质的访问
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-10-06
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/面试/" class="post-category" target="_blank">
+                                    面试
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/计算机网络/" target="_blank">
+                        <span class="chip bg-color">计算机网络</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/10/06/mian-shi-cao-zuo-xi-tong/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="面试-操作系统">
+                        
+                        <span class="card-title">面试-操作系统</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            进程管理1.进程
+1.1 进程与线程（1）进程与线程的概念
+
+进程是对运行时程序的封装，是系统进行资源调度和分配的的基本单位，实现了操作系统的并发；
+线程是进程的子任务，是CPU调度和分派的基本单位，用于保证程序的实时性，实现进程内部的并发
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-10-06
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/面试/" class="post-category" target="_blank">
+                                    面试
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/操作系统/" target="_blank">
+                        <span class="chip bg-color">操作系统</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: 吴超峰的博客<br />'
+            + '作者: 吴超峰<br />'
+            + '链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () { bodyElement.removeChild(newdiv); }, 200);
+    });
+</script>
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            &copy; 2019 chaofengwu. All Rights Reserved.
+
+            
+            &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+            <span class="white-color">106.3k</span>
+            
+
+            <br>
+            <span id="sitetime"></span>
+
+            
+            
+            <br>
+            
+            <span id="busuanzi_container_site_pv" style='display:none'>
+                <i class="fa fa-heart-o"></i>
+                本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv" style='display:none'>
+                人次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+            </span>
+            
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/fengshentianxia" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="https://user.qzone.qq.com/1339784341" class="tooltipped" target="_blank" data-tooltip="访问我的QQ空间" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+    $(document).ready(function () {
+
+        var int = setInterval(fixCount, 50);
+        var pvcountOffset = 0;
+        var uvcountOffset = 0;
+
+        function fixCount() {
+            if (document.getElementById("busuanzi_container_site_pv").style.display != "none") {
+                $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + pvcountOffset);
+                clearInterval(int);
+            }
+            if ($("#busuanzi_container_site_pv").css("display") != "none") {
+                $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + uvcountOffset); // 加上初始数据 
+                clearInterval(int);
+            }
+        }
+    });
+</script>
+
+<script language=javascript>
+    function siteTime() {
+        window.setTimeout("siteTime()", 1000);
+        var seconds = 1000;
+        var minutes = seconds * 60;
+        var hours = minutes * 60;
+        var days = hours * 24;
+        var years = days * 365;
+        var today = new Date();
+        var todayYear = today.getFullYear();
+        var todayMonth = today.getMonth() + 1;
+        var todayDate = today.getDate();
+        var todayHour = today.getHours();
+        var todayMinute = today.getMinutes();
+        var todaySecond = today.getSeconds();
+        /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+        year - 作为date对象的年份，为4位年份值
+        month - 0-11之间的整数，做为date对象的月份
+        day - 1-31之间的整数，做为date对象的天数
+        hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+        minutes - 0-59之间的整数，做为date对象的分钟数
+        seconds - 0-59之间的整数，做为date对象的秒数
+        microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+        var t1 = Date.UTC(2019, 10, 6, 00, 00, 00); //北京时间2018-2-13 00:00:00
+        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+        var diff = t2 - t1;
+        var diffYears = Math.floor(diff / years);
+        var diffDays = Math.floor((diff / days) - diffYears * 365);
+        var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+        var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes);
+        var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes * minutes) / seconds);
+        document.getElementById("sitetime").innerHTML = "本站已运行 " + diffYears + " 年 " + diffDays + " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+</script>
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <script type="text/javascript"> var OriginTitile = document.title, st; document.addEventListener("visibilitychange", function () { document.hidden ? (document.title = "Σ(っ °Д °;)っ喔哟，崩溃啦！", clearTimeout(st)) : (document.title = "φ(゜▽゜*)♪咦，又好了！", st = setTimeout(function () { document.title = OriginTitile }, 3e3)) })
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', '');
+</script>
+
+
+
+    
+    <script src="/libs/others/clicklove.js"></script>
+    
+
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    <!-- 雪花特效 -->
+    
+
+</body>
+
+</html>

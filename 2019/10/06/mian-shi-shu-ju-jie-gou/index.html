@@ -1,0 +1,1831 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="面试-数据结构, 吴超峰的博客">
+    <meta name="baidu-site-verification" content>
+    <meta name="google-site-verification" content>
+    <meta name="360-site-verification" content>
+    <meta name="description" content="1. 绪论
+2. 线性表
+2.1 数组与链表（1）数组的特点：数组是将元素在内存中连续存放，由于每个元素占用内存相同，可以通过下标迅速访问数组中任何元素。数组的插入数据和删除数据效率低，插入数据时，这个位置后面的数据在内存中都要向后移。删除">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>面试-数据结构 | 吴超峰的博客</title>
+    <link rel="icon" type="image/jpeg" href="/logo.jpg">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?46e79e71af0709a5b9106bf20cecc493";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.jpg" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">吴超峰的博客</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/contact" class="waves-effect waves-light">
+            
+            <span>留言板</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.jpg" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">吴超峰的博客</div>
+        <div class="logo-desc">
+            
+            南京大学 | 计算机科学与技术系
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-link"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-link"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-link"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-link"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-link"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-link"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        <li>
+            <a href="/contact" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-link"></i>
+                
+                留言板
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/fengshentianxia" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/fengshentianxia" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        面试-数据结构
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                        <a href="/tags/数据结构/" target="_blank">
+                            <span class="chip bg-color">数据结构</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                        <a href="/categories/面试/" class="post-category" target="_blank">
+                            面试
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-10-06
+                </div>
+
+                <div class="post-author info-break-policy">
+                    <i class="fa fa-user-o fa-fw"></i>作者:&nbsp;&nbsp;
+                    
+                    吴超峰
+                    
+                </div>
+
+                
+                
+                <div class="info-break-policy">
+                    <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    8.7k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    31 分
+                </div>
+                
+                
+
+                
+                <div id="busuanzi_container_page_pv" class="info-break-policy">
+                    <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                    <span id="busuanzi_value_page_pv"></span>
+                </div>
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="1-绪论"><a href="#1-绪论" class="headerlink" title="1. 绪论"></a>1. 绪论</h2><p><img src="/2019/10/06/mian-shi-shu-ju-jie-gou/%E7%BB%AA%E8%AE%BA.jpg" alt="数据结构"></p>
+<h2 id="2-线性表"><a href="#2-线性表" class="headerlink" title="2. 线性表"></a>2. 线性表</h2><p><img src="/2019/10/06/mian-shi-shu-ju-jie-gou/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-1570360192307.jpg" alt="数据结构"></p>
+<h3 id="2-1-数组与链表"><a href="#2-1-数组与链表" class="headerlink" title="2.1 数组与链表"></a>2.1 数组与链表</h3><h4 id="（1）数组的特点："><a href="#（1）数组的特点：" class="headerlink" title="（1）数组的特点："></a>（1）数组的特点：</h4><p>数组是将元素在内存中连续存放，由于每个元素占用内存相同，可以通过下标迅速访问数组中任何元素。数组的插入数据和删除数据效率低，插入数据时，这个位置后面的数据在内存中都要向后移。删除数据时，这个数据后面的数据都要往前移动。但数组的随机读取效率很高。因为数组是连续的，知道每一个数据的内存地址，可以直接找到给地址的数据。如果应用需要快速访问数据，很少或不插入和删除元素，就应该用数组。数组需要预留空间，在使用前要先申请占内存的大小，可能会浪费内存空间。并且数组不利于扩展，数组定义的空间不够时要重新定义数组。</p>
+<p><strong>数组的优点：</strong></p>
+<blockquote>
+<ol>
+<li>随机访问性强</li>
+<li>查找速度快</li>
+</ol>
+</blockquote>
+<p><strong>数组的缺点:</strong></p>
+<blockquote>
+<ol>
+<li>插入和删除效率低</li>
+<li>可能浪费内存</li>
+<li>内存空间要求高，必须有足够的连续内存空间。</li>
+<li>数组大小固定，不能动态拓展</li>
+</ol>
+</blockquote>
+<h4 id="（2）链表的特点："><a href="#（2）链表的特点：" class="headerlink" title="（2）链表的特点："></a>（2）链表的特点：</h4><p>链表中的元素在内存中不是顺序存储的，而是通过存在元素中的指针联系到一起。比如：上一个元素有个指针指到下一个元素，以此类推，直到最后一个元素。如果要访问链表中一个元素，需要从第一个元素开始，一直找到需要的元素位置。但是增加和删除一个元素对于链表数据结构就非常简单了，只要修改元素中的指针就可以了。如果应用需要经常插入和删除元素你就需要用链表数据结构了。不指定大小，扩展方便。链表大小不用定义，数据随意增删。</p>
+<p><strong>链表的优点:</strong></p>
+<blockquote>
+<ol>
+<li>插入删除速度快</li>
+<li>内存利用率高，不会浪费内存</li>
+<li>大小没有固定，拓展很灵活。</li>
+</ol>
+</blockquote>
+<p><strong>链表的缺点:</strong></p>
+<blockquote>
+<ol>
+<li>不能随机查找，必须从第一个开始遍历，查找效率低</li>
+</ol>
+</blockquote>
+<h3 id="2-2-问题"><a href="#2-2-问题" class="headerlink" title="2.2 问题"></a>2.2 问题</h3><h4 id="（1）一个长度为N的整形数组，数组中每个元素的取值范围是-0-n-1-判断该数组否有重复的数，请说一下你的思路并手写代码"><a href="#（1）一个长度为N的整形数组，数组中每个元素的取值范围是-0-n-1-判断该数组否有重复的数，请说一下你的思路并手写代码" class="headerlink" title="（1）一个长度为N的整形数组，数组中每个元素的取值范围是[0,n-1],判断该数组否有重复的数，请说一下你的思路并手写代码"></a>（1）一个长度为N的整形数组，数组中每个元素的取值范围是[0,n-1],判断该数组否有重复的数，请说一下你的思路并手写代码</h4><p>把每个数放到自己对应序号的位置上，如果其他位置上有和自己对应序号相同的数，那么即为有重复的数值。时间复杂度为O(N),同时为了节省空间复杂度，可以在原数组上进行操作，空间复杂度为O(1)</p>
+<h4 id="（2）请你手写代码，如何合并两个有序链表"><a href="#（2）请你手写代码，如何合并两个有序链表" class="headerlink" title="（2）请你手写代码，如何合并两个有序链表"></a>（2）请你手写代码，如何<strong>合并两个有序链表</strong></h4><h4 id="（3）-手写代码：反转链表"><a href="#（3）-手写代码：反转链表" class="headerlink" title="（3） 手写代码：反转链表"></a>（3） 手写代码：反转链表</h4><h4 id="（4）-判断一个链表是否为回文链表，说出你的思路并手写代码"><a href="#（4）-判断一个链表是否为回文链表，说出你的思路并手写代码" class="headerlink" title="（4） 判断一个链表是否为回文链表，说出你的思路并手写代码"></a>（4） 判断一个链表是否为回文链表，说出你的思路并手写代码</h4><h4 id="（5）什么是单向链表，如何判断两个单向链表是否相交"><a href="#（5）什么是单向链表，如何判断两个单向链表是否相交" class="headerlink" title="（5）什么是单向链表，如何判断两个单向链表是否相交"></a>（5）什么是单向链表，如何判断两个单向链表是否相交</h4><h2 id="3-栈和队列"><a href="#3-栈和队列" class="headerlink" title="3. 栈和队列"></a>3. 栈和队列</h2><p><img src="/2019/10/06/mian-shi-shu-ju-jie-gou/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-1570360235018.jpg" alt="数据结构"></p>
+<h3 id="3-1-请你回答一下栈和堆的区别，以及为什么栈要快"><a href="#3-1-请你回答一下栈和堆的区别，以及为什么栈要快" class="headerlink" title="3.1 请你回答一下栈和堆的区别，以及为什么栈要快"></a>3.1 请你回答一下栈和堆的区别，以及为什么栈要快</h3><h4 id="（1）堆和栈的区别"><a href="#（1）堆和栈的区别" class="headerlink" title="（1）堆和栈的区别"></a>（1）堆和栈的区别</h4><blockquote>
+<p>1）申请方式：</p>
+<p>栈由系统自动分配和管理，堆由程序员手动分配和管理。</p>
+<p>2）效率：</p>
+<p>栈由系统分配，速度快，不会有内存碎片。</p>
+<p>堆由程序员分配，速度较慢，可能由于操作不当产生内存碎片。</p>
+<p>3）扩展方向</p>
+<p>栈从高地址向低地址进行扩展，堆由低地址向高地址进行扩展。</p>
+<p>4）程序局部变量是使用的栈空间，new/malloc动态申请的内存是堆空间，函数调用时会进行形参和返回值的压栈出栈，也是用的栈空间。</p>
+</blockquote>
+<h4 id="（2）栈的效率高的原因"><a href="#（2）栈的效率高的原因" class="headerlink" title="（2）栈的效率高的原因"></a>（2）栈的效率高的原因</h4><blockquote>
+<p>栈是操作系统提供的数据结构，计算机底层对栈提供了一系列支持：分配专门的寄存器存储栈的地址，压栈和入栈有专门的指令执行；</p>
+<p>而堆是由C/C++函数库提供的，机制复杂，需要一些列分配内存、合并内存和释放内存的算法，因此效率较低。</p>
+</blockquote>
+<h4 id="（3）-小根堆与大根堆"><a href="#（3）-小根堆与大根堆" class="headerlink" title="（3） 小根堆与大根堆"></a>（3） 小根堆与大根堆</h4><p>堆是一棵完全二叉树（如果一共有h层，那么1~h-1层均满，在h层可能会连续缺失若干个右叶子）。</p>
+<blockquote>
+<p><strong>1）小根堆</strong></p>
+<p>若根节点存在左子女则根节点的值小于左子女的值；若根节点存在右子女则根节点的值小于右子女的值。</p>
+<p><strong>2）大根堆</strong></p>
+<p>若根节点存在左子女则根节点的值大于左子女的值；若根节点存在右子女则根节点的值大于右子女的值。</p>
+</blockquote>
+<h3 id="3-2-问题"><a href="#3-2-问题" class="headerlink" title="3.2 问题"></a>3.2 问题</h3><h4 id="（1）请说一说你理解的stack-overflow，并举个简单例子导致栈溢出"><a href="#（1）请说一说你理解的stack-overflow，并举个简单例子导致栈溢出" class="headerlink" title="（1）请说一说你理解的stack overflow，并举个简单例子导致栈溢出"></a>（1）请说一说你理解的stack overflow，并举个简单例子导致栈溢出</h4><p><strong>栈溢出概念：</strong></p>
+<p>栈溢出指的是程序向栈中某个变量中写入的字节数超过了这个变量本身所申请的字节数，因而导致栈中与其相邻的变量的值被改变。</p>
+<p><strong>栈溢出的原因：</strong></p>
+<blockquote>
+<ol>
+<li>局部数组过大。当函数内部的数组过大时，有可能导致堆栈溢出。局部变量是存储在栈中的，因此这个很好理解。解决这类问题的办法有两个，一是增大栈空间,二是改用动态分配，使用堆（heap）而不是栈（stack）。</li>
+<li>递归调用层次太多。递归函数在运行时会执行压栈操作，当压栈次数太多时，也会导致堆栈溢出。</li>
+<li>指针或数组越界。这种情况最常见，例如进行字符串拷贝，或处理用户输入等等。</li>
+</ol>
+</blockquote>
+<p><strong>栈溢出例子：</strong></p>
+<pre class="line-numbers language-c++"><code class="language-c++">#include <stdio.h>
+#include <string.h>
+int main(int argc, char* argv[]) {
+    char buf[256];
+    strcpy(buf,argv[1]);
+    printf("Input:%s\n",buf);
+    return 0;
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上述代码中的strcpy(buf,argv[1]);这一行发生了缓冲区溢出错误，因为源缓冲区内容是用户输入的。</p>
+<h4 id="（2）手写代码：两个栈实现一个队列"><a href="#（2）手写代码：两个栈实现一个队列" class="headerlink" title="（2）手写代码：两个栈实现一个队列"></a>（2）手写代码：两个栈实现一个队列</h4><h2 id="4-树与二叉树"><a href="#4-树与二叉树" class="headerlink" title="4. 树与二叉树"></a>4. 树与二叉树</h2><p><img src="/2019/10/06/mian-shi-shu-ju-jie-gou/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-1570360260147.jpg" alt="数据结构"></p>
+<h3 id="4-1-平衡二叉树（AVL树）与红黑树"><a href="#4-1-平衡二叉树（AVL树）与红黑树" class="headerlink" title="4.1 平衡二叉树（AVL树）与红黑树"></a>4.1 平衡二叉树（AVL树）与红黑树</h3><blockquote>
+<h5 id="（1）平衡二叉树（AVL树）："><a href="#（1）平衡二叉树（AVL树）：" class="headerlink" title="（1）平衡二叉树（AVL树）："></a>（1）平衡二叉树（AVL树）：</h5><blockquote>
+<p>平衡二叉树又称为AVL树，是一种特殊的二叉排序树。其左右子树都是平衡二叉树，且左右子树高度之差的绝对值不超过1。一句话表述为：以树中所有结点为根的树的左右子树高度之差的绝对值不超过1。将二叉树上结点的左子树深度减去右子树深度的值称为平衡因子BF，那么平衡二叉树上的所有结点的平衡因子只可能是-1、0和1。只要二叉树上有一个结点的平衡因子的绝对值大于1，则该二叉树就是不平衡的。</p>
+</blockquote>
+<h5 id="（2）红黑树："><a href="#（2）红黑树：" class="headerlink" title="（2）红黑树："></a>（2）红黑树：</h5><p>红黑树是一种二叉查找树，但在每个节点增加一个存储位表示节点的颜色，可以是红或黑（非红即黑）。通过对任何一条从根到叶子的路径上各个节点着色的方式的限制，红黑树确保没有一条路径会比其它路径长出两倍，因此，红黑树是一种弱平衡二叉树，相对于要求严格的AVL树来说，它的旋转次数少，所以对于搜索，插入，删除操作较多的情况下，通常使用红黑树。</p>
+<p>从根到叶子的最长的可能路径不多于最短的可能路径的两倍长。它可以在O(log n)时间内做查找，插入和删除，这里的n 是树中元素的数目。恢复红黑属性需要少量(O(log n))的颜色变更(这在实践中是非常快速的)并且不超过三次树旋转(对于插入是两次)。</p>
+<p><strong>性质：</strong></p>
+<blockquote>
+<ul>
+<li>每个节点非红即黑</li>
+<li>根节点是黑的;</li>
+<li>每个叶节点（叶节点即树尾端NULL指针或NULL节点）都是黑的;</li>
+<li>如果一个节点是红色的，则它的子节点必须是黑色的。</li>
+<li>对于任意节点而言，其到叶子点树NULL指针的每条路径都包含相同数目的黑节点;</li>
+</ul>
+</blockquote>
+<p><strong>红黑树的旋转</strong></p>
+<p>旋转：红黑树的旋转是一种能保持二叉搜索树性质的搜索树局部操作。有左旋和右旋两种旋转，通过改变树中某些结点的颜色以及指针结构来保持对红黑树进行插入和删除操作后的红黑性质。</p>
+<blockquote>
+<p><strong>左旋：</strong>对某个结点x做左旋操作时，假设其右孩子为y而不是T.nil：以x到y的链为“支轴”进行。使y成为该子树新的根结点，x成为y的左孩子，y的左孩子成为x的右孩子。</p>
+<p><img src="https://uploadfiles.nowcoder.com/images/20190315/308571_1552656212115_1587159E7ADB036880D502D2927B9597" alt="img"></p>
+<p><strong>右旋：</strong>对某个结点x做右旋操作时，假设其左孩子为y而不是T.nil：以x到y的链为“支轴”进行。使y成为该子树新的根结点，x成为y的右孩子，y的右孩子成为x的左孩子</p>
+<p><img src="https://uploadfiles.nowcoder.com/images/20190315/308571_1552656223637_991B891FAD560CB072639E0791F9CBB7" alt="img"></p>
+</blockquote>
+<h5 id="（3）区别："><a href="#（3）区别：" class="headerlink" title="（3）区别："></a>（3）区别：</h5><blockquote>
+<p>AVL 树是高度平衡的，频繁的插入和删除，会引起频繁的rebalance，导致效率下降；</p>
+<p>红黑树不是高度平衡的，算是一种折中，插入最多两次旋转，删除最多三次旋转。</p>
+</blockquote>
+</blockquote>
+<h3 id="4-2-哈夫曼树"><a href="#4-2-哈夫曼树" class="headerlink" title="4.2 哈夫曼树"></a>4.2 哈夫曼树</h3><h4 id="（1）概念"><a href="#（1）概念" class="headerlink" title="（1）概念"></a>（1）概念</h4><blockquote>
+<p>在含有N个带权叶子结点的二叉树中，其中带权路径长度（WPL）最小的二叉树称为哈夫曼树，也称为最优二叉树。</p>
+</blockquote>
+<h4 id="（2）构造"><a href="#（2）构造" class="headerlink" title="（2）构造"></a>（2）构造</h4><blockquote>
+<ol>
+<li>哈夫曼算法以自底向上的方式构造表示最优前缀码的二叉树T。</li>
+<li>算法以|C|个叶结点开始，执行|C|－1次的“合并”运算后产生最终所要求的树T。</li>
+<li>假设编码字符集中每一字符c的频率是f(c)。以f为键值的优先队列Q用在贪心选择时有效地确定算法当前要合并的2棵具有最小频率的树。一旦2棵具有最小频率的树合并后，产生一棵新的树，其频率为合并的2棵树的频率之和，并将新树插入优先队列Q。经过n－1次的合并后，优先队列中只剩下一棵树，即所要求的树T。</li>
+</ol>
+</blockquote>
+<h4 id="（3）哈夫曼编码"><a href="#（3）哈夫曼编码" class="headerlink" title="（3）哈夫曼编码"></a>（3）哈夫曼编码</h4><blockquote>
+<p>可变长度编码比固定长度编码好得多，其特点是对频率高的字符赋以短编码，而对频率较低的字符则赋以较长一些的编码，从而可以使字符平均编码长度减短，起到压缩数据的效果。哈夫曼编码是一种被广泛应用而且非常有效的数据压缩编码。</p>
+</blockquote>
+<h3 id="4-3-B树与B-树"><a href="#4-3-B树与B-树" class="headerlink" title="4.3 B树与B+树"></a>4.3 B树与B+树</h3><p>b树（balance tree）和b+树应用在数据库索引，可以认为是m叉的多路平衡查找树</p>
+<h4 id="（1）B树"><a href="#（1）B树" class="headerlink" title="（1）B树"></a>（1）B树</h4><p>一个M阶的b树具有如下几个特征：</p>
+<blockquote>
+<p>1）树中每个结点至多有m棵子树（即至多含有m-1个关键字）</p>
+<p>2）若根结点不是终端结点，则至少有两棵子树。</p>
+<p>3）除根结点外的所有非叶结点至少有「m/2]棵子树（即至少含有「m/2]-1个关键字</p>
+<p>4）n个节点有n+1个子树</p>
+<p>5）所有的叶结点都出现在同一层次上，并且不带信息</p>
+</blockquote>
+<h4 id="（2）B树"><a href="#（2）B树" class="headerlink" title="（2）B树"></a>（2）B树</h4><p>B+是一种多路搜索树，主要为磁盘或其他直接存取辅助设备而设计的一种平衡查找树，在B+树中，每个节点的可以有多个孩子，并且按照关键字大小有序排列。所有记录节点都是按照键值的大小顺序存放在同一层的叶节点中。</p>
+<p>一个M阶的b+树具有如下几个特征：</p>
+<blockquote>
+<p>1）每个分支结点最多有m棵子树（子结点）</p>
+<p>2）非叶根结点至少有两棵子树，其他每个分支结点至少有「m/2]棵子树</p>
+<p>3）结点的子树个数与关键字个数相等。</p>
+<p>4）所有叶结点包含全部关键字及指向相应记录的指针，而且叶结点中将关键字按大小顺序排列，并且相邻叶</p>
+<p>结点按大小顺序相互链接起来。</p>
+<p>5）所有分支结点（可看成是索引的索引）中仅包含它的各个子结点（即下一级的索引块）中关键字的最大值</p>
+<p>及指向其子结点的指针</p>
+</blockquote>
+<h4 id="（3）b-树相比于b树的查询优势"><a href="#（3）b-树相比于b树的查询优势" class="headerlink" title="（3）b+树相比于b树的查询优势"></a>（3）b+树相比于b树的查询优势</h4><blockquote>
+<ol>
+<li>b+树的中间节点不保存数据，所以磁盘页能容纳更多节点元素，更“矮胖”；</li>
+<li>b+树查询必须查找到叶子节点，b树只要匹配到即可不用管元素位置，因此b+树查找更稳定（并不慢）；</li>
+<li>对于范围查找来说，b+树只需遍历叶子节点链表即可，b树却需要重复地中序遍历</li>
+</ol>
+</blockquote>
+<h3 id="4-4-并查集"><a href="#4-4-并查集" class="headerlink" title="4.4 并查集"></a>4.4 并查集</h3><h4 id="（1）-概念"><a href="#（1）-概念" class="headerlink" title="（1） 概念"></a>（1） 概念</h4><p>并査集是一种简单的集合表示，它支持以下3种操作</p>
+<blockquote>
+<ol>
+<li>Union(S,Root1,Root2)：把集合S中的子集合Root2并入子集合 Root1中。要求Root1和Root2互不相交，否则不执行合并。</li>
+<li>Find(s,x)：查找集合S中单元素x所在的子集合，并返回该子集合的名字。</li>
+<li>Initial(s)：将集合S中每一个元素都初始化为只有一个单元素的子集合。</li>
+</ol>
+</blockquote>
+<p>通常用树（森林）的双亲表示作为并查集的存储结构，每个子集合以一棵树表示。所有表示子集合的树，构成表示全集合的森林，存放在双亲表示数组内。通常用数组元素的下标代表元素名，根结点的下标代表子集合名，根结点的双亲结点为负数。</p>
+<h3 id="4-5-问题"><a href="#4-5-问题" class="headerlink" title="4.5 问题"></a>4.5 问题</h3><h4 id="（1）请你回答一下map底层为什么用红黑树实现"><a href="#（1）请你回答一下map底层为什么用红黑树实现" class="headerlink" title="（1）请你回答一下map底层为什么用红黑树实现"></a>（1）请你回答一下map底层为什么用红黑树实现</h4><p><strong>红黑树较AVL树的优点：</strong></p>
+<blockquote>
+<p>AVL 树是高度平衡的，频繁的插入和删除，会引起频繁的rebalance，导致效率下降；</p>
+<p>红黑树不是高度平衡的，算是一种折中，插入最多两次旋转，删除最多三次旋转。</p>
+<p>所以红黑树在查找，插入删除的性能都是O(logn)，且性能稳定，所以STL里面很多结构包括map底层实现都是使用的红黑树。</p>
+</blockquote>
+<h4 id="（2）请你说一说map和unordered-map的底层实现"><a href="#（2）请你说一说map和unordered-map的底层实现" class="headerlink" title="（2）请你说一说map和unordered_map的底层实现"></a>（2）请你说一说map和unordered_map的底层实现</h4><p>map底层是基于红黑树实现的，因此map内部元素排列是有序的。而unordered_map底层则是基于哈希表实现的，因此其元素的排列顺序是杂乱无序的。</p>
+<h4 id="（3）请你回答一下map和unordered-map优点和缺点"><a href="#（3）请你回答一下map和unordered-map优点和缺点" class="headerlink" title="（3）请你回答一下map和unordered_map优点和缺点"></a>（3）请你回答一下map和unordered_map优点和缺点</h4><p>对于map，其底层是基于红黑树实现的</p>
+<p><strong>优点如下：</strong></p>
+<blockquote>
+<p>1)有序性，这是map结构最大的优点，其元素的有序性在很多应用中都会简化很多的操作</p>
+<p>2)map的查找、删除、增加等一系列操作时间复杂度稳定，都为logn</p>
+</blockquote>
+<p><strong>缺点如下：</strong></p>
+<blockquote>
+<p>1）查找、删除、增加等操作平均时间复杂度较慢，与n相关</p>
+</blockquote>
+<p>对于unordered_map来说，其底层是一个哈希表</p>
+<p><strong>优点如下：</strong></p>
+<blockquote>
+<p>查找、删除、添加的速度快，时间复杂度为常数级O(c)</p>
+</blockquote>
+<p><strong>缺点如下：</strong></p>
+<blockquote>
+<p>因为unordered_map内部基于哈希表，以（key,value）对的形式存储，因此空间占用率高</p>
+<p>Unordered_map的查找、删除、添加的时间复杂度不稳定，平均为O(c)，取决于哈希函数。极端情况下可能为O(n)</p>
+</blockquote>
+<h4 id="（4）请你回答一下epoll怎么实现的"><a href="#（4）请你回答一下epoll怎么实现的" class="headerlink" title="（4）请你回答一下epoll怎么实现的"></a>（4）请你回答一下epoll怎么实现的</h4><blockquote>
+<p>Linux epoll机制是通过红黑树和双向链表实现的。 首先通过epoll_create()系统调用在内核中创建一个eventpoll类型的句柄，其中包括红黑树根节点和双向链表头节点。然后通过epoll_ctl()系统调用，向epoll对象的红黑树结构中添加、删除、修改感兴趣的事件，返回0标识成功，返回-1表示失败。最后通过epoll_wait()系统调用判断双向链表是否为空，如果为空则阻塞。当文件描述符状态改变，fd上的回调函数被调用，该函数将fd加入到双向链表中，此时epoll_wait函数被唤醒，返回就绪好的事件。</p>
+</blockquote>
+<h3 id="4-6-问题"><a href="#4-6-问题" class="headerlink" title="4.6 问题"></a>4.6 问题</h3><h4 id="（1）-请你实现二叉树的层序遍历并输出"><a href="#（1）-请你实现二叉树的层序遍历并输出" class="headerlink" title="（1） 请你实现二叉树的层序遍历并输出"></a>（1） 请你实现二叉树的层序遍历并输出</h4><pre class="line-numbers language-c++"><code class="language-c++">void layerTrace(BTreeNode *T)
+{
+    if(T== nullptr)return;
+    BTreeNode *p=T;
+    queue<BTreeNode*>q;
+    q.push(p);
+    while(!q.empty())
+    {
+        p=q.front();
+        q.pop();
+        cout<<<<p->data;
+        if(p->left!= nullptr)q.push(p->left);
+        if(p->right!= nullptr)q.push(p->right);
+    }
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="（2）手写代码：二叉树序列化反序列化"><a href="#（2）手写代码：二叉树序列化反序列化" class="headerlink" title="（2）手写代码：二叉树序列化反序列化"></a>（2）手写代码：二叉树序列化反序列化</h4><blockquote>
+<p>序列化：必须保存一个中序遍历结果，然后外加一个前序或者后序遍历结果反序列化：根据两次遍历生成的结果恢复二叉树，代码如下(前序和中序)：</p>
+</blockquote>
+<pre class="line-numbers language-c++"><code class="language-c++">TreeNode* helper(vector<int>pre,int startPre,int endPre,vector<int>in,int startIn,int endIn)
+{
+    if(startPre>endPre||startIn>endIn)
+        return nullptr;
+    TreeNode * root=new TreeNode(pre[startPre]);
+    for(int i=startIn;i<=endIn;++i){
+        if(in[i]==pre[startPre]){
+            root->left=helper(pre,startPre+1,startPre+i-                        startIn,in,startIn,i-1);
+            root->right=helper(pre,i-        startIn+startPre+1,endPre,in,i+1,endIn);
+        break;
+        }
+    }
+    return root;
+}
+TreeNode* reConstructBinaryTree(vector<int> pre,vector<int> vin){
+    TreeNode*root=helper(pre,0,pre.size()-1,vin,0,vin.size()-1);
+    return root;
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="5-图"><a href="#5-图" class="headerlink" title="5. 图"></a>5. 图</h2><p><img src="/2019/10/06/mian-shi-shu-ju-jie-gou/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-1570360310878.jpg" alt="数据结构"></p>
+<h2 id="6-查找"><a href="#6-查找" class="headerlink" title="6. 查找"></a>6. 查找</h2><p><img src="/2019/10/06/mian-shi-shu-ju-jie-gou/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-1570360331045.jpg" alt="数据结构"></p>
+<h3 id="6-1-哈希"><a href="#6-1-哈希" class="headerlink" title="6.1 哈希"></a>6.1 哈希</h3><h4 id="1）请你来说一说hash表的实现，包括STL中的哈希桶长度常数"><a href="#1）请你来说一说hash表的实现，包括STL中的哈希桶长度常数" class="headerlink" title="(1）请你来说一说hash表的实现，包括STL中的哈希桶长度常数"></a>(1）请你来说一说hash表的实现，包括STL中的哈希桶长度常数</h4><p>hash表的实现主要包括构造哈希和处理哈希冲突两个方面：</p>
+<p>对于构造哈希来说，主要包括直接地址法、平方取中法、除留余数法等。</p>
+<p>对于处理哈希冲突来说，最常用的处理冲突的方法有开放定址法、再哈希法、链地址法、建立公共溢出区等方法。SGL版本使用链地址法，使用一个链表保持相同散列值的元素。</p>
+<p>虽然链地址法并不要求哈希桶长度必须为质数，但SGI STL仍然以质数来设计哈希桶长度，并且将28个质数（逐渐呈现大约两倍的关系）计算好，以备随时访问，同时提供一个函数，用来查询在这28个质数之中，“最接近某数并大于某数”的质数。</p>
+<h4 id="（2）-请你回答一下hash表如何rehash，以及怎么处理其中保存的资源"><a href="#（2）-请你回答一下hash表如何rehash，以及怎么处理其中保存的资源" class="headerlink" title="（2） 请你回答一下hash表如何rehash，以及怎么处理其中保存的资源"></a>（2） 请你回答一下hash表如何rehash，以及怎么处理其中保存的资源</h4><p>C++的hash表中有一个负载因子loadFactor，当loadFactor&lt;=1时，hash表查找的期望复杂度为O(1). 因此，每次往hash表中添加元素时，我们必须保证是在loadFactor &lt;1的情况下，才能够添加。</p>
+<p>因此，当Hash表中loadFactor==1时，Hash就需要进行rehash。rehash过程中，会模仿C++的vector扩容方式，Hash表中每次发现loadFactor ==1时，就开辟一个原来桶数组的两倍空间，称为新桶数组，然后把原来的桶数组中元素全部重新哈希到新的桶数组中。</p>
+<h4 id="（3）请你说一下哈希表的桶个数为什么是质数，合数有何不妥？"><a href="#（3）请你说一下哈希表的桶个数为什么是质数，合数有何不妥？" class="headerlink" title="（3）请你说一下哈希表的桶个数为什么是质数，合数有何不妥？"></a>（3）请你说一下哈希表的桶个数为什么是质数，合数有何不妥？</h4><p>哈希表的桶个数使用质数，可以最大程度减少冲突概率，使哈希后的数据分布的更加均匀。如果使用合数，可能会造成很多数据分布会集中在某些点上，从而影响哈希表效率。</p>
+<p>算法：</p>
+<p>给定一个数字数组，返回哈夫曼树的头指针</p>
+<pre class="line-numbers language-c++"><code class="language-c++">struct BTreeNode* CreateHuffman(ElemType a[], int n)
+{
+    int i, j;
+    struct BTreeNode **b, *q;
+    b = malloc(n*sizeof(struct BTreeNode));
+    for (i = 0; i < n; i++){
+        b[i] = malloc(sizeof(struct BTreeNode));
+        b[i]->data = a[i];
+        b[i]->left = b[i]->right = NULL;
+    }
+    for (i = 1; i < n; i++){
+        int k1 = -1, k2;
+        for (j = 0; j < n; j++){
+            if (b[j] != NULL && k1 == -1){
+                k1 = j;
+                continue;
+            }
+            if (b[j] != NULL){
+                k2 = j;
+                break;
+            }
+        }
+        for (j = k2; j < n; j++){
+            if (b[j] != NULL){
+                if (b[j]->data < b[k1]->data){
+                    k2 = k1;
+                    k1 = j;
+                }else if (b[j]->data < b[k2]->data)
+                    k2 = j;
+                }
+            }
+            q = malloc(sizeof(struct BTreeNode));
+            q->data = b[k1]->data + b[k2]->data;
+            q->left = b[k1];
+            q->right = b[k2];
+            b[k1] = q;
+            b[k2] = NULL;
+        }
+        free(b);
+        return q;
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="（4）请你说一下解决hash冲突的方法"><a href="#（4）请你说一下解决hash冲突的方法" class="headerlink" title="（4）请你说一下解决hash冲突的方法"></a>（4）请你说一下解决hash冲突的方法</h4><p>当哈希表关键字集合很大时，关键字值不同的元素可能会映象到哈希表的同一地址上，这样的现象称为哈希冲突。目前常用的解决哈希冲突的方法如下：</p>
+<blockquote>
+<ul>
+<li>开放定址法: 当发生地址冲突时，按照某种方法继续探测哈希表中的其他存储单元，直到找到空位置为止。</li>
+<li>再哈希法：当发生哈希冲突时使用另一个哈希函数计算地址值，直到冲突不再发生。这种方法不易产生聚集，但是增加计算时间，同时需要准备许多哈希函数。</li>
+<li>链地址法：将所有哈希值相同的Key通过链表存储。key按顺序插入到链表中</li>
+<li>建立公共溢出区：采用一个溢出表存储产生冲突的关键字。如果公共溢出区还产生冲突，再采用处理冲突方法处理。</li>
+</ul>
+</blockquote>
+<h2 id="7-排序"><a href="#7-排序" class="headerlink" title="7. 排序"></a>7. 排序</h2><p><img src="/2019/10/06/mian-shi-shu-ju-jie-gou/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-1570360356519.jpg" alt="数据结构"></p>
+<h3 id="7-1-各种排序算法及时间复杂度"><a href="#7-1-各种排序算法及时间复杂度" class="headerlink" title="7.1 各种排序算法及时间复杂度"></a>7.1 各种排序算法及时间复杂度</h3><p><img src="https://uploadfiles.nowcoder.com/images/20190313/311436_1552474444160_93CF294B0FB45C83DC616C5700184F2E" alt="img"></p>
+<blockquote>
+<p><strong>插入排序：</strong>对于一个带排序数组来说，其初始有序数组元素个数为1，然后从第二个元素，插入到有序数组中。对于每一次插入操作，从后往前遍历当前有序数组，如果当前元素大于要插入的元素，则后移一位；如果当前元素小于或等于要插入的元素，则将要插入的元素插入到当前元素的下一位中。</p>
+<p><strong>希尔排序：</strong>先将整个待排序记录分割成若干子序列，然后分别进行直接插入排序，待整个序列中的记录基本有序时，在对全体记录进行一次直接插入排序。其子序列的构成不是简单的逐段分割，而是将每隔某个增量的记录组成一个子序列。希尔排序时间复杂度与增量序列的选取有关，其最后一个值必须为1.</p>
+<p><strong>归并排序：</strong>该算法采用分治法；对于包含m个元素的待排序序列，将其看成m个长度为1的子序列。然后两两合归并，得到n/2个长度为2或者1的有序子序列；然后再两两归并，直到得到1个长度为m的有序序列。</p>
+<p><strong>冒泡排序：</strong>对于包含n个元素的带排序数组，重复遍历数组，首先比较第一个和第二个元素，若为逆序，则交换元素位置；然后比较第二个和第三个元素，重复上述过程。每次遍历会把当前前n-i个元素中的最大的元素移到n-i位置。遍历n次，完成排序。</p>
+<p><strong>快速排序：</strong>通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。</p>
+<p><strong>选择排序：</strong>每次循环，选择当前无序数组中最小的那个元素，然后将其与无序数组的第一个元素交换位置，从而使有序数组元素加1，无序数组元素减1.初始时无序数组为空。</p>
+<p><strong>堆排序：</strong>堆排序是一种选择排序，利用堆这种数据结构来完成选择。其算法思想是将带排序数据构造一个最大堆（升序）/最小堆（降序），然后将堆顶元素与待排序数组的最后一个元素交换位置，此时末尾元素就是最大/最小的值。然后将剩余n-1个元素重新构造成最大堆/最小堆。</p>
+</blockquote>
+<h3 id="7-2-问题"><a href="#7-2-问题" class="headerlink" title="7.2 问题"></a>7.2 问题</h3><h4 id="（1）请你来手写一下快排的代码"><a href="#（1）请你来手写一下快排的代码" class="headerlink" title="（1）请你来手写一下快排的代码"></a>（1）请你来手写一下快排的代码</h4><pre class="line-numbers language-c++"><code class="language-c++">int once_quick_sort(vector<int> &data, int left, int right){
+    int key = data[left];
+    while (left < right)
+    {
+        while (left < right && key <= data[right]){
+            right--;
+        }
+        if (left < right){
+            data[left++] = data[right];
+        }
+        while (left < right && key > data[left]){
+            left++;
+        }
+        if (left < right){
+            data[right--] = data[left];
+        }
+    }
+    data[left] = key;
+    return left;
+}
+int quick_sort(vector<int> & data, int left, int right)
+{
+    if (left >= right )
+    {
+        return 1;
+    }
+    int middle = 0;
+    middle = once_quick_sort(data, left, right);
+    quick_sort(data, left, middle-1);
+    quick_sort(data, middle + 1, right);
+}；<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="（2）-请问求第k大的数的方法以及各自的复杂度是怎样的，另外追问一下，当有相同元素时，还可以使用什么不同的方法求第k大的元素"><a href="#（2）-请问求第k大的数的方法以及各自的复杂度是怎样的，另外追问一下，当有相同元素时，还可以使用什么不同的方法求第k大的元素" class="headerlink" title="（2） 请问求第k大的数的方法以及各自的复杂度是怎样的，另外追问一下，当有相同元素时，还可以使用什么不同的方法求第k大的元素"></a>（2） 请问求第k大的数的方法以及各自的复杂度是怎样的，另外追问一下，当有相同元素时，还可以使用什么不同的方法求第k大的元素</h4><blockquote>
+<ul>
+<li>首先使用快速排序算法将数组按照从大到小排序，然后取第k个，其时间复杂度最快为O(nlogn)</li>
+<li>使用堆排序，建立最大堆，然后调整堆，知道获得第k个元素，其时间复杂度为O(n+klogn)</li>
+<li>首先利用哈希表统计数组中个元素出现的次数，然后利用计数排序的思想，线性从大到小扫描过程中，前面有k-1个数则为第k大的数</li>
+<li>利用快排思想，从数组中随机选择一个数i，然后将数组分成两部分Dl,Dr，Dl的元素都小于i,Dr的元素都大于i。然后统计Dr元素个数，如果Dr元素个数等于k-1,那么第k大的数即为k，如果Dr元素个数小于k,那么继续求Dl中第k-Dr大的元素；如果Dr元素个数大于k,那么继续求Dr中第k大的元素。</li>
+<li>当有相同元素的时候，首先利用哈希表统计数组中个元素出现的次数，然后利用计数排序的思想，线性从大到小扫描过程中，前面有k-1个数则为第k大的数，平均情况下时间复杂度为O(n)</li>
+</ul>
+</blockquote>
+<h4 id="（3）请问海量数据如何去取最大的k个"><a href="#（3）请问海量数据如何去取最大的k个" class="headerlink" title="（3）请问海量数据如何去取最大的k个"></a>（3）请问海量数据如何去取最大的k个</h4><p><strong>1.直接全部排序（只适用于内存够的情况）</strong></p>
+<blockquote>
+<p>当数据量较小的情况下，内存中可以容纳所有数据。则最简单也是最容易想到的方法是将数据全部排序，然后取排序后的数据中的前K个。</p>
+<p>这种方法对数据量比较敏感，当数据量较大的情况下，内存不能完全容纳全部数据，这种方法便不适应了。即使内存能够满足要求，该方法将全部数据都排序了，而题目只要求找出top K个数据，所以该方法并不十分高效，不建议使用。</p>
+</blockquote>
+<p><strong>2.快速排序的变形 （只使用于内存够的情况）</strong></p>
+<blockquote>
+<p>这是一个基于快速排序的变形，因为第一种方法中说到将所有元素都排序并不十分高效，只需要找出前K个最大的就行。</p>
+<p>这种方法类似于快速排序，首先选择一个划分元，将比这个划分元大的元素放到它的前面，比划分元小的元素放到它的后面，此时完成了一趟排序。如果此时这个划分元的序号index刚好等于K，那么这个划分元以及它左边的数，刚好就是前K个最大的元素；如果index  &gt; K，那么前K大的数据在index的左边，那么就继续递归的从index-1个数中进行一趟排序；如果index &lt; K，那么再从划分元的右边继续进行排序，直到找到序号index刚好等于K为止。再将前K个数进行排序后，返回Top K个元素。这种方法就避免了对除了Top K个元素以外的数据进行排序所带来的不必要的开销。</p>
+</blockquote>
+<p><strong>3.最小堆法</strong></p>
+<blockquote>
+<p>这是一种局部淘汰法。先读取前K个数，建立一个最小堆。然后将剩余的所有数字依次与最小堆的堆顶进行比较，如果小于或等于堆顶数据，则继续比较下一个；否则，删除堆顶元素，并将新数据插入堆中，重新调整最小堆。当遍历完全部数据后，最小堆中的数据即为最大的K个数。</p>
+</blockquote>
+<p><strong>4.分治法</strong></p>
+<blockquote>
+<p>将全部数据分成N份，前提是每份的数据都可以读到内存中进行处理，找到每份数据中最大的K个数。此时剩下N<em>K个数据，如果内存不能容纳N</em>K个数据，则再继续分治处理，分成M份，找出每份数据中最大的K个数，如果M*K个数仍然不能读到内存中，则继续分治处理。直到剩余的数可以读入内存中，那么可以对这些数使用快速排序的变形或者归并排序进行处理。</p>
+</blockquote>
+<p><strong>5.Hash法</strong></p>
+<blockquote>
+<p>如果这些数据中有很多重复的数据，可以先通过hash法，把重复的数去掉。这样如果重复率很高的话，会减少很大的内存用量，从而缩小运算空间。处理后的数据如果能够读入内存，则可以直接排序；否则可以使用分治法或者最小堆法来处理数据。</p>
+</blockquote>
+<h2 id="8-动态规划"><a href="#8-动态规划" class="headerlink" title="8. 动态规划"></a>8. 动态规划</h2><h3 id="8-1最长公共子序列"><a href="#8-1最长公共子序列" class="headerlink" title="8.1最长公共子序列"></a>8.1最长公共子序列</h3><h3 id="8-2-求一个字符串最长回文子串"><a href="#8-2-求一个字符串最长回文子串" class="headerlink" title="8.2 求一个字符串最长回文子串"></a>8.2 求一个字符串最长回文子串</h3><h3 id="8-3-查找最长回文子串"><a href="#8-3-查找最长回文子串" class="headerlink" title="8.3 查找最长回文子串"></a>8.3 查找最长回文子串</h3><h2 id="9-高级算法"><a href="#9-高级算法" class="headerlink" title="9. 高级算法"></a>9. 高级算法</h2><h3 id="9-1-加密方法都有哪些"><a href="#9-1-加密方法都有哪些" class="headerlink" title="9.1 加密方法都有哪些"></a>9.1 加密方法都有哪些</h3><p>考察点：密码学</p>
+<p>公司：腾讯</p>
+<p>1、单向加密</p>
+<p>单向加密又称为不可逆加密算法，其密钥是由加密散列函数生成的。单向散列函数一般用于产生消息摘要，密钥加密等，常见的有：</p>
+<blockquote>
+<ul>
+<li>MD5（Message Digest Algorithm 5）：是RSA数据安全公司开发的一种单向散列算法，非可逆，相同的明文产生相同的密文；</li>
+<li>SHA（Secure Hash Algorithm）：可以对任意长度的数据运算生成一个160位的数值。其变种由SHA192，SHA256，SHA384等；</li>
+<li>CRC-32，主要用于提供校验功能；</li>
+</ul>
+</blockquote>
+<p>算法特征：</p>
+<blockquote>
+<ul>
+<li>输入一样，输出必然相同；</li>
+<li>雪崩效应，输入的微小改变，将会引起结果的巨大变化；</li>
+<li>定长输出，无论原始数据多大，结果大小都是相同的；</li>
+<li>不可逆，无法根据特征码还原原来的数据；</li>
+</ul>
+</blockquote>
+<p>2、对称加密</p>
+<p>采用单钥密码系统的加密方法，同一个密钥可以同时用作信息的加密和解密，这种加密方法称为对称加密，也称为单密钥加密。</p>
+<p>特点：</p>
+<blockquote>
+<ul>
+<li>加密方和解密方使用同一个密钥；</li>
+<li>加密解密的速度比较快，适合数据比较长时的使用；</li>
+<li>密钥传输的过程不安全，且容易被破解，密钥管理也比较麻烦；</li>
+</ul>
+</blockquote>
+<p>优点：</p>
+<blockquote>
+<p>对称加密算法的优点是算法公开、计算量小、加密速度快、加密效率高。</p>
+</blockquote>
+<p>缺点：</p>
+<blockquote>
+<p>对称加密算法的缺点是在数据传送前，发送方和接收方必须商定好秘钥，然后使双方都能保存好秘钥。其次如果一方的秘钥被泄露，那么加密信息也就不安全了。另外，每对用户每次使用对称加密算法时，都需要使用其他人不知道的唯一秘钥，这会使得收、发双方所拥有的钥匙数量巨大，密钥管理成为双方的负担。</p>
+</blockquote>
+<p>3、非对称加密</p>
+<p>非对称密钥加密也称为公钥加密，由一对公钥和私钥组成。公钥是从私钥提取出来的。可以用公钥加密，再用私钥解密，这种情形一般用于公钥加密，当然也可以用私钥加密，用公钥解密。常用于数字签名，因此非对称加密的主要功能就是加密和数字签名。</p>
+<p>特征：</p>
+<blockquote>
+<ul>
+<li>秘钥对，公钥(public key)和私钥(secret key)</li>
+<li>主要功能：加密和签名</li>
+</ul>
+<blockquote>
+<p>发送方用对方的公钥加密，可以保证数据的机密性（公钥加密）。</p>
+<p>发送方用自己的私钥加密，可以实现身份验证（数字签名）。</p>
+</blockquote>
+<ul>
+<li>公钥加密算法很少用来加密数据，速度太慢，通常用来实现身份验证。</li>
+</ul>
+</blockquote>
+<p>常用的非对称加密算法</p>
+<blockquote>
+<ul>
+<li>RSA：由 RSA公司发明，是一个支持变长密钥的公共密钥算法，需要加密的文件块的长度也是可变的；既可以实现加密，又可以实现签名。</li>
+<li>DSA（Digital Signature Algorithm）：数字签名算法，是一种标准的 DSS（数字签名标准）。</li>
+<li>ECC（Elliptic Curves Cryptography）：椭圆曲线密码编码。</li>
+</ul>
+</blockquote>
+<h3 id="9-2-什么是LRU缓存"><a href="#9-2-什么是LRU缓存" class="headerlink" title="9.2 什么是LRU缓存"></a>9.2 什么是LRU缓存</h3><p>LRU缓存即保存最近经常使用的数据的内存空间，这样当再次读取该数据时可直接从缓存中读取提高效率</p>
+<h3 id="9-3-请你说一说洗牌算法"><a href="#9-3-请你说一说洗牌算法" class="headerlink" title="9.3 请你说一说洗牌算法"></a>9.3 请你说一说洗牌算法</h3><p>1、Fisher-Yates Shuffle算法</p>
+<p>最早提出这个洗牌方法的是 Ronald A. Fisher 和 Frank Yates，即 Fisher–Yates Shuffle，其基本思想就是从原始数组中随机取一个之前没取过的数字到新的数组中，具体如下：</p>
+<blockquote>
+<p>1）初始化原始数组和新数组，原始数组长度为n(已知)。</p>
+<p>2）从还没处理的数组（假如还剩k个）中，随机产生一个[0, k)之间的数字p（假设数组从0开始）。</p>
+<p>3）从剩下的k个数中把第p个数取出。</p>
+<p>4）重复步骤2和3直到数字全部取完。</p>
+<p>5）从步骤3取出的数字序列便是一个打乱了的数列。</p>
+</blockquote>
+<p><strong>时间复杂度为O(n*n)，空间复杂度为O(n)。</strong></p>
+<p>2）Knuth-Durstenfeld Shuffle</p>
+<p>Knuth 和 Durstenfeld  在Fisher 等人的基础上对算法进行了改进，在原始数组上对数字进行交互，省去了额外O(n)的空间。该算法的基本思想和 Fisher 类似，每次从未处理的数据中随机取出一个数字，然后把该数字放在数组的尾部，即数组尾部存放的是已经处理过的数字。</p>
+<p>算法步骤为：</p>
+<blockquote>
+<ol>
+<li>建立一个数组大小为 n 的数组 arr，分别存放 1 到 n 的数值；</li>
+<li>生成一个从 0 到 n - 1 的随机数 x；</li>
+<li>输出 arr 下标为 x 的数值，即为第一个随机数；</li>
+<li>将 arr 的尾元素和下标为 x 的元素互换；</li>
+<li>同2，生成一个从 0 到 n - 2 的随机数 x；</li>
+<li>输出 arr 下标为 x 的数值，为第二个随机数；</li>
+<li>将 arr 的倒数第二个元素和下标为 x 的元素互换；</li>
+<li>……</li>
+<li>如上，直到输出m 个数为止</li>
+</ol>
+</blockquote>
+<p><strong>时间复杂度为O(n)，空间复杂度为O(1)，缺点必须知道数组长度n。</strong></p>
+
+            </div>
+            <hr />
+
+            
+            <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.88rem;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-large waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fa fa-close"></i></a>
+            <h4 class="reward-title">写作不易，客官能否打赏一杯奶茶？</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《面试-数据结构》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/10/06/mian-shi-shu-ju-jie-gou/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                吴超峰
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+    <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: 'd71785aa5056a34a83a8',
+        clientSecret: '11f797c7924b4eda214973051526455de2da39d9',
+        repo: 'fengshentianxia.github.io',
+        owner: 'fengshentianxia',
+        admin: "fengshentianxia",
+        id: '2019/10/06/mian-shi-shu-ju-jie-gou/',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+    <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments input[type=text],
+    #vcomments input[type=email],
+    #vcomments input[type=url],
+    #vcomments textarea {
+        box-sizing: border-box;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #42b983;
+        font-weight: 500;
+        text-decoration: underline;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div id="vcomments" class="card-content"></div>
+</div>
+
+<script src="/libs/valine/av-min.js"></script>
+<script src="/libs/valine/Valine.min.js"></script>
+<!-- <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script> -->
+
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: '',
+        appKey: '',
+        notify: 'false' === 'true',
+        verify: 'false' === 'true',
+        visitor: 'false' === 'true',
+        avatar: 'wavatar',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: '如果你没有GitHub账号，还可以在这里评论啦！'
+    });
+</script>
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/10/06/mian-shi-cao-zuo-xi-tong/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="面试-操作系统">
+                        
+                        <span class="card-title">面试-操作系统</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            进程管理1.进程
+1.1 进程与线程（1）进程与线程的概念
+
+进程是对运行时程序的封装，是系统进行资源调度和分配的的基本单位，实现了操作系统的并发；
+线程是进程的子任务，是CPU调度和分派的基本单位，用于保证程序的实时性，实现进程内部的并发
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-10-06
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/面试/" class="post-category" target="_blank">
+                                    面试
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/操作系统/" target="_blank">
+                        <span class="chip bg-color">操作系统</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                本篇&nbsp;<i class="fa fa-dot-circle-o"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/10/06/mian-shi-shu-ju-jie-gou/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="面试-数据结构">
+                        
+                        <span class="card-title">面试-数据结构</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            1. 绪论
+2. 线性表
+2.1 数组与链表（1）数组的特点：数组是将元素在内存中连续存放，由于每个元素占用内存相同，可以通过下标迅速访问数组中任何元素。数组的插入数据和删除数据效率低，插入数据时，这个位置后面的数据在内存中都要向后移。删除
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-10-06
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/面试/" class="post-category" target="_blank">
+                                    面试
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/数据结构/" target="_blank">
+                        <span class="chip bg-color">数据结构</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: 吴超峰的博客<br />'
+            + '作者: 吴超峰<br />'
+            + '链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () { bodyElement.removeChild(newdiv); }, 200);
+    });
+</script>
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            &copy; 2019 chaofengwu. All Rights Reserved.
+
+            
+            &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+            <span class="white-color">106.3k</span>
+            
+
+            <br>
+            <span id="sitetime"></span>
+
+            
+            
+            <br>
+            
+            <span id="busuanzi_container_site_pv" style='display:none'>
+                <i class="fa fa-heart-o"></i>
+                本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv" style='display:none'>
+                人次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+            </span>
+            
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/fengshentianxia" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="https://user.qzone.qq.com/1339784341" class="tooltipped" target="_blank" data-tooltip="访问我的QQ空间" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+    $(document).ready(function () {
+
+        var int = setInterval(fixCount, 50);
+        var pvcountOffset = 0;
+        var uvcountOffset = 0;
+
+        function fixCount() {
+            if (document.getElementById("busuanzi_container_site_pv").style.display != "none") {
+                $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + pvcountOffset);
+                clearInterval(int);
+            }
+            if ($("#busuanzi_container_site_pv").css("display") != "none") {
+                $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + uvcountOffset); // 加上初始数据 
+                clearInterval(int);
+            }
+        }
+    });
+</script>
+
+<script language=javascript>
+    function siteTime() {
+        window.setTimeout("siteTime()", 1000);
+        var seconds = 1000;
+        var minutes = seconds * 60;
+        var hours = minutes * 60;
+        var days = hours * 24;
+        var years = days * 365;
+        var today = new Date();
+        var todayYear = today.getFullYear();
+        var todayMonth = today.getMonth() + 1;
+        var todayDate = today.getDate();
+        var todayHour = today.getHours();
+        var todayMinute = today.getMinutes();
+        var todaySecond = today.getSeconds();
+        /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+        year - 作为date对象的年份，为4位年份值
+        month - 0-11之间的整数，做为date对象的月份
+        day - 1-31之间的整数，做为date对象的天数
+        hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+        minutes - 0-59之间的整数，做为date对象的分钟数
+        seconds - 0-59之间的整数，做为date对象的秒数
+        microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+        var t1 = Date.UTC(2019, 10, 6, 00, 00, 00); //北京时间2018-2-13 00:00:00
+        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+        var diff = t2 - t1;
+        var diffYears = Math.floor(diff / years);
+        var diffDays = Math.floor((diff / days) - diffYears * 365);
+        var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+        var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes);
+        var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes * minutes) / seconds);
+        document.getElementById("sitetime").innerHTML = "本站已运行 " + diffYears + " 年 " + diffDays + " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+</script>
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <script type="text/javascript"> var OriginTitile = document.title, st; document.addEventListener("visibilitychange", function () { document.hidden ? (document.title = "Σ(っ °Д °;)っ喔哟，崩溃啦！", clearTimeout(st)) : (document.title = "φ(゜▽゜*)♪咦，又好了！", st = setTimeout(function () { document.title = OriginTitile }, 3e3)) })
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', '');
+</script>
+
+
+
+    
+    <script src="/libs/others/clicklove.js"></script>
+    
+
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    <!-- 雪花特效 -->
+    
+
+</body>
+
+</html>

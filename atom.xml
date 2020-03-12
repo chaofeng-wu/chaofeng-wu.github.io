@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>吴超峰的博客</title>
+  
+  <subtitle>chaofengwu</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://fengshentianxia.github.io/"/>
+  <updated>2020-03-12T11:22:35.580Z</updated>
+  <id>https://fengshentianxia.github.io/</id>
+  
+  <author>
+    <name>吴超峰</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>article title</title>
+    <link href="https://fengshentianxia.github.io/2020/03/12/article-title/"/>
+    <id>https://fengshentianxia.github.io/2020/03/12/article-title/</id>
+    <published>2020-03-12T11:22:35.000Z</published>
+    <updated>2020-03-12T11:22:35.580Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>UNIX环境高级编程-进程控制</title>
+    <link href="https://fengshentianxia.github.io/2019/10/09/unix-huan-jing-gao-ji-bian-cheng-jin-cheng-kong-zhi/"/>
+    <id>https://fengshentianxia.github.io/2019/10/09/unix-huan-jing-gao-ji-bian-cheng-jin-cheng-kong-zhi/</id>
+    <published>2019-10-09T02:52:36.000Z</published>
+    <updated>2020-03-12T08:49:33.016Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;今天讨论进程控制这一章，也是进程中最终要的一部分，其实主要就是围绕着 fork、exec、wait这三个函数来讨论 Unix 系统是如何管理进程的。&lt;/p&gt;
+&lt;h2 id=&quot;1-进程标识&quot;&gt;&lt;a href=&quot;#1-进程标识&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="UNIX环境高级编程" scheme="https://fengshentianxia.github.io/categories/UNIX%E7%8E%AF%E5%A2%83%E9%AB%98%E7%BA%A7%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Linux" scheme="https://fengshentianxia.github.io/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>详解core dump</title>
+    <link href="https://fengshentianxia.github.io/2019/10/08/xiang-jie-core-dump/"/>
+    <id>https://fengshentianxia.github.io/2019/10/08/xiang-jie-core-dump/</id>
+    <published>2019-10-08T02:25:02.000Z</published>
+    <updated>2020-03-12T08:49:33.021Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;&lt;a href=&quot;https://blog.csdn.net/tenfyguo/article/details/8159176&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;转载自–详解coredump&lt;/a&gt;&lt;/p&gt;
+&lt;h3
+        
+      
+    
+    </summary>
+    
+      <category term="core dump" scheme="https://fengshentianxia.github.io/categories/core-dump/"/>
+    
+    
+      <category term="Linux" scheme="https://fengshentianxia.github.io/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>UNIX环境高级编程-进程环境</title>
+    <link href="https://fengshentianxia.github.io/2019/10/07/unix-huan-jing-gao-ji-bian-cheng-jin-cheng-huan-jing/"/>
+    <id>https://fengshentianxia.github.io/2019/10/07/unix-huan-jing-gao-ji-bian-cheng-jin-cheng-huan-jing/</id>
+    <published>2019-10-07T12:25:50.000Z</published>
+    <updated>2020-03-12T08:49:33.018Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;第7章-进程环境&quot;&gt;&lt;a href=&quot;#第7章-进程环境&quot; class=&quot;headerlink&quot; title=&quot;第7章 进程环境&quot;&gt;&lt;/a&gt;第7章 进程环境&lt;/h2&gt;&lt;img
+        
+      
+    
+    </summary>
+    
+      <category term="UNIX环境高级编程" scheme="https://fengshentianxia.github.io/categories/UNIX%E7%8E%AF%E5%A2%83%E9%AB%98%E7%BA%A7%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="Linux" scheme="https://fengshentianxia.github.io/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>面试-数据库</title>
+    <link href="https://fengshentianxia.github.io/2019/10/06/mian-shi-shu-ju-ku/"/>
+    <id>https://fengshentianxia.github.io/2019/10/06/mian-shi-shu-ju-ku/</id>
+    <published>2019-10-06T13:18:38.000Z</published>
+    <updated>2020-03-12T08:49:33.043Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;一、基本概念&quot;&gt;&lt;a href=&quot;#一、基本概念&quot; class=&quot;headerlink&quot; title=&quot;一、基本概念&quot;&gt;&lt;/a&gt;一、基本概念&lt;/h2&gt;&lt;h4 id=&quot;1-主键、外键、超键、候选键&quot;&gt;&lt;a href=&quot;#1-主键、外键、超键、候选键&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="面试" scheme="https://fengshentianxia.github.io/categories/%E9%9D%A2%E8%AF%95/"/>
+    
+    
+      <category term="数据库" scheme="https://fengshentianxia.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>面试-计算机网络</title>
+    <link href="https://fengshentianxia.github.io/2019/10/06/mian-shi-ji-suan-ji-wang-luo/"/>
+    <id>https://fengshentianxia.github.io/2019/10/06/mian-shi-ji-suan-ji-wang-luo/</id>
+    <published>2019-10-06T12:59:58.000Z</published>
+    <updated>2020-03-12T08:49:33.052Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;1-网络模型&quot;&gt;&lt;a href=&quot;#1-网络模型&quot; class=&quot;headerlink&quot; title=&quot;1. 网络模型&quot;&gt;&lt;/a&gt;1. 网络模型&lt;/h3&gt;&lt;h4 id=&quot;1-1-OSI七层模型和TCP-IP四层模型&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="面试" scheme="https://fengshentianxia.github.io/categories/%E9%9D%A2%E8%AF%95/"/>
+    
+    
+      <category term="计算机网络" scheme="https://fengshentianxia.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>面试-C++</title>
+    <link href="https://fengshentianxia.github.io/2019/10/06/mian-shi-c/"/>
+    <id>https://fengshentianxia.github.io/2019/10/06/mian-shi-c/</id>
+    <published>2019-10-06T12:20:14.000Z</published>
+    <updated>2020-03-12T08:49:33.030Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;1-编译和链接&quot;&gt;&lt;a href=&quot;#1-编译和链接&quot; class=&quot;headerlink&quot; title=&quot;1 编译和链接&quot;&gt;&lt;/a&gt;1 编译和链接&lt;/h2&gt;&lt;h3 id=&quot;1-1-编译和链接&quot;&gt;&lt;a href=&quot;#1-1-编译和链接&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="面试" scheme="https://fengshentianxia.github.io/categories/%E9%9D%A2%E8%AF%95/"/>
+    
+    
+      <category term="C++" scheme="https://fengshentianxia.github.io/tags/C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>面试-操作系统</title>
+    <link href="https://fengshentianxia.github.io/2019/10/06/mian-shi-cao-zuo-xi-tong/"/>
+    <id>https://fengshentianxia.github.io/2019/10/06/mian-shi-cao-zuo-xi-tong/</id>
+    <published>2019-10-06T11:51:58.000Z</published>
+    <updated>2020-03-12T08:49:33.033Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;进程管理&quot;&gt;&lt;a href=&quot;#进程管理&quot; class=&quot;headerlink&quot; title=&quot;进程管理&quot;&gt;&lt;/a&gt;进程管理&lt;/h2&gt;&lt;h3 id=&quot;1-进程&quot;&gt;&lt;a href=&quot;#1-进程&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="面试" scheme="https://fengshentianxia.github.io/categories/%E9%9D%A2%E8%AF%95/"/>
+    
+    
+      <category term="操作系统" scheme="https://fengshentianxia.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>面试-数据结构</title>
+    <link href="https://fengshentianxia.github.io/2019/10/06/mian-shi-shu-ju-jie-gou/"/>
+    <id>https://fengshentianxia.github.io/2019/10/06/mian-shi-shu-ju-jie-gou/</id>
+    <published>2019-10-06T11:05:43.000Z</published>
+    <updated>2020-03-12T08:49:33.048Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;1-绪论&quot;&gt;&lt;a href=&quot;#1-绪论&quot; class=&quot;headerlink&quot; title=&quot;1. 绪论&quot;&gt;&lt;/a&gt;1. 绪论&lt;/h2&gt;&lt;p&gt;&lt;img
+        
+      
+    
+    </summary>
+    
+      <category term="面试" scheme="https://fengshentianxia.github.io/categories/%E9%9D%A2%E8%AF%95/"/>
+    
+    
+      <category term="数据结构" scheme="https://fengshentianxia.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+  </entry>
+  
+</feed>
