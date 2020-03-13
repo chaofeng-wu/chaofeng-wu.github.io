@@ -2,9 +2,9 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://chaofeng-wu.github.io/2020/03/12/article-title/</loc>
+    <loc>https://chaofeng-wu.github.io/tags/index.html</loc>
     
-    <lastmod>2020-03-12T11:22:35.580Z</lastmod>
+    <lastmod>2020-03-12T08:49:33.073Z</lastmod>
     
   </url>
   
@@ -16,21 +16,14 @@
   </url>
   
   <url>
-    <loc>https://chaofeng-wu.github.io/tags/index.html</loc>
-    
-    <lastmod>2020-03-12T08:49:33.073Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://chaofeng-wu.github.io/archives/index.html</loc>
+    <loc>https://chaofeng-wu.github.io/categories/index.html</loc>
     
     <lastmod>2020-03-12T08:49:33.072Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://chaofeng-wu.github.io/categories/index.html</loc>
+    <loc>https://chaofeng-wu.github.io/archives/index.html</loc>
     
     <lastmod>2020-03-12T08:49:33.072Z</lastmod>
     
