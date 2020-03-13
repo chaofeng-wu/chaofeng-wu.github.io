@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>Xcode 11中的Gurobi 9.0配置</title>
+      <link href="/2020/03/13/xcode11-zhong-de-gurobi-pei-zhi/"/>
+      <url>/2020/03/13/xcode11-zhong-de-gurobi-pei-zhi/</url>
+      
+        <content type="html"><![CDATA[<h3 id="1-安装Gurobi"><a href="#1-安装Gurobi" class="headerlink" title="1. 安装Gurobi"></a>1. 安装Gurobi</h3><p>一般来说Gurobi的默认链接库路径为<br><code>/Library/gurobi901/</code></p><h3 id="2-在Xcode配置Gurobi的运行环境"><a href="#2-在Xcode配置Gurobi的运行环境" class="headerlink" title="2. 在Xcode配置Gurobi的运行环境"></a>2. 在Xcode配置Gurobi的运行环境</h3><h4 id="2-1-添加头文件路径"><a href="#2-1-添加头文件路径" class="headerlink" title="2.1 添加头文件路径"></a>2.1 添加头文件路径</h4><ul><li>Header Search Paths: 添加#include &lt;&gt;的路径，即添加<br><code>/Library/gurobi901/mac64/include</code></li><li>找到User Header Search Paths: 添加#include “”路径，即添加<br><code>/Library/gurobi901/mac64/include</code></li></ul><h4 id="2-2-添加库文件"><a href="#2-2-添加库文件" class="headerlink" title="2.2 添加库文件"></a>2.2 添加库文件</h4><ul><li>Library Search Paths: 添加库所在目录，添加<br><code>/Library/gurobi901/mac64/include</code>和<code>/Library/gurobi901/mac64/lib</code></li><li>Other Linker Flags: 比如要链接的库是libboost_regex.a,那么此处应该添加-lboost_regex即可。添加<br><code>-lgurobi90</code>和<code>-lgurobi_c++</code></li></ul><h3 id="3-测试环境-不报错即为成功"><a href="#3-测试环境-不报错即为成功" class="headerlink" title="3. 测试环境(不报错即为成功)"></a>3. 测试环境(不报错即为成功)</h3><pre class="line-numbers language-c++"><code class="language-c++">#include "gurobi_c++.h"using namespace std;intmain(int   argc,     char *argv[]){  if (argc < 2) {    cout << "Usage: lp_c++ filename" << endl;    return 1;  }  try {    GRBEnv env = GRBEnv();    GRBModel model = GRBModel(env, argv[1]);    model.optimize();    int optimstatus = model.get(GRB_IntAttr_Status);    if (optimstatus == GRB_INF_OR_UNBD) {      model.set(GRB_IntParam_Presolve, 0);      model.optimize();      optimstatus = model.get(GRB_IntAttr_Status);    }    if (optimstatus == GRB_OPTIMAL) {      double objval = model.get(GRB_DoubleAttr_ObjVal);      cout << "Optimal objective: " << objval << endl;    } else if (optimstatus == GRB_INFEASIBLE) {      cout << "Model is infeasible" << endl;      // compute and write out IIS      model.computeIIS();      model.write("model.ilp");    } else if (optimstatus == GRB_UNBOUNDED) {      cout << "Model is unbounded" << endl;    } else {      cout << "Optimization was stopped with status = "           << optimstatus << endl;    }  } catch(GRBException e) {    cout << "Error code = " << e.getErrorCode() << endl;    cout << e.getMessage() << endl;  } catch (...) {    cout << "Error during optimization" << endl;  }  return 0;}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> Xcode 11 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Gurobi 9.0 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>UNIX环境高级编程-进程控制</title>
       <link href="/2019/10/09/unix-huan-jing-gao-ji-bian-cheng-jin-cheng-kong-zhi/"/>
       <url>/2019/10/09/unix-huan-jing-gao-ji-bian-cheng-jin-cheng-kong-zhi/</url>

@@ -4,12 +4,13 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="详解core dump, 吴超峰的博客">
+    <meta name="keywords" content="Xcode 11中的Gurobi 9.0配置, 吴超峰的博客">
     <meta name="baidu-site-verification" content="72b9FEAmOi">
     <meta name="google-site-verification" content="72b9FEAmOi">
     <meta name="360-site-verification" content>
-    <meta name="description" content="转载自–详解coredump
-1.什么是coredump​        我们经常听到大家说到程序core掉了，需要定位解决，这里说的大部分是指对应程序由于各种异常或者bug导致在运行过程中异常退出或者中止，并且在满足一定条件下&amp;#40;这">
+    <meta name="description" content="1. 安装Gurobi一般来说Gurobi的默认链接库路径为/Library/gurobi901/
+2. 在Xcode配置Gurobi的运行环境2.1 添加头文件路径
+Header Search Paths: 添加#include &amp;lt;">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +18,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>详解core dump | 吴超峰的博客</title>
+    <title>Xcode 11中的Gurobi 9.0配置 | 吴超峰的博客</title>
     <link rel="icon" type="image/jpeg" href="/logo.jpg">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -291,13 +292,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        详解core dump
+                        Xcode 11中的Gurobi 9.0配置
                     </div>
                 </div>
             </div>
@@ -408,8 +409,8 @@
                     
                     <div class="article-tag">
                         
-                        <a href="/tags/Linux/" target="_blank">
-                            <span class="chip bg-color">Linux</span>
+                        <a href="/tags/Gurobi-9-0/" target="_blank">
+                            <span class="chip bg-color">Gurobi 9.0</span>
                         </a>
                         
                     </div>
@@ -420,8 +421,8 @@
                     <div class="post-cate">
                         <i class="fa fa-bookmark fa-fw icon-category"></i>
                         
-                        <a href="/categories/core-dump/" class="post-category" target="_blank">
-                            core dump
+                        <a href="/categories/Xcode-11/" class="post-category" target="_blank">
+                            Xcode 11
                         </a>
                         
                     </div>
@@ -432,7 +433,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2019-10-08
+                    2020-03-13
                 </div>
 
                 <div class="post-author info-break-policy">
@@ -446,14 +447,14 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.1k
+                    158
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    11 分
+                    1 分
                 </div>
                 
                 
@@ -469,193 +470,67 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p><a href="https://blog.csdn.net/tenfyguo/article/details/8159176" target="_blank" rel="noopener">转载自–详解coredump</a></p>
-<h3 id="1-什么是coredump"><a href="#1-什么是coredump" class="headerlink" title="1.什么是coredump"></a>1.什么是coredump</h3><p>​        我们经常听到大家说到程序core掉了，需要定位解决，这里说的大部分是指对应程序由于各种异常或者bug导致在运行过程中异常退出或者中止，并且在满足一定条件下&#40;这里为什么说需要满足一定的条件呢？下面会分析）会产生一个叫做core的文件。</p>
-<p>​        通常情况下，core文件会包含了程序运行时的内存，寄存器状态，堆栈指针，内存管理信息还有各种函数调用堆栈信息等，我们可以理解为是程序工作当前状态存储生成第一个文件，许多的程序出错的时候都会产生一个core文件，通过工具分析这个文件，我们可以定位到程序异常退出的时候对应的堆栈调用等信息，找出问题所在并进行及时解决。</p>
-<h3 id="2-coredump文件的存储位置"><a href="#2-coredump文件的存储位置" class="headerlink" title="2.coredump文件的存储位置"></a>2.coredump文件的存储位置</h3><p>core文件默认的存储位置与对应的可执行程序在同一目录下，文件名是core，大家可以通过下面的命令看到core文件的存在位置：</p>
-<blockquote>
-<p>cat  /proc/sys/kernel/core_pattern</p>
-</blockquote>
-<p> 缺省值是core</p>
-<p> <strong>注意：</strong>这里是指在进程当前工作目录的下创建。通常与程序在相同的路径下。但如果程序中调用了chdir函数，则有可能改变了当前工作目录。这时core文件创建在chdir指定的路径下。有好多程序崩溃了，我们却找不到core文件放在什么位置。和chdir函数就有关系。当然程序崩溃了不一定都产生 core文件。</p>
-<p>如下程序代码：则会把生成的core文件存储在/data/coredump/wd，而不是大家认为的跟可执行文件在同一目录。</p>
- <img src="/2019/10/08/xiang-jie-core-dump/1352287597_1389.jpg" alt="img" style="zoom:50%;">
+                <h3 id="1-安装Gurobi"><a href="#1-安装Gurobi" class="headerlink" title="1. 安装Gurobi"></a>1. 安装Gurobi</h3><p>一般来说Gurobi的默认链接库路径为<br><code>/Library/gurobi901/</code></p>
+<h3 id="2-在Xcode配置Gurobi的运行环境"><a href="#2-在Xcode配置Gurobi的运行环境" class="headerlink" title="2. 在Xcode配置Gurobi的运行环境"></a>2. 在Xcode配置Gurobi的运行环境</h3><h4 id="2-1-添加头文件路径"><a href="#2-1-添加头文件路径" class="headerlink" title="2.1 添加头文件路径"></a>2.1 添加头文件路径</h4><ul>
+<li>Header Search Paths: 添加#include &lt;&gt;的路径，即添加<br><code>/Library/gurobi901/mac64/include</code></li>
+<li>找到User Header Search Paths: 添加#include “”路径，即添加<br><code>/Library/gurobi901/mac64/include</code></li>
+</ul>
+<h4 id="2-2-添加库文件"><a href="#2-2-添加库文件" class="headerlink" title="2.2 添加库文件"></a>2.2 添加库文件</h4><ul>
+<li>Library Search Paths: 添加库所在目录，添加<br><code>/Library/gurobi901/mac64/include</code>和<code>/Library/gurobi901/mac64/lib</code></li>
+<li>Other Linker Flags: 比如要链接的库是libboost_regex.a,那么此处应该添加-lboost_regex即可。添加<br><code>-lgurobi90</code>和<code>-lgurobi_c++</code></li>
+</ul>
+<h3 id="3-测试环境-不报错即为成功"><a href="#3-测试环境-不报错即为成功" class="headerlink" title="3. 测试环境(不报错即为成功)"></a>3. 测试环境(不报错即为成功)</h3><pre class="line-numbers language-c++"><code class="language-c++">#include "gurobi_c++.h"
+using namespace std;
 
-<p>通过下面的命令可以更改coredump文件的存储位置，若你希望把core文件生成到/data/coredump/core目录下：</p>
-<blockquote>
-<p>echo “/data/coredump/core”&gt; /proc/sys/kernel/core_pattern</p>
-</blockquote>
-<p>注意，这里当前用户必须具有对/proc/sys/kernel/core_pattern的写权限。</p>
-<p>缺省情况下，内核在coredump时所产生的core文件放在与该程序相同的目录中，并且文件名固定为core。很显然，如果有多个程序产生core文件，或者同一个程序多次崩溃，就会重复覆盖同一个core文件，因此我们有必要对不同程序生成的core文件进行分别命名。</p>
-<p>我们通过修改kernel的参数，可以指定内核所生成的coredump文件的文件名。例如，使用下面的命令使kernel生成名字为core.filename.pid格式的core dump文件：</p>
-<blockquote>
-<p>echo “/data/coredump/core.%e.%p” &gt;/proc/sys/kernel/core_pattern</p>
-</blockquote>
-<p>这样配置后，产生的core文件中将带有崩溃的程序名、以及它的进程ID。上面的%e和%p会被替换成程序文件名以及进程ID。</p>
-<p>如果在上述文件名中包含目录分隔符“/”，那么所生成的core文件将会被放到指定的目录中。 需要说明的是，在内核中还有一个与coredump相关的设置，就是/proc/sys/kernel/core_uses_pid。如果这个文件的内容被配置成1，那么即使core_pattern中没有设置%p，最后生成的core dump文件名仍会加上进程ID。</p>
-<h3 id="3-如何判断一个文件是coredump文件？"><a href="#3-如何判断一个文件是coredump文件？" class="headerlink" title="3.如何判断一个文件是coredump文件？"></a>3.如何判断一个文件是coredump文件？</h3><p>在类unix系统下，coredump文件本身主要的格式也是ELF格式，因此，我们可以通过readelf命令进行判断。</p>
-<img src="/2019/10/08/xiang-jie-core-dump/1352287700_6534.jpg" alt="img" style="zoom:50%;">
+int
+main(int   argc,
+     char *argv[])
+{
+  if (argc < 2) {
+    cout << "Usage: lp_c++ filename" << endl;
+    return 1;
+  }
 
-<p>可以看到ELF文件头的Type字段的类型是：CORE &#40;Core file&#41;</p>
-<p>可以通过简单的file命令进行快速判断：</p>
-<p><img src="https://img-my.csdn.net/uploads/201211/07/1352287746_8191.jpg" alt="img"></p>
-<h3 id="4-产生coredum的一些条件总结"><a href="#4-产生coredum的一些条件总结" class="headerlink" title="4.产生coredum的一些条件总结"></a>4.产生coredum的一些条件总结</h3><p><strong>4.1</strong>产生coredump的条件，首先需要确认当前会话的ulimit –c，若为0，则不会产生对应的coredump，需要进行修改和设置。</p>
-<blockquote>
-<p>ulimit  -c unlimited  &#40;可以产生coredump且不受大小限制&#41;</p>
-</blockquote>
-<ul>
-<li>若想甚至对应的字符大小，则可以指定：</li>
-</ul>
-<blockquote>
-<p>ulimit –c [size]</p>
-</blockquote>
-<img src="/2019/10/08/xiang-jie-core-dump/1352287797_3458.jpg" alt="img" style="zoom:50%;">
+  try {
+    GRBEnv env = GRBEnv();
+    GRBModel model = GRBModel(env, argv[1]);
 
-<p>可以看出，这里的size的单位是blocks,一般1block=512bytes</p>
-<ul>
-<li>但当前设置的ulimit只对当前会话有效，若想系统均有效，则需要进行如下设置：</li>
-</ul>
-<blockquote>
-<p>在/etc/profile中加入以下一行，这将允许生成coredump文件</p>
-<p>ulimit-c unlimited</p>
-<p>在rc.local中加入以下一行，这将使程序崩溃时生成的coredump文件位于/data/coredump/目录下:</p>
-<p>echo /data/coredump/core.%e.%p&gt; /proc/sys/kernel/core_pattern </p>
-</blockquote>
-<p><strong>4.2</strong>当前用户，即执行对应程序的用户具有对写入core目录的写权限以及有足够的空间。</p>
-<p><strong>4.3</strong> 几种不会产生core文件的情况说明：</p>
-<blockquote>
-<ol>
-<li>the process was set-user-ID and the current user is not the owner of the program file, or</li>
-<li>the process was set-group-ID and the current user is not the group owner of the file,</li>
-<li>the user does not have permission to write in the current working directory, </li>
-<li>the file already exists and the user does not have permission to write to it, or </li>
-<li>the file is too big &#40;recall the RLIMIT_CORE limit in Section 7.11&#41;. The permissions of the core file &#40;assuming that the file doesn’t already exist&#41; are usually user-read and user-write, although Mac OS X sets only user-read.</li>
-</ol>
-</blockquote>
-<h3 id="5-core-dump产生的几种可能情况"><a href="#5-core-dump产生的几种可能情况" class="headerlink" title="5.core dump产生的几种可能情况"></a>5.core dump产生的几种可能情况</h3><p>造成程序coredump的原因有很多，这里总结一些比较常用的经验吧：</p>
-<h4 id="5-1-内存访问越界"><a href="#5-1-内存访问越界" class="headerlink" title="5.1 内存访问越界"></a>5.1 内存访问越界</h4><blockquote>
-<p>a&#41; 由于使用错误的下标，导致数组访问越界。</p>
-<p>b&#41; 搜索字符串时，依靠字符串结束符来判断字符串是否结束，但是字符串没有正常的使用结束符。</p>
-<p>c&#41; 使用strcpy, strcat, sprintf, strcmp,strcasecmp等字符串操作函数，将目标字符串读/写爆。应该使用strncpy, strlcpy, strncat, strlcat, snprintf, strncmp, strncasecmp等函数防止读写越界。</p>
-</blockquote>
-<h4 id="5-2-多线程程序使用了线程不安全的函数。"><a href="#5-2-多线程程序使用了线程不安全的函数。" class="headerlink" title="5.2 多线程程序使用了线程不安全的函数。"></a>5.2 多线程程序使用了线程不安全的函数。</h4><p>应该使用可重入的函数，它们很容易被用错.</p>
-<h4 id="5-3-多线程读写的数据未加锁保护。"><a href="#5-3-多线程读写的数据未加锁保护。" class="headerlink" title="5.3 多线程读写的数据未加锁保护。"></a>5.3 多线程读写的数据未加锁保护。</h4><p>对于会被多个线程同时访问的全局数据，应该注意加锁保护，否则很容易造成core dump。</p>
-<h4 id="5-4-非法指针"><a href="#5-4-非法指针" class="headerlink" title="5.4 非法指针"></a>5.4 非法指针</h4><blockquote>
-<p>a&#41; 使用空指针</p>
-<p>b&#41; 随意使用指针转换。一个指向一段内存的指针，除非确定这段内存原先就分配为某种结构或类型，或者这种结构或类型的数组，否则不要将它转换为这种结构或类型的指针，而应该将这段内存拷贝到一个这种结构或类型中，再访问这个结构或类型。这是因为如果这段内存的开始地址不是按照这种结构或类型对齐的，那么访问它时就很容易因为bus error而core dump。</p>
-</blockquote>
-<h4 id="5-6-堆栈溢出"><a href="#5-6-堆栈溢出" class="headerlink" title="5.6 堆栈溢出"></a>5.6 堆栈溢出</h4><p>不要使用大的局部变量 &#40;因为局部变量都分配在栈上），这样容易造成堆栈溢出，破坏系统的栈和堆结构，导致出现莫名其妙的错误。  </p>
-<h3 id="6-利用gdb进行coredump的定位"><a href="#6-利用gdb进行coredump的定位" class="headerlink" title="6.利用gdb进行coredump的定位"></a>6.利用gdb进行coredump的定位</h3><p>其实分析coredump的工具有很多，现在大部分类unix系统都提供了分析coredump文件的工具，不过，我们经常用到的工具是gdb。这里我们以程序为例子来说明如何进行定位。</p>
-<h4 id="40-1-41-段错误-–-segmentfault"><a href="#40-1-41-段错误-–-segmentfault" class="headerlink" title="&#40;1&#41; 段错误 – segmentfault"></a>&#40;1&#41; 段错误 – segmentfault</h4><ul>
-<li><p>我们写一段代码往受到系统保护的地址写内容。</p>
-<img src="/2019/10/08/xiang-jie-core-dump/1352287869_3119.jpg" alt="img" style="zoom:50%;">
-</li>
-<li><p>按如下方式进行编译和执行，注意这里需要-g选项编译。</p>
-</li>
-</ul>
-<img src="/2019/10/08/xiang-jie-core-dump/1352287908_9077.jpg" alt="img">
+    model.optimize();
 
-<p>可以看到，当输入12的时候，系统提示段错误并且core dumped</p>
-<ul>
-<li>我们进入对应的core文件生成目录，优先确认是否core文件格式并启用gdb进行调试。</li>
-</ul>
-<img src="/2019/10/08/xiang-jie-core-dump/1352287964_7192.jpg" alt="img" style="zoom: 80%;">
+    int optimstatus = model.get(GRB_IntAttr_Status);
 
-<blockquote>
-<p>从红色方框截图可以看到，程序中止是因为信号11，且从bt（backtrace）命令（或者where）可以看到函数的调用栈，即程序执行到coremain.cpp的第5行，且里面调用scanf 函数，而该函数其实内部会调用_IO_vfscanf_internal（）函数。</p>
-</blockquote>
-<ul>
-<li>接下来我们继续用gdb，进行调试对应的程序。</li>
-</ul>
-<p>记住几个常用的gdb命令：</p>
-<blockquote>
-<p>l（list），显示源代码，并且可以看到对应的行号；</p>
-<p>b（break）x, x是行号，表示在对应的行号位置设置断点；</p>
-<p>p（print）x, x是变量名，表示打印变量x的值</p>
-<p>r（run）, 表示继续执行到断点的位置</p>
-<p>n（next）,表示执行下一步</p>
-<p>c（continue）,表示继续执行</p>
-<p>q（quit），表示退出gdb</p>
-</blockquote>
-<p> 启动gdb,注意该程序编译需要-g选项进行。</p>
-<p><img src="/2019/10/08/xiang-jie-core-dump/1352288068_8926-1570504739171.jpg" alt="img"></p>
-<p>注：  SIGSEGV     11       Core    Invalid memoryreference</p>
-<h3 id="7-附注："><a href="#7-附注：" class="headerlink" title="7.附注："></a>7.附注：</h3><h4 id="40-1-41-gdb的查看源码"><a href="#40-1-41-gdb的查看源码" class="headerlink" title="&#40;1&#41;gdb的查看源码"></a>&#40;1&#41;gdb的查看源码</h4><p>GDB 可以打印出所调试程序的源代码，当然，在程序编译时一定要加上-g的参数，把源程序信息编译到执行文件中。不然就看不到源程序了。当程序停下来以后，GDB会报告程序停在了那个文件的第几行上。你可以用list命令来打印程序的源代码。还是来看一看查看源代码的GDB命令吧。</p>
-<blockquote>
-<p>list&lt;linenum&gt;</p>
-</blockquote>
-<p>显示程序第linenum行的周围的源程序。</p>
-<blockquote>
-<p>list&lt;function&gt;</p>
-</blockquote>
-<p>显示函数名为function的函数的源程序。</p>
-<blockquote>
-<p>list</p>
-</blockquote>
-<p>显示当前行后面的源程序。</p>
-<blockquote>
-<p>list -</p>
-</blockquote>
-<p>显示当前行前面的源程序。</p>
-<p>一般是打印当前行的上5行和下5行，如果显示函数是是上2行下8行，默认是10行，当然，你也可以定制显示的范围，使用下面命令可以设置一次显示源程序的行数。</p>
-<blockquote>
-<p>setlistsize &lt;count&gt;</p>
-</blockquote>
-<p>设置一次显示源代码的行数。</p>
-<blockquote>
-<p>showlistsize</p>
-</blockquote>
-<p>查看当前listsize的设置。</p>
-<p>list命令还有下面的用法：</p>
-<blockquote>
-<p>list&lt;first&gt;, &lt;last&gt;</p>
-</blockquote>
-<p>显示从first行到last行之间的源代码。</p>
-<blockquote>
-<p>list ,&lt;last&gt;</p>
-</blockquote>
-<p>显示从当前行到last行之间的源代码。</p>
-<blockquote>
-<p>list +</p>
-</blockquote>
-<p>往后显示源代码。</p>
-<p>一般来说在list后面可以跟以下这些参数：</p>
-<blockquote>
-<p>&lt;linenum&gt;   行号。</p>
-<p>&lt;+offset&gt;   当前行号的正偏移量。</p>
-<p>&lt;-offset&gt;   当前行号的负偏移量。</p>
-<p>&lt;filename linenum&gt;  哪个文件的哪一行。</p>
-<p>&lt;function&gt;函数名。</p>
-<p>&lt;filename: function&gt;哪个文件中的哪个函数。</p>
-<p>&lt;*address&gt;  程序运行时的语句在内存中的地址。</p>
-</blockquote>
-<h4 id="40-2-41-一些常用signal的含义"><a href="#40-2-41-一些常用signal的含义" class="headerlink" title="&#40;2&#41; 一些常用signal的含义"></a>&#40;2&#41; 一些常用signal的含义</h4><ul>
-<li>SIGABRT：调用abort函数时产生此信号。进程异常终止。</li>
-<li>SIGBUS：指示一个实现定义的硬件故障。</li>
-<li>SIGEMT：指示一个实现定义的硬件故障。EMT这一名字来自PDP-11的emulator trap 指令。</li>
-<li>SIGFPE：此信号表示一个算术运算异常，例如除以0，浮点溢出等。</li>
-<li>SIGILL：此信号指示进程已执行一条非法硬件指令。4.3BSD由abort函数产生此信号。SIGABRT现在被用于此。</li>
-<li>SIGIOT：这指示一个实现定义的硬件故障。IOT这个名字来自于PDP-11对于输入／输出TRAP&#40;input/outputTRAP&#41;指令的缩写。系统V的早期版本，由abort函数产生此信号。SIGABRT现在被用于此。</li>
-<li>SIGQUIT：当用户在终端上按退出键&#40;一般采用Ctrl-/）时，产生此信号，并送至前台进程组中的所有进程。此信号不仅终止前台进程组&#40;如SIGINT所做的那样），同时产生一个core文件。</li>
-<li>SIGSEGV：指示进程进行了一次无效的存储访问。名字SEGV表示“段违例&#40;segmentationviolation）”。</li>
-<li>SIGSYS：指示一个无效的系统调用。由于某种未知原因，进程执行了一条系统调用指令，但其指示系统调用类型的参数却是无效的。</li>
-<li>SIGTRAP：指示一个实现定义的硬件故障。此信号名来自于PDP-11的TRAP指令。</li>
-<li>SIGXCPUSVR4和4.3+BSD支持资源限制的概念。如果进程超过了其软C P U时间限制，则产生此信号。</li>
-<li>SIGXFSZ：如果进程超过了其软文件长度限制，则SVR4和4.3+BSD产生此信号。</li>
-</ul>
-<h4 id="40-3-41-Core-pattern的格式"><a href="#40-3-41-Core-pattern的格式" class="headerlink" title="&#40;3&#41;Core_pattern的格式"></a>&#40;3&#41;Core_pattern的格式</h4><p>可以在core_pattern模板中使用变量还很多，见下面的列表：</p>
-<blockquote>
-<ul>
-<li>%% 单个%字符</li>
-<li>%p 所dump进程的进程ID</li>
-<li>%u 所dump进程的实际用户ID</li>
-<li>%g 所dump进程的实际组ID</li>
-<li>%s 导致本次core dump的信号</li>
-<li>%t core dump的时间 &#40;由1970年1月1日计起的秒数&#41;</li>
-<li>%h 主机名</li>
-<li>%e 程序文件名</li>
-</ul>
-</blockquote>
+    if (optimstatus == GRB_INF_OR_UNBD) {
+      model.set(GRB_IntParam_Presolve, 0);
+      model.optimize();
+      optimstatus = model.get(GRB_IntAttr_Status);
+    }
+
+    if (optimstatus == GRB_OPTIMAL) {
+      double objval = model.get(GRB_DoubleAttr_ObjVal);
+      cout << "Optimal objective: " << objval << endl;
+    } else if (optimstatus == GRB_INFEASIBLE) {
+      cout << "Model is infeasible" << endl;
+
+      // compute and write out IIS
+
+      model.computeIIS();
+      model.write("model.ilp");
+    } else if (optimstatus == GRB_UNBOUNDED) {
+      cout << "Model is unbounded" << endl;
+    } else {
+      cout << "Optimization was stopped with status = "
+           << optimstatus << endl;
+    }
+
+  } catch(GRBException e) {
+    cout << "Error code = " << e.getErrorCode() << endl;
+    cout << e.getMessage() << endl;
+  } catch (...) {
+    cout << "Error during optimization" << endl;
+  }
+
+  return 0;
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
             </div>
             <hr />
@@ -814,9 +689,9 @@
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《详解core dump》
+                    《Xcode 11中的Gurobi 9.0配置》
                 </span> 由
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/10/08/xiang-jie-core-dump/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2020/03/13/xcode11-zhong-de-gurobi-pei-zhi/" property="cc:attributionName"
                rel="cc:attributionURL">
                 吴超峰
             </a> 采用
@@ -857,7 +732,7 @@
         repo: 'chaofeng-wu.github.io',
         owner: 'chaofeng-wu',
         admin: "chaofeng-wu",
-        id: '2019/10/08/xiang-jie-core-dump/',
+        id: '2020/03/13/xcode11-zhong-de-gurobi-pei-zhi/',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -1140,9 +1015,60 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2020/03/13/xcode11-zhong-de-gurobi-pei-zhi/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Xcode 11中的Gurobi 9.0配置">
+                        
+                        <span class="card-title">Xcode 11中的Gurobi 9.0配置</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            本文主要介绍了如何在Xcode 11配置Gurobi 9.0的运行环境。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-13
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Xcode-11/" class="post-category" target="_blank">
+                                    Xcode 11
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Gurobi-9-0/" target="_blank">
+                        <span class="chip bg-color">Gurobi 9.0</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
             <div class="card">
                 <a href="/2019/10/09/unix-huan-jing-gao-ji-bian-cheng-jin-cheng-kong-zhi/">
                     <div class="card-image">
@@ -1160,61 +1086,8 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-10-09
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fa fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/UNIX环境高级编程/" class="post-category" target="_blank">
-                                    UNIX环境高级编程
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/Linux/" target="_blank">
-                        <span class="chip bg-color">Linux</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2019/10/07/unix-huan-jing-gao-ji-bian-cheng-jin-cheng-huan-jing/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="UNIX环境高级编程-进程环境">
-                        
-                        <span class="card-title">UNIX环境高级编程-进程环境</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            第7章 进程环境
-
-本章前半部分讨论进程的开始和结束，后半部分讨论参数列表、环境变量、C 程序虚拟地址空间布局等内容。
-7.1 main函数 int main (int argc, char *argv[]);
- int main (int
-                        
-                    </div>
-                    <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-10-07
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-10-09
                             </span>
                         <span class="publish-author">
                             

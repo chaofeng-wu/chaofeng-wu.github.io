@@ -1,3 +1,4 @@
+https://chaofeng-wu.github.io/2020/03/13/xcode11-zhong-de-gurobi-pei-zhi/
 https://chaofeng-wu.github.io/2019/10/09/unix-huan-jing-gao-ji-bian-cheng-jin-cheng-kong-zhi/
 https://chaofeng-wu.github.io/2019/10/08/xiang-jie-core-dump/
 https://chaofeng-wu.github.io/2019/10/07/unix-huan-jing-gao-ji-bian-cheng-jin-cheng-huan-jing/

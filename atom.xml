@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://chaofeng-wu.github.io/"/>
-  <updated>2020-03-12T08:49:33.016Z</updated>
+  <updated>2020-03-13T03:14:58.256Z</updated>
   <id>https://chaofeng-wu.github.io/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Xcode 11中的Gurobi 9.0配置</title>
+    <link href="https://chaofeng-wu.github.io/2020/03/13/xcode11-zhong-de-gurobi-pei-zhi/"/>
+    <id>https://chaofeng-wu.github.io/2020/03/13/xcode11-zhong-de-gurobi-pei-zhi/</id>
+    <published>2020-03-13T03:09:09.000Z</published>
+    <updated>2020-03-13T03:14:58.256Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;1-安装Gurobi&quot;&gt;&lt;a href=&quot;#1-安装Gurobi&quot; class=&quot;headerlink&quot; title=&quot;1. 安装Gurobi&quot;&gt;&lt;/a&gt;1.
+        
+      
+    
+    </summary>
+    
+      <category term="Xcode 11" scheme="https://chaofeng-wu.github.io/categories/Xcode-11/"/>
+    
+    
+      <category term="Gurobi 9.0" scheme="https://chaofeng-wu.github.io/tags/Gurobi-9-0/"/>
+    
+  </entry>
   
   <entry>
     <title>UNIX环境高级编程-进程控制</title>
